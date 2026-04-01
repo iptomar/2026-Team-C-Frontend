@@ -1,0 +1,89 @@
+/* 🔹 Layout geral */
+.builder {
+  padding-right: 10px;
+  display: flex;
+  height: 100vh;
+  background-color: #f5f6f8;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Sidebar */
+.palette {
+  width: 220px;
+  background: #ffffff;
+  border-right: 1px solid #ddd;
+  padding: 15px;
+}
+
+/* Itens da sidebar */
+.tool-item {
+  background: #f0f2f5;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: grab;
+  text-align: center;
+  color: #333;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.tool-item:hover {
+  background: #e4e7ec;
+}
+
+/* Canvas */
+.canvas {
+  flex: 1;
+  position: relative;
+  background-color: #ffffff;
+  border: 2px dashed #ccc;
+  margin: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Quando está a fazer hover */
+.canvas.over {
+  border-color: #4a90e2;
+  background-color: #f0f7ff;
+}
+
+
+
+/* QUANDO ESTÁS A ARRASTAR */
+.canvas-field:active {
+  opacity: 0.8;
+  cursor: grabbing;
+
+
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  border-color: #4a90e2;
+}
+
+/* Inputs dentro dos campos */
+.canvas-field input,
+.canvas-field textarea,
+.canvas-field select,
+.canvas-field h2{
+  width: 100%;
+  padding: 6px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+   color: #333;
+}
+
+/* Labels */
+.canvas-field label {
+  font-size: 14px;
+  color: #333;
+}
+
+
+.canvas-field.dragging {
+  opacity: 0.9;
+  background: #ffffff;
+  color: #000; 
+}
