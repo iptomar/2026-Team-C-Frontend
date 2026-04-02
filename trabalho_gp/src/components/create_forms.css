@@ -47,7 +47,7 @@
 /* Quando está a fazer hover */
 .canvas.over {
   border-color: #4a90e2;
-  background-color: #f0f7ff;
+  background-color: transparent;
 }
 
 
@@ -65,19 +65,20 @@
 /* Inputs dentro dos campos */
 .canvas-field input,
 .canvas-field textarea,
-.canvas-field select,
-.canvas-field h2{
+.canvas-field select{
   width: 100%;
   padding: 6px;
   margin-top: 5px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  background-color: #ccc;
    color: #333;
 }
 
 /* Labels */
-.canvas-field label {
-  font-size: 14px;
+
+.canvas-field h2,
+h3{
   color: #333;
 }
 
@@ -87,3 +88,48 @@
   background: #ffffff;
   color: #000; 
 }
+
+.canvas-wrapper {
+  position: relative;
+  flex: 1;
+  margin: 20px;
+}
+
+/*  TEXTO */
+.text-layer {
+  position: absolute;
+  inset: 0;
+  padding: 20px;
+
+  z-index: 1;
+
+  font-size: 16px;
+  color: #222;
+
+  outline: none;
+  cursor: text;
+}
+
+/*  CANVAS */
+.canvas {
+  position: absolute;
+  inset: 0;
+
+  z-index: 2;
+
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+
+  background: transparent;
+
+  pointer-events: none;
+}
+
+/*  CAMPOS */
+.canvas-field {
+  pointer-events: all;
+  position: absolute;
+}
+
+
+

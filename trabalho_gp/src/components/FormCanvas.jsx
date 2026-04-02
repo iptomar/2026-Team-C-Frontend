@@ -17,6 +17,7 @@ function DraggableField({ field }) {
     },
   });
 
+
   const style = {
     position: "absolute",
     left: field.x,
@@ -39,6 +40,7 @@ function DraggableField({ field }) {
   );
 }
 
+
 /**
  * COMPONENTE: FormCanvas
  * Esta é a "folha de papel" ou área onde largas os campos.
@@ -51,14 +53,26 @@ export default function FormCanvas({ fields }) {
   });
 
   return (
-    <div
-      ref={setNodeRef}
-      id="form-canvas"
-      className={`canvas ${isOver ? "over" : ""}`}
-    >
-      {fields.map((field) => (
-        <DraggableField key={field.id} field={field} />
-      ))}
+    <div className="canvas-wrapper">
+      
+      {/* 🔥 TEXTO LIVRE */}
+      <div
+        className="text-layer"
+        contentEditable
+        suppressContentEditableWarning
+      />
+
+      {/* 🔥 CANVAS REAL */}
+      <div
+        ref={setNodeRef}
+        id="form-canvas"
+        className={`canvas ${isOver ? "over" : ""}`}
+      >
+        {fields.map((field) => (
+          <DraggableField key={field.id} field={field} />
+        ))}
+      </div>
+
     </div>
   );
 }
