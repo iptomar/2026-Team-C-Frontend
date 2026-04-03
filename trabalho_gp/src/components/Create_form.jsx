@@ -3,24 +3,16 @@ import { DndContext } from "@dnd-kit/core";
 
 import FormCanvas from "./FormCanvas";
 import FieldPalette from "./FieldPalette";
+import FieldEditor from "./FieldEditor";
 import "./create_forms.css";
 
-/**
- * COMPONENTE PRINCIPAL: Create_form
- * lógica de onde os campos aparecem no ecrã.
- * @returns
- */
 export default function Create_form() {
-
   const [fields, setFields] = useState([]);
-
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [selectedFieldId, setSelectedFieldId] = useState(null);
 
-  /**
-   * FUNÇÃO: handleDragStart (Início do Arrasto)
-   * Regista as coordenadas iniciais para sabermos de onde o objeto partiu.
-   * @param {*} event 
-   */
+  const selectedField = fields.find((f) => f.id === selectedFieldId);
+
   function handleDragStart(event) {
     const e = event.activatorEvent;
 
@@ -37,12 +29,7 @@ export default function Create_form() {
 
     setDragStart({ x: clientX, y: clientY });
   }
-  /**
-   * FUNÇÃO: handleDragEnd (Fim do Arrasto)
-   * Decide se deve criar um novo campo ou apenas mover um que já existia.
-   * @param {*} event 
-   * @returns 
-   */
+
   function handleDragEnd(event) {
     const { active, delta } = event;
 
@@ -57,7 +44,7 @@ export default function Create_form() {
     const x = finalX - rect.left;
     const y = finalY - rect.top;
 
-    // NOVO ITEM
+    // NOVO
     if (active.data.current?.from === "palette") {
       setFields((prev) => [
         ...prev,
@@ -66,33 +53,51 @@ export default function Create_form() {
           type: active.data.current.type,
           x,
           y,
+          label: "Pergunta",
+          placeholder: "Escreve aqui...",
+          options: ["Opção 1", "Opção 2"],
+          stars: 5,
         },
       ]);
       return;
     }
 
-    // MOVER EXISTENTE
+    // MOVER
     if (active.data.current?.from === "canvas") {
       setFields((prev) =>
-        prev.map((field) => {
-          if (field.id === active.id) {
-            return {
-              ...field,
-              x: field.x + delta.x,
-              y: field.y + delta.y,
-            };
-          }
-          return field;
-        }),
+        prev.map((field) =>
+          field.id === active.id
+            ? {
+                ...field,
+                x: field.x + delta.x,
+                y: field.y + delta.y,
+              }
+            : field
+        )
       );
     }
+  }
+
+  function updateField(id, newData) {
+    setFields((prev) =>
+      prev.map((f) => (f.id === id ? { ...f, ...newData } : f))
+    );
   }
 
   return (
     <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
       <div className="builder">
-        <FormCanvas fields={fields} />
+        <FormCanvas
+          fields={fields}
+          setSelectedField={setSelectedFieldId}
+        />
+
         <FieldPalette />
+
+        <FieldEditor
+          field={selectedField}
+          updateField={updateField}
+        />
       </div>
     </DndContext>
   );

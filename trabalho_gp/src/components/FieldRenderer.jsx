@@ -8,7 +8,12 @@
 export default function FieldRenderer({ field }) {
   switch (field.type) {
     case "text":
-      return <input placeholder="Texto curto" />;
+  return (
+    <>
+      
+      <input placeholder={field.placeholder} />
+    </>
+  );
 
     case "textarea":
       return <textarea placeholder="Texto longo" />;
@@ -23,20 +28,29 @@ export default function FieldRenderer({ field }) {
       return <label><input type="checkbox" /> Checkbox</label>;
 
     case "radio":
-      return (
-        <div>
-          <label><input type="radio" name={field.id} /> Opção 1</label>
-          <label><input type="radio" name={field.id} /> Opção 2</label>
-        </div>
-      );
+  return (
+    <div>
+      
+      {field.options.map((opt, i) => (
+        <label key={i}>
+          <input type="radio" name={field.id} />
+          {opt}
+        </label>
+      ))}
+    </div>
+  );
 
     case "select":
-      return (
-        <select>
-          <option>Opção 1</option>
-          <option>Opção 2</option>
-        </select>
-      );
+  return (
+    <>
+     
+      <select>
+        {field.options.map((opt, i) => (
+          <option key={i}>{opt}</option>
+        ))}
+      </select>
+    </>
+  );
 
     case "date":
       return <input type="date" />;
@@ -45,10 +59,16 @@ export default function FieldRenderer({ field }) {
       return <input type="file" />;
 
     case "rating":
-      return <div>⭐⭐⭐⭐⭐</div>;
+  return (
+    <div>
+      {Array.from({ length: field.stars }).map((_, i) => (
+        <span key={i}>⭐</span>
+      ))}
+    </div>
+  );
 
     case "title":
-      return <h2>Título</h2>;
+  return <h2>{field.label}</h2>;
 
     default:
       return null;
