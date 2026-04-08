@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "./LoginPage.css";
 
 export default function LoginPage() {
@@ -29,7 +30,7 @@ export default function LoginPage() {
     setSuccess("");
 
     if (!formData.email || !formData.password) {
-      setError("Preenche todos os campos.");
+      setError("Preencha todos os campos.");
       return;
     }
 
@@ -51,7 +52,7 @@ export default function LoginPage() {
       <div className="login-card">
         <h1 className="login-title">Iniciar Sessão</h1>
         <p className="login-subtitle">
-          Introduz os teus dados para aceder ao sistema
+          Introduza os seus dados para aceder ao sistema
         </p>
 
         <form onSubmit={handleSubmit} className="login-form">
@@ -82,14 +83,19 @@ export default function LoginPage() {
           </div>
 
           {error && <p className="login-message error-message">{error}</p>}
-          {success && (
-            <p className="login-message success-message">{success}</p>
-          )}
+          {success && <p className="login-message success-message">{success}</p>}
 
           <button type="submit" className="login-button" disabled={loading}>
             {loading ? "A entrar..." : "Entrar"}
           </button>
         </form>
+
+        <p className="login-register-text">
+          Ainda não tem conta?{" "}
+          <Link to="/registo" className="login-register-link">
+            Criar conta
+          </Link>
+        </p>
       </div>
     </div>
   );
