@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./LoginPage.css";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -40,6 +42,10 @@ export default function LoginPage() {
       console.log("Login enviado:", formData);
 
       setSuccess("Login efetuado com sucesso.");
+
+setTimeout(() => {
+  navigate("/dashboard");
+}, 1000);
     } catch (err) {
       setError("Erro ao autenticar.");
     } finally {
@@ -93,7 +99,7 @@ export default function LoginPage() {
         <p className="login-register-text">
           Ainda não tem conta?{" "}
           <Link to="/registo" className="login-register-link">
-            Criar conta
+            Registe-se
           </Link>
         </p>
       </div>

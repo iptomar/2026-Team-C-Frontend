@@ -50,20 +50,21 @@ export default function RegisterPage() {
 
     if (!isStrongPassword(formData.password)) {
       setError(
-        "A password deve ter pelo menos 8 caracteres, com maiúscula, minúscula, número e carácter especial."
+        "A palavra-passe deve ter pelo menos 8 caracteres, com maiúscula, minúscula, número e carácter especial."
       );
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setError("As passwords não coincidem.");
+      setError("As palavras-passe não coincidem.");
       return;
     }
 
+    console.log("Registo enviado:", formData);
     setSuccess("Conta criada com sucesso.");
 
     setTimeout(() => {
-navigate("/");
+      navigate("/login");
     }, 1000);
   }
 
@@ -72,7 +73,7 @@ navigate("/");
       <div className="register-card">
         <h1 className="register-title">Criar Conta</h1>
         <p className="register-subtitle">
-          Preencha os dados para criar a sua conta
+          Preencha os seus dados para criar conta
         </p>
 
         <form onSubmit={handleSubmit} className="register-form">
@@ -84,7 +85,7 @@ navigate("/");
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="O teu nome"
+              placeholder="O seu nome"
               className="register-input"
             />
           </div>
@@ -139,9 +140,9 @@ navigate("/");
         </form>
 
         <p className="register-login-text">
-          Já tens conta?{" "}
-          <Link to="/" className="register-login-link">
-            Iniciar sessão
+          Já tem conta?{" "}
+          <Link to="/login" className="register-login-link">
+            Inicie sessão
           </Link>
         </p>
       </div>

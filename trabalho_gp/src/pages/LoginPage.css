@@ -19,7 +19,7 @@
 .login-title {
   margin: 0 0 8px 0;
   text-align: center;
-  font-size: 48px;
+  font-size: 42px;
   font-weight: 700;
   color: #111827;
 }
@@ -46,7 +46,6 @@
 .login-field label {
   font-size: 16px;
   color: #374151;
-  text-align: center;
 }
 
 .login-input {
@@ -62,7 +61,6 @@
   border-color: #2563eb;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
-
 
 .login-message {
   margin: 0;
