@@ -1,19 +1,20 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
-import Create_form from './components/create_form.jsx';
+import { Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import DashboardPage from "./pages/DashboardPage";
+import Create_form from "./components/Create_form";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-    <Create_form></Create_form>
-    
-    </>
-  )
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/registo" element={<RegisterPage />} />
+      <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/create-form" element={<Create_form />} />
+    </Routes>
+  );
 }
 
-export default App
+export default App;
