@@ -53,7 +53,7 @@ export default function Create_form() {
           type: active.data.current.type,
           x,
           y,
-          label: "Pergunta",
+          label: "Descrição",
           placeholder: "Escreve aqui...",
           options: ["Opção 1", "Opção 2"],
           stars: 5,
