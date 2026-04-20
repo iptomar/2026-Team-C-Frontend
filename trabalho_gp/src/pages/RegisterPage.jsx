@@ -48,6 +48,11 @@ export default function RegisterPage() {
       return;
     }
 
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      setError("Introduza um email válido.");
+      return;
+    }
+
     if (!isStrongPassword(formData.password)) {
       setError(
         "A palavra-passe deve ter pelo menos 8 caracteres, com maiúscula, minúscula, número e carácter especial."
