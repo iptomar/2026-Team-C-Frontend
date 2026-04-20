@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { saveToken } from "../utils/session";
 import "./LoginPage.css";
 
 export default function LoginPage() {
@@ -49,13 +50,14 @@ export default function LoginPage() {
     try {
       setLoading(true);
 
-      console.log("Login enviado:", formData);
+      // const data = await loginRequest(formData)
+      // saveToken(data.token)
 
       setSuccess("Login efetuado com sucesso.");
 
-setTimeout(() => {
-  navigate("/dashboard");
-}, 1000);
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1000);
     } catch (err) {
       setError("Erro ao autenticar.");
     } finally {

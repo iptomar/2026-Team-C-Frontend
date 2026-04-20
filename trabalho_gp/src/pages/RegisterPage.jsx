@@ -33,17 +33,17 @@ export default function RegisterPage() {
     setSuccess("");
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     setError("");
     setSuccess("");
 
-    if (
-      !formData.name ||
-      !formData.email ||
-      !formData.password ||
-      !formData.confirmPassword
-    ) {
+    const name = formData.name.trim();
+    const email = formData.email.trim().toLowerCase();
+    const password = formData.password;
+    const confirmPassword = formData.confirmPassword;
+
+    if (!name || !email || !password || !confirmPassword) {
       setError("Preencha todos os campos.");
       return;
     }
@@ -55,22 +55,44 @@ export default function RegisterPage() {
 
     if (!isStrongPassword(formData.password)) {
       setError(
-        "A palavra-passe deve ter pelo menos 8 caracteres, com maiúscula, minúscula, número e carácter especial."
+        "A password deve ter pelo menos 8 caracteres, com maiúscula, minúscula, número e carácter especial."
       );
       return;
     }
 
-    if (formData.password !== formData.confirmPassword) {
-      setError("As palavras-passe não coincidem.");
+    if (password !== confirmPassword) {
+      setError("As passwords não coincidem.");
       return;
     }
 
-    console.log("Registo enviado:", formData);
-    setSuccess("Conta criada com sucesso.");
+    try {
+      const response = await fetch("http://localhost:3000/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
 
-    setTimeout(() => {
-      navigate("/login");
-    }, 1000);
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || "Erro ao registar utilizador.");
+        return;
+      }
+
+      setSuccess(data.message || "Conta criada com sucesso.");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    } catch (err) {
+      setError("Erro ao ligar ao servidor.");
+    }
   }
 
   return (
@@ -78,7 +100,7 @@ export default function RegisterPage() {
       <div className="register-card">
         <h1 className="register-title">Criar Conta</h1>
         <p className="register-subtitle">
-          Preencha os seus dados para criar conta
+          Preencha os dados para criar a sua conta
         </p>
 
         <form onSubmit={handleSubmit} className="register-form">
@@ -90,7 +112,7 @@ export default function RegisterPage() {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="O seu nome"
+              placeholder="O teu nome"
               className="register-input"
             />
           </div>
@@ -145,9 +167,9 @@ export default function RegisterPage() {
         </form>
 
         <p className="register-login-text">
-          Já tem conta?{" "}
-          <Link to="/login" className="register-login-link">
-            Inicie sessão
+          Já tens conta?{" "}
+          <Link to="/" className="register-login-link">
+            Iniciar sessão
           </Link>
         </p>
       </div>
