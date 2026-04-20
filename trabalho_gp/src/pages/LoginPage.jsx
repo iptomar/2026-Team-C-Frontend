@@ -1,9 +1,18 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { isAuthenticated } from "../utils/session";
 import "./LoginPage.css";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || "/dashboard";
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, []);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -42,10 +51,7 @@ export default function LoginPage() {
       console.log("Login enviado:", formData);
 
       setSuccess("Login efetuado com sucesso.");
-
-setTimeout(() => {
-  navigate("/dashboard");
-}, 1000);
+      navigate(from, { replace: true });
     } catch (err) {
       setError("Erro ao autenticar.");
     } finally {
