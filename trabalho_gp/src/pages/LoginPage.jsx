@@ -37,6 +37,16 @@ export default function LoginPage() {
       return;
     }
 
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      setError("Introduza um email válido.");
+      return;
+    }
+
+    if (formData.password.length < 8) {
+      setError("A palavra-passe deve ter pelo menos 8 caracteres.");
+      return;
+    }
+
     try {
       setLoading(true);
 
