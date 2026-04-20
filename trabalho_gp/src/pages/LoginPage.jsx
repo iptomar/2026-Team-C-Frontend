@@ -48,7 +48,8 @@ export default function LoginPage() {
     try {
       setLoading(true);
 
-      console.log("Login enviado:", formData);
+      // const data = await loginRequest(formData)
+      // saveToken(data.token)
 
       setSuccess("Login efetuado com sucesso.");
       navigate(from, { replace: true });
