@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { saveToken } from "../utils/session";
 import "./LoginPage.css";
 
 export default function LoginPage() {
@@ -36,16 +37,27 @@ export default function LoginPage() {
       return;
     }
 
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      setError("Introduza um email válido.");
+      return;
+    }
+
+    if (formData.password.length < 8) {
+      setError("A palavra-passe deve ter pelo menos 8 caracteres.");
+      return;
+    }
+
     try {
       setLoading(true);
 
-      console.log("Login enviado:", formData);
+      // const data = await loginRequest(formData)
+      // saveToken(data.token)
 
       setSuccess("Login efetuado com sucesso.");
 
-setTimeout(() => {
-  navigate("/dashboard");
-}, 1000);
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1000);
     } catch (err) {
       setError("Erro ao autenticar.");
     } finally {
