@@ -1,0 +1,61 @@
+.home-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+.home-card {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+}
+
+.home-title {
+  font-size: 42px;
+  margin-bottom: 10px;
+  color: #111827;
+}
+
+.home-subtitle {
+  font-size: 16px;
+  color: #6b7280;
+  margin-bottom: 30px;
+}
+
+.home-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.home-button {
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  color: white;
+  background-color: #111827;
+  transition: background-color 0.2s ease;
+}
+
+.home-button:hover {
+  background-color: #1f2937;
+}
+
+.home-button.secondary {
+  background-color: #2563eb;
+}
+
+.home-button.secondary:hover {
+  background-color: #1d4ed8;
+}
