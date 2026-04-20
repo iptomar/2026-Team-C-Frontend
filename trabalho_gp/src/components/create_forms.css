@@ -1,0 +1,181 @@
+/* 🔹 Layout geral */
+.builder {
+  padding-right: 10px;
+  display: flex;
+  height: 100vh;
+  background-color: #f5f6f8;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* 🔹 Sidebar */
+.palette {
+  width: 220px;
+  background: #ffffff;
+  border-right: 1px solid #ddd;
+  padding: 15px;
+}
+
+/* 🔹 Itens da sidebar */
+.tool-item {
+  background: #f0f2f5;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: grab;
+  text-align: center;
+  color: #333;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.tool-item:hover {
+  background: #e4e7ec;
+  transform: scale(1.03);
+}
+
+/* 🔹 Wrapper */
+.canvas-wrapper {
+  position: relative;
+  flex: 1;
+  margin: 20px;
+}
+
+/* 🔹 TEXTO LIVRE */
+.text-layer {
+  position: absolute;
+  inset: 0;
+  padding: 20px;
+  z-index: 1;
+
+  font-size: 16px;
+  color: #222;
+
+  outline: none;
+  cursor: text;
+}
+
+/* 🔹 CANVAS */
+.canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+
+  background: transparent;
+
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+/* 🔹 Hover canvas */
+.canvas.over {
+  border-color: #4a90e2;
+  background-color: rgba(74, 144, 226, 0.05);
+}
+
+/* 🔹 CAMPOS */
+.canvas-field {
+  pointer-events: all;
+  position: absolute;
+
+  
+  padding: 8px;
+  border-radius: 8px;
+
+  transition: all 0.15s ease;
+}
+
+/* 🔹 Hover campo */
+.canvas-field:hover {
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* 🔹 Campo selecionado */
+.canvas-field.selected {
+  border: 2px solid #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74,144,226,0.2);
+}
+
+/* 🔹 Dragging */
+.canvas-field:active {
+  opacity: 0.85;
+  cursor: grabbing;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+  border-color: #4a90e2;
+}
+
+/* 🔹 Inputs dentro dos campos */
+.canvas-field input,
+.canvas-field textarea,
+.canvas-field select {
+  width: 100%;
+  padding: 6px;
+  margin-top: 5px;
+
+  border-radius: 5px;
+  border: 1px solid #ccc;
+
+  background-color: #fff;
+  color: #333;
+
+  transition: border 0.15s ease;
+}
+
+.canvas-field input:focus,
+.canvas-field textarea:focus,
+.canvas-field select:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+
+/* 🔹 Labels */
+.canvas-field label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* 🔹 Títulos */
+.canvas-field h2,
+.canvas-field h3 {
+  color: #333;
+  margin: 0;
+}
+
+/* 🔹 Editor lateral */
+.editor {
+  width: 260px;
+  background: #ffffff;
+  border-left: 1px solid #ddd;
+  padding: 15px;
+}
+
+.editor h3 {
+  margin-bottom: 10px;
+}
+
+.editor input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.editor button {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  background: #4a90e2;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.editor button:hover {
+  background: #357abd;
+}
