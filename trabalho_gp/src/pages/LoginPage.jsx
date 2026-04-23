@@ -50,8 +50,10 @@ export default function LoginPage() {
     try {
       setLoading(true);
 
+      // TODO: substituir pelo token real quando o backend estiver pronto
       // const data = await loginRequest(formData)
       // saveToken(data.token)
+      saveToken("mock-token")
 
       setSuccess("Login efetuado com sucesso.");
 
