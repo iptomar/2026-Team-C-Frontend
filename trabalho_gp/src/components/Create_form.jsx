@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DndContext } from "@dnd-kit/core";
 
 import FormCanvas from "./FormCanvas";
@@ -84,12 +84,30 @@ export default function Create_form() {
     );
   }
 
+  function deleteField(id) {
+    setFields((prev) => prev.filter((f) => f.id !== id));
+    setSelectedFieldId(null);
+  }
+
+  // 🔥 Delete key
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === "Delete" && selectedFieldId) {
+        deleteField(selectedFieldId);
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedFieldId]);
+
   return (
     <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
       <div className="builder">
         <FormCanvas
           fields={fields}
           setSelectedField={setSelectedFieldId}
+          selectedFieldId={selectedFieldId}
         />
 
         <FieldPalette />
@@ -97,6 +115,7 @@ export default function Create_form() {
         <FieldEditor
           field={selectedField}
           updateField={updateField}
+          deleteField={deleteField}
         />
       </div>
     </DndContext>

@@ -1,4 +1,4 @@
-export default function FieldEditor({ field, updateField }) {
+export default function FieldEditor({ field, updateField, deleteField }) {
   if (!field) return <div className="editor">Seleciona um campo</div>;
 
   return (
@@ -7,9 +7,7 @@ export default function FieldEditor({ field, updateField }) {
 
       <input
         value={field.label}
-        onChange={(e) =>
-          updateField(field.id, { label: e.target.value })
-        }
+        onChange={(e) => updateField(field.id, { label: e.target.value })}
         placeholder="Descrição"
       />
 
@@ -60,6 +58,14 @@ export default function FieldEditor({ field, updateField }) {
           }
         />
       )}
+
+      {/* 🔴 BOTÃO SEMPRE VISÍVEL */}
+      <button
+        onClick={() => deleteField(field.id)}
+        style={{ background: "#e74c3c", marginTop: "10px" }}
+      >
+        🗑️ Eliminar
+      </button>
     </div>
   );
 }
