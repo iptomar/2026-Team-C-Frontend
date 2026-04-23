@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { DndContext } from "@dnd-kit/core";
 
 import FormCanvas from "./FormCanvas";
@@ -7,9 +8,12 @@ import FieldEditor from "./FieldEditor";
 import "./create_forms.css";
 
 export default function Create_form() {
+  const navigate = useNavigate();
+
   const [fields, setFields] = useState([]);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [selectedFieldId, setSelectedFieldId] = useState(null);
+  const [formTitle, setFormTitle] = useState("");
 
   const selectedField = fields.find((f) => f.id === selectedFieldId);
 
@@ -44,7 +48,6 @@ export default function Create_form() {
     const x = finalX - rect.left;
     const y = finalY - rect.top;
 
-    // NOVO
     if (active.data.current?.from === "palette") {
       setFields((prev) => [
         ...prev,
@@ -62,7 +65,6 @@ export default function Create_form() {
       return;
     }
 
-    // MOVER
     if (active.data.current?.from === "canvas") {
       setFields((prev) =>
         prev.map((field) =>
@@ -84,20 +86,73 @@ export default function Create_form() {
     );
   }
 
+  function handleSaveForm() {
+    const trimmedTitle = formTitle.trim();
+
+    if (!trimmedTitle) {
+      alert("Escreve um título para o formulário.");
+      return;
+    }
+
+    if (fields.length === 0) {
+      alert("Adiciona pelo menos um campo antes de guardar.");
+      return;
+    }
+
+    const newForm = {
+      id: crypto.randomUUID(),
+      title: trimmedTitle,
+      createdAt: new Date().toISOString(),
+      fields: fields,
+    };
+
+    const existingForms = JSON.parse(localStorage.getItem("myForms")) || [];
+
+    localStorage.setItem(
+      "myForms",
+      JSON.stringify([...existingForms, newForm])
+    );
+
+    alert("Formulário guardado com sucesso!");
+    navigate("/meus-formularios");
+  }
+
   return (
     <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <div className="builder">
-        <FormCanvas
-          fields={fields}
-          setSelectedField={setSelectedFieldId}
-        />
+      <div className="create-form-page">
+        <div className="form-header">
+          <input
+            type="text"
+            value={formTitle}
+            onChange={(e) => setFormTitle(e.target.value)}
+            className="form-title-input"
+            placeholder="Escreve o título do formulário"
+          />
 
-        <FieldPalette />
+          <div className="header-buttons">
+            <button className="back-btn" onClick={() => navigate(-1)}>
+              Voltar
+            </button>
 
-        <FieldEditor
-          field={selectedField}
-          updateField={updateField}
-        />
+            <button className="save-btn" onClick={handleSaveForm}>
+              Guardar formulário
+            </button>
+          </div>
+        </div>
+
+        <div className="builder">
+          <FormCanvas
+            fields={fields}
+            setSelectedField={setSelectedFieldId}
+          />
+
+          <FieldPalette />
+
+          <FieldEditor
+            field={selectedField}
+            updateField={updateField}
+          />
+        </div>
       </div>
     </DndContext>
   );

@@ -2,7 +2,7 @@
 .builder {
   padding-right: 10px;
   display: flex;
-  height: 100vh;
+  flex: 1;
   background-color: #f5f6f8;
   font-family: "Segoe UI", sans-serif;
 }
@@ -47,10 +47,8 @@
   inset: 0;
   padding: 20px;
   z-index: 1;
-
   font-size: 16px;
   color: #222;
-
   outline: none;
   cursor: text;
 }
@@ -60,17 +58,13 @@
   position: absolute;
   inset: 0;
   z-index: 2;
-
   border: 2px dashed #ccc;
   border-radius: 10px;
-
   background: transparent;
-
   pointer-events: none;
   transition: all 0.2s ease;
 }
 
-/* 🔹 Hover canvas */
 .canvas.over {
   border-color: #4a90e2;
   background-color: rgba(74, 144, 226, 0.05);
@@ -80,26 +74,20 @@
 .canvas-field {
   pointer-events: all;
   position: absolute;
-
-  
   padding: 8px;
   border-radius: 8px;
-
   transition: all 0.15s ease;
 }
 
-/* 🔹 Hover campo */
 .canvas-field:hover {
   box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
-/* 🔹 Campo selecionado */
 .canvas-field.selected {
   border: 2px solid #4a90e2;
   box-shadow: 0 0 0 2px rgba(74,144,226,0.2);
 }
 
-/* 🔹 Dragging */
 .canvas-field:active {
   opacity: 0.85;
   cursor: grabbing;
@@ -107,20 +95,17 @@
   border-color: #4a90e2;
 }
 
-/* 🔹 Inputs dentro dos campos */
+/* 🔹 Inputs */
 .canvas-field input,
 .canvas-field textarea,
 .canvas-field select {
   width: 100%;
   padding: 6px;
   margin-top: 5px;
-
   border-radius: 5px;
   border: 1px solid #ccc;
-
   background-color: #fff;
   color: #333;
-
   transition: border 0.15s ease;
 }
 
@@ -161,7 +146,6 @@
   width: 100%;
   padding: 8px;
   margin-bottom: 10px;
-
   border-radius: 6px;
   border: 1px solid #ccc;
 }
@@ -178,4 +162,70 @@
 
 .editor button:hover {
   background: #357abd;
+}
+
+/* PÁGINA COMPLETA */
+.create-form-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* HEADER */
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: #ffffff;
+  border-bottom: 1px solid #ddd;
+}
+
+/* INPUT TÍTULO */
+.form-title-input {
+  font-size: 1.8rem;
+  font-weight: 400;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #222;
+  min-width: 300px;
+}
+
+/* BOTÕES */
+.header-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+/* BOTÃO GUARDAR */
+.save-btn {
+  background: #4a90e2;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.save-btn:hover {
+  background: #357abd;
+}
+
+/* BOTÃO VOLTAR */
+.back-btn {
+  background: #e5e7eb;
+  color: #111827;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.back-btn:hover {
+  background: #d1d5db;
 }
