@@ -86,7 +86,7 @@ export default function Create_form() {
     );
   }
 
-  function handleSaveForm() {
+  async function handleSaveForm() {
     const trimmedTitle = formTitle.trim();
 
     if (!trimmedTitle) {
@@ -99,22 +99,36 @@ export default function Create_form() {
       return;
     }
 
-    const newForm = {
-      id: crypto.randomUUID(),
-      title: trimmedTitle,
-      createdAt: new Date().toISOString(),
+    const formData = {
+      name: trimmedTitle,
+      html: "<div>Formulário criado no builder</div>",
+      css: "/* sem estilos */",
+      ownerId: 1,
       fields: fields,
     };
 
-    const existingForms = JSON.parse(localStorage.getItem("myForms")) || [];
+    try {
+      const response = await fetch("http://localhost:3000/api/forms", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    localStorage.setItem(
-      "myForms",
-      JSON.stringify([...existingForms, newForm])
-    );
+      const data = await response.json();
 
-    alert("Formulário guardado com sucesso!");
-    navigate("/meus-formularios");
+      if (!response.ok) {
+        alert(data.erro || "Erro ao guardar formulário.");
+        return;
+      }
+
+      alert("Formulário guardado com sucesso!");
+      navigate("/meus-formularios");
+    } catch (error) {
+      alert("Erro ao ligar ao servidor.");
+      console.error(error);
+    }
   }
 
   return (
