@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DndContext } from "@dnd-kit/core";
 
@@ -17,6 +17,7 @@ export default function Create_form() {
 
   const selectedField = fields.find((f) => f.id === selectedFieldId);
 
+  // 🔹 DRAG START
   function handleDragStart(event) {
     const e = event.activatorEvent;
 
@@ -34,6 +35,7 @@ export default function Create_form() {
     setDragStart({ x: clientX, y: clientY });
   }
 
+  // 🔹 DRAG END
   function handleDragEnd(event) {
     const { active, delta } = event;
 
@@ -48,6 +50,7 @@ export default function Create_form() {
     const x = finalX - rect.left;
     const y = finalY - rect.top;
 
+    // 👉 Criar novo campo
     if (active.data.current?.from === "palette") {
       setFields((prev) => [
         ...prev,
@@ -65,6 +68,7 @@ export default function Create_form() {
       return;
     }
 
+    // 👉 Mover campo
     if (active.data.current?.from === "canvas") {
       setFields((prev) =>
         prev.map((field) =>
@@ -80,6 +84,7 @@ export default function Create_form() {
     }
   }
 
+  // 🔹 UPDATE
   function updateField(id, newData) {
     setFields((prev) =>
       prev.map((f) => (f.id === id ? { ...f, ...newData } : f))
@@ -87,6 +92,28 @@ export default function Create_form() {
   }
 
   async function handleSaveForm() {
+
+  // 🔹 DELETE
+  function deleteField(id) {
+    setFields((prev) => prev.filter((f) => f.id !== id));
+    setSelectedFieldId(null);
+  }
+
+  // 🔹 DELETE KEY
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === "Delete" && selectedFieldId) {
+        deleteField(selectedFieldId);
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedFieldId]);
+
+  // 🔹 GUARDAR FORM
+  async function handleSaveForm() {
+
     const trimmedTitle = formTitle.trim();
 
     if (!trimmedTitle) {
@@ -107,6 +134,7 @@ export default function Create_form() {
       fields: fields,
     };
 
+
     try {
       const response = await fetch("http://localhost:3000/api/forms", {
         method: "POST",
@@ -115,6 +143,9 @@ export default function Create_form() {
         },
         body: JSON.stringify(formData),
       });
+
+    const existingForms =
+      JSON.parse(localStorage.getItem("myForms")) || [];
 
       const data = await response.json();
 
@@ -131,9 +162,11 @@ export default function Create_form() {
     }
   }
 
+  // 🔹 UI
   return (
     <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
       <div className="create-form-page">
+        {/* HEADER */}
         <div className="form-header">
           <input
             type="text"
@@ -154,10 +187,12 @@ export default function Create_form() {
           </div>
         </div>
 
+        {/* BUILDER */}
         <div className="builder">
           <FormCanvas
             fields={fields}
             setSelectedField={setSelectedFieldId}
+            selectedFieldId={selectedFieldId} // 🔥 IMPORTANTE
           />
 
           <FieldPalette />
@@ -165,9 +200,11 @@ export default function Create_form() {
           <FieldEditor
             field={selectedField}
             updateField={updateField}
+            deleteField={deleteField}
           />
         </div>
       </div>
     </DndContext>
   );
+  }
 }

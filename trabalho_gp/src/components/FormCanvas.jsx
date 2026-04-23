@@ -1,7 +1,7 @@
 import { useDroppable, useDraggable } from "@dnd-kit/core";
 import FieldRenderer from "./FieldRenderer";
 
-function DraggableField({ field, onClick }) {
+function DraggableField({ field, onClick, isSelected }) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: field.id,
     data: {
@@ -25,7 +25,7 @@ function DraggableField({ field, onClick }) {
       style={style}
       {...listeners}
       {...attributes}
-      className="canvas-field"
+      className={`canvas-field ${isSelected ? "selected" : ""}`} // ✅ AQUI
       onMouseDown={(e) => {
         e.stopPropagation();
         onClick();
@@ -36,7 +36,11 @@ function DraggableField({ field, onClick }) {
   );
 }
 
-export default function FormCanvas({ fields, setSelectedField }) {
+export default function FormCanvas({
+  fields,
+  setSelectedField,
+  selectedFieldId, // ✅ NOVO
+}) {
   const { setNodeRef, isOver } = useDroppable({
     id: "form-canvas",
   });
@@ -59,7 +63,8 @@ export default function FormCanvas({ fields, setSelectedField }) {
           <DraggableField
             key={field.id}
             field={field}
-            onClick={() => setSelectedField(field.id)} // ✅ CORRIGIDO
+            onClick={() => setSelectedField(field.id)}
+            isSelected={field.id === selectedFieldId}
           />
         ))}
       </div>
