@@ -27,9 +27,9 @@ export default function MyFormsPage() {
     navigate(`/criar-formulario/${formId}`);
   }
 
-  function handleViewForm(formId) {
-    navigate(`/formulario/${formId}`);
-  }
+function handleViewForm(formId) {
+  navigate(`/formulario/${formId}`);
+}
 
   return (
     <div className="myforms-page">
