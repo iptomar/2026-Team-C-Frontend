@@ -8,9 +8,9 @@ export default function DashboardPage() {
     navigate("/login");
   }
 
-  function handleCreateForm() {
-    alert("Funcionalidade de criar formulário em desenvolvimento.");
-  }
+function handleCreateForm() {
+  navigate("/criar-formulario");
+}
 
   function handleMyForms() {
     alert("Página de formulários em desenvolvimento.");
