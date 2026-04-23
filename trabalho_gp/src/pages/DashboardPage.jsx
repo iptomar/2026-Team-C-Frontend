@@ -12,9 +12,9 @@ function handleCreateForm() {
   navigate("/criar-formulario");
 }
 
-  function handleMyForms() {
-    alert("Página de formulários em desenvolvimento.");
-  }
+function handleMyForms() {
+  navigate("/meus-formularios");
+}
 
   function handleResponses() {
     alert("Página de respostas em desenvolvimento.");

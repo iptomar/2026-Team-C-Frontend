@@ -5,6 +5,9 @@ import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import PrivateRoute from "./components/PrivateRoute";
 import Create_form from "./components/Create_form";
+import MyFormsPage from "./pages/MyFormsPage";
+import ViewFormPage from "./pages/ViewFormPage";
+
 
 function App() {
   return (
@@ -30,6 +33,24 @@ function App() {
           </PrivateRoute>
         }
       />
+
+      <Route
+  path="/meus-formularios"
+  element={
+    <PrivateRoute>
+      <MyFormsPage />
+    </PrivateRoute>
+  }
+/>
+
+<Route
+  path="/formulario/:id"
+  element={
+    <PrivateRoute>
+      <ViewFormPage />
+    </PrivateRoute>
+  }
+/>
     </Routes>
   );
 }

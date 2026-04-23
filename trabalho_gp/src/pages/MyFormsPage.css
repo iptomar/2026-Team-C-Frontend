@@ -1,0 +1,143 @@
+.myforms-page {
+  min-height: 100vh;
+  background: #f5f6f8;
+  padding: 48px 24px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.myforms-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.myforms-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  gap: 20px;
+}
+
+.myforms-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.myforms-top-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.myforms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 24px 28px;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.form-card-title {
+  margin: 0 0 10px 0;
+  font-size: 1.6rem;
+  color: #0f172a;
+}
+
+.form-card-info {
+  color: #475569;
+  line-height: 1.7;
+}
+
+.form-card-info p {
+  margin: 0;
+}
+
+.form-card-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.myforms-empty-box {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+}
+
+.myforms-empty {
+  color: #64748b;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.new-form-btn,
+.back-btn,
+.view-btn,
+.edit-btn,
+.delete-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.new-form-btn {
+  background: #4a90e2;
+  color: white;
+}
+
+.new-form-btn:hover {
+  background: #357abd;
+}
+
+.back-btn {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.back-btn:hover {
+  background: #d1d5db;
+}
+
+.view-btn {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.view-btn:hover {
+  background: #bae6fd;
+}
+
+.edit-btn {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.edit-btn:hover {
+  background: #ddd6fe;
+}
+
+.delete-btn {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.delete-btn:hover {
+  background: #fecaca;
+}
