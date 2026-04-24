@@ -7,58 +7,29 @@ export default function MyFormsPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchForms();
+    const savedForms = JSON.parse(localStorage.getItem("myForms")) || [];
+    setForms(savedForms);
   }, []);
 
-  async function fetchForms() {
-    try {
-      const response = await fetch("http://localhost:3000/api/forms");
-      const data = await response.json();
-
-      if (!response.ok) {
-        console.error(data.erro || "Erro ao buscar formulários");
-        return;
-      }
-
-      setForms(data);
-    } catch (error) {
-      console.error("Erro ao ligar ao servidor:", error);
-    }
-  }
-
-  async function handleDeleteForm(formId) {
+  function handleDeleteForm(formId) {
     const confirmDelete = window.confirm(
       "Tens a certeza que queres eliminar este formulário?"
     );
 
     if (!confirmDelete) return;
 
-    try {
-      const response = await fetch(`http://localhost:3000/api/forms/${formId}`, {
-        method: "DELETE",
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        alert(data.erro || "Erro ao eliminar formulário.");
-        return;
-      }
-
-      setForms((prev) => prev.filter((form) => form.id !== formId));
-    } catch (error) {
-      alert("Erro ao ligar ao servidor.");
-      console.error(error);
-    }
+    const updatedForms = forms.filter((form) => form.id !== formId);
+    setForms(updatedForms);
+    localStorage.setItem("myForms", JSON.stringify(updatedForms));
   }
 
   function handleEditForm(formId) {
     navigate(`/criar-formulario/${formId}`);
   }
 
-  function handleViewForm(formId) {
-    navigate(`/formulario/${formId}`);
-  }
+function handleViewForm(formId) {
+  navigate(`/formulario/${formId}`);
+}
 
   return (
     <div className="myforms-page">
@@ -97,10 +68,10 @@ export default function MyFormsPage() {
             {forms.map((form) => (
               <div key={form.id} className="form-card">
                 <div className="form-card-content">
-                  <h2 className="form-card-title">{form.name}</h2>
+                  <h2 className="form-card-title">{form.title}</h2>
 
                   <div className="form-card-info">
-                    <p>Número de campos: {form.fields?.length || 0}</p>
+                    <p>Número de campos: {form.fields.length}</p>
                     <p>
                       Criado em:{" "}
                       {new Date(form.createdAt).toLocaleDateString("pt-PT")}
