@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./MyFormsPage.css";
+import "../css/MyFormsPage.css";
 
 export default function MyFormsPage() {
   const [forms, setForms] = useState([]);

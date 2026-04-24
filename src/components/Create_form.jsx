@@ -5,7 +5,7 @@ import { DndContext } from "@dnd-kit/core";
 import FormCanvas from "./FormCanvas";
 import FieldPalette from "./FieldPalette";
 import FieldEditor from "./FieldEditor";
-import "./create_forms.css";
+import "../css/create_forms.css";
 
 export default function Create_form() {
   const navigate = useNavigate();
