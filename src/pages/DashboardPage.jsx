@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import "./DashboardPage.css";
+import "../css/DashboardPage.css";
 
 export default function DashboardPage() {
   const navigate = useNavigate();

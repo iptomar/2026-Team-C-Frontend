@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { saveToken } from "../utils/session";
-import "./LoginPage.css";
+import "../css/LoginPage.css";
 
 export default function LoginPage() {
   const navigate = useNavigate();
