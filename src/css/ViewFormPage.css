@@ -1,0 +1,257 @@
+.viewform-page {
+  min-height: 100vh;
+  background: #f8f9fb;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Topbar ── */
+.viewform-topbar {
+  height: 60px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  flex-shrink: 0;
+}
+
+.viewform-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.viewform-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.viewform-back-btn:hover {
+  background: #e5e7eb;
+}
+
+.viewform-topbar-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.viewform-topbar-meta {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* ── Content ── */
+.viewform-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 40px 24px;
+}
+
+.viewform-container {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── Card de intro ── */
+.viewform-intro {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-top: 4px solid #DD6418;
+  border-radius: 14px;
+  padding: 24px 28px;
+}
+
+.viewform-intro h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.4px;
+  margin: 0 0 4px 0;
+}
+
+.viewform-intro p {
+  font-size: 13px;
+  color: #9ca3af;
+  margin: 0;
+}
+
+/* ── Card de campos ── */
+.viewform-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── Campos ── */
+.viewform-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.viewform-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  letter-spacing: 0.2px;
+}
+
+.viewform-field input,
+.viewform-field textarea,
+.viewform-field select {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #e5e7eb;
+  font-size: 14px;
+  color: #111827;
+  background-color: #f9fafb;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.viewform-field input:focus,
+.viewform-field textarea:focus,
+.viewform-field select:focus {
+  border-color: #DD6418;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(221, 100, 24, 0.12);
+}
+
+.viewform-field textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.viewform-field input[type="checkbox"],
+.viewform-field input[type="radio"] {
+  width: auto;
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  accent-color: #DD6418;
+}
+
+.viewform-radio-group,
+.viewform-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.viewform-radio-option,
+.viewform-checkbox-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+}
+
+.viewform-stars {
+  display: flex;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.viewform-star {
+  font-size: 24px;
+  cursor: pointer;
+  color: #e5e7eb;
+  transition: color 0.15s ease;
+  line-height: 1;
+}
+
+.viewform-star.active {
+  color: #DD6418;
+}
+
+.viewform-star:hover {
+  color: #DD6418;
+}
+
+/* ── Divider entre campos ── */
+.viewform-field + .viewform-field {
+  padding-top: 20px;
+  border-top: 1px solid #f3f4f6;
+}
+
+/* ── Submit ── */
+.viewform-actions {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 20px 28px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.viewform-submit {
+  padding: 11px 28px;
+  background: #DD6418;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.viewform-submit:hover {
+  background: #c05515;
+  box-shadow: 0 6px 16px rgba(221, 100, 24, 0.3);
+}
+
+/* ── Not found ── */
+.viewform-not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 12px;
+  color: #9ca3af;
+  font-size: 15px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .viewform-topbar {
+    padding: 0 16px;
+  }
+
+  .viewform-content {
+    padding: 24px 16px;
+  }
+
+  .viewform-card,
+  .viewform-intro,
+  .viewform-actions {
+    padding: 20px 16px;
+  }
+}

@@ -1,244 +1,342 @@
-/* 🔹 Layout geral */
-.builder {
-  padding-right: 10px;
-  display: flex;
-  flex: 1;
-  background-color: #f5f6f8;
-  font-family: "Segoe UI", sans-serif;
-}
-
-/* 🔹 Sidebar */
-.palette {
-  width: 220px;
-  background: #ffffff;
-  border-right: 1px solid #ddd;
-  padding: 15px;
-}
-
-/* 🔹 Itens da sidebar */
-.tool-item {
-  background: #f0f2f5;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  cursor: grab;
-  text-align: center;
-  color: #333;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.tool-item:hover {
-  background: #e4e7ec;
-  transform: scale(1.03);
-}
-
-/* 🔹 Wrapper */
-.canvas-wrapper {
-  position: relative;
-  flex: 1;
-  margin: 20px;
-}
-
-/* 🔹 TEXTO LIVRE */
-.text-layer {
-  position: absolute;
-  inset: 0;
-  padding: 20px;
-  z-index: 1;
-  font-size: 16px;
-  color: #222;
-  outline: none;
-  cursor: text;
-}
-
-/* 🔹 CANVAS */
-.canvas {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  border: 2px dashed #ccc;
-  border-radius: 10px;
-  background: transparent;
-  pointer-events: none;
-  transition: all 0.2s ease;
-}
-
-.canvas.over {
-  border-color: #4a90e2;
-  background-color: rgba(74, 144, 226, 0.05);
-}
-
-/* 🔹 CAMPOS */
-.canvas-field {
-  pointer-events: all;
-  position: absolute;
-
-  padding: 1px 15px 1px 1px; 
-  border-radius: 8px;
-
-  background: transparent;
-  transition: all 0.15s ease;
-}
-
-.canvas-field.selected {
-  border: 2px solid #4a90e2;
-
-
-  box-shadow: 
-    0 0 0 4px rgba(74,144,226,0.15),
-    0 4px 12px rgba(0,0,0,0.1);
-}
-
-/* 🔹 Hover campo */
-.canvas-field:hover {
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-}
-
-.canvas-field.selected {
-  border: 2px solid #4a90e2;
-  box-shadow: 0 0 0 2px rgba(74,144,226,0.2);
-}
-
-.canvas-field:active {
-  opacity: 0.85;
-  cursor: grabbing;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.2);
-  border-color: #4a90e2;
-}
-
-/* 🔹 Inputs */
-.canvas-field input,
-.canvas-field textarea,
-.canvas-field select {
-  width: 100%;
-  padding: 6px;
-  margin-top: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  color: #333;
-  transition: border 0.15s ease;
-}
-
-.canvas-field input:focus,
-.canvas-field textarea:focus,
-.canvas-field select:focus {
-  outline: none;
-  border-color: #4a90e2;
-}
-
-/* 🔹 Labels */
-.canvas-field label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-}
-
-/* 🔹 Títulos */
-.canvas-field h2,
-.canvas-field h3 {
-  color: #333;
-  margin: 0;
-}
-
-/* 🔹 Editor lateral */
-.editor {
-  width: 260px;
-  background: #ffffff;
-  border-left: 1px solid #ddd;
-  padding: 15px;
-}
-
-.editor h3 {
-  margin-bottom: 10px;
-}
-
-.editor input {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-.editor button {
-  width: 100%;
-  padding: 8px;
-  border: none;
-  background: #4a90e2;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.editor button:hover {
-  background: #357abd;
-}
-
-/* PÁGINA COMPLETA */
+/* ── Página ── */
 .create-form-page {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  background: #f8f9fb;
+  font-family: "Segoe UI", system-ui, sans-serif;
 }
 
-/* HEADER */
+/* ── Header ── */
 .form-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px;
+  padding: 0 24px;
+  height: 60px;
   background: #ffffff;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #e5e7eb;
+  flex-shrink: 0;
+  gap: 16px;
 }
 
-/* INPUT TÍTULO */
 .form-title-input {
-  font-size: 1.8rem;
-  font-weight: 400;
+  font-size: 16px;
+  font-weight: 600;
   border: none;
   outline: none;
   background: transparent;
-  color: #222;
-  min-width: 300px;
+  color: #111827;
+  min-width: 260px;
+  flex: 1;
 }
 
-/* BOTÕES */
+.form-title-input::placeholder {
+  color: #d1d5db;
+  font-weight: 400;
+}
+
 .header-buttons {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
-/* BOTÃO GUARDAR */
 .save-btn {
-  background: #4a90e2;
-  color: white;
+  background: #DD6418;
+  color: #ffffff;
   border: none;
-  padding: 10px 16px;
+  padding: 8px 18px;
   border-radius: 8px;
   cursor: pointer;
-  font-weight: 500;
-  transition: 0.2s;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s, box-shadow 0.2s;
 }
 
 .save-btn:hover {
-  background: #357abd;
+  background: #c05515;
+  box-shadow: 0 4px 12px rgba(221, 100, 24, 0.25);
 }
 
-/* BOTÃO VOLTAR */
 .back-btn {
-  background: #e5e7eb;
-  color: #111827;
+  background: #f3f4f6;
+  color: #374151;
   border: none;
-  padding: 10px 16px;
+  padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
-  font-weight: 500;
-  transition: 0.2s;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s;
 }
 
 .back-btn:hover {
-  background: #d1d5db;
+  background: #e5e7eb;
+}
+
+/* ── Builder layout ── */
+.builder {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Palette (sidebar esquerda) ── */
+.sidebar {
+  width: 200px;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.sidebar h3 {
+  font-size: 11px;
+  font-weight: 700;
+  color: #9ca3af;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin: 0 0 8px 4px;
+}
+
+.tool-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 9px 12px;
+  border-radius: 10px;
+  cursor: grab;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.tool-item:hover {
+  background: #fff3eb;
+  border-color: #DD6418;
+  color: #DD6418;
+  box-shadow: 0 3px 8px rgba(221, 100, 24, 0.12);
+}
+
+.tool-item:active {
+  cursor: grabbing;
+}
+
+/* ── Canvas ── */
+.canvas-wrapper {
+  position: relative;
+  flex: 1;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.canvas {
+  position: absolute;
+  inset: 24px;
+  border: 2px dashed #e5e7eb;
+  border-radius: 14px;
+  background: #ffffff;
+  pointer-events: none;
+  transition: border-color 0.2s, background 0.2s;
+  z-index: 2;
+}
+
+.canvas.over {
+  border-color: #DD6418;
+  background: rgba(221, 100, 24, 0.03);
+}
+
+.text-layer {
+  position: absolute;
+  inset: 24px;
+  padding: 20px;
+  z-index: 1;
+  font-size: 15px;
+  color: #374151;
+  outline: none;
+  cursor: text;
+}
+
+/* ── Campos no canvas ── */
+.canvas-field {
+  pointer-events: all;
+  position: absolute;
+  padding: 4px 28px 4px 4px;
+  border-radius: 10px;
+  background: transparent;
+  transition: box-shadow 0.15s ease;
+  cursor: grab;
+}
+
+.canvas-field:hover {
+  box-shadow: 0 3px 10px rgba(221, 100, 24, 0.1);
+}
+
+.canvas-field.selected {
+  border: 2px solid #DD6418;
+  box-shadow: 0 0 0 4px rgba(221, 100, 24, 0.1), 0 4px 14px rgba(0,0,0,0.08);
+}
+
+.canvas-field:active {
+  cursor: grabbing;
+  opacity: 0.85;
+}
+
+.canvas-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 4px;
+}
+
+.canvas-field input[type="text"],
+.canvas-field input[type="number"],
+.canvas-field input[type="email"],
+.canvas-field input[type="date"],
+.canvas-field textarea,
+.canvas-field select {
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: 7px;
+  border: 1.5px solid #e5e7eb;
+  background: #f9fafb;
+  color: #111827;
+  font-size: 13px;
+  font-family: inherit;
+  transition: border 0.15s ease;
+  pointer-events: none;
+}
+
+.canvas-field h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.canvas-field h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+}
+
+/* ── Editor (sidebar direita) ── */
+.editor {
+  width: 240px;
+  background: #ffffff;
+  border-left: 1px solid #e5e7eb;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.editor-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #d1d5db;
+  font-size: 13px;
+  text-align: center;
+  padding: 20px;
+}
+
+.editor h3 {
+  font-size: 11px;
+  font-weight: 700;
+  color: #9ca3af;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin: 0 0 4px 0;
+}
+
+.editor-input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1.5px solid #e5e7eb;
+  background: #f9fafb;
+  color: #111827;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.editor-input:focus {
+  border-color: #DD6418;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(221, 100, 24, 0.1);
+}
+
+.editor-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  letter-spacing: 0.3px;
+}
+
+.editor-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.editor-divider {
+  border: none;
+  border-top: 1px solid #f3f4f6;
+  margin: 4px 0;
+}
+
+.editor-add-btn {
+  background: #f9fafb;
+  border: 1.5px dashed #e5e7eb;
+  border-radius: 8px;
+  padding: 7px;
+  color: #9ca3af;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  width: 100%;
+}
+
+.editor-add-btn:hover {
+  border-color: #DD6418;
+  color: #DD6418;
+  background: #fff3eb;
+}
+
+.editor-delete-btn {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 8px;
+  color: #b91c1c;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.editor-delete-btn:hover {
+  background: #fee2e2;
 }

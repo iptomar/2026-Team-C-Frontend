@@ -1,12 +1,43 @@
 .myforms-page {
   min-height: 100vh;
-  background: #f5f6f8;
-  padding: 48px 24px;
-  font-family: "Segoe UI", sans-serif;
+  background: #f8f9fb;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Topbar ── */
+.myforms-topbar {
+  height: 60px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  flex-shrink: 0;
+}
+
+.myforms-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.myforms-topbar-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+/* ── Content ── */
+.myforms-content {
+  flex: 1;
+  padding: 40px 32px;
 }
 
 .myforms-container {
-  max-width: 1100px;
+  max-width: 860px;
   margin: 0 auto;
 }
 
@@ -14,130 +45,219 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px;
-  gap: 20px;
+  margin-bottom: 24px;
 }
 
 .myforms-title {
-  font-size: 3rem;
+  font-size: 22px;
   font-weight: 700;
-  color: #0f172a;
+  color: #111827;
+  letter-spacing: -0.4px;
   margin: 0;
 }
 
-.myforms-top-actions {
-  display: flex;
-  gap: 12px;
+.myforms-count {
+  font-size: 13px;
+  color: #9ca3af;
+  margin: 4px 0 0 0;
 }
 
+/* ── Lista ── */
 .myforms-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 }
 
+/* ── Card ── */
 .form-card {
-  background: white;
+  background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 18px;
-  padding: 24px 28px;
-  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+  border-radius: 14px;
+  padding: 18px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 20px;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
-.form-card-title {
-  margin: 0 0 10px 0;
-  font-size: 1.6rem;
-  color: #0f172a;
+.form-card:hover {
+  transform: translateY(-1px);
+  border-color: #DD6418;
+  box-shadow: 0 6px 20px rgba(221, 100, 24, 0.1);
+}
+
+.form-card-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.form-card-icon {
+  width: 40px;
+  height: 40px;
+  background: #fff3eb;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #DD6418;
+  flex-shrink: 0;
 }
 
 .form-card-info {
-  color: #475569;
-  line-height: 1.7;
+  min-width: 0;
 }
 
-.form-card-info p {
+.form-card-title {
+  margin: 0 0 4px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.form-card-meta {
+  display: flex;
+  gap: 12px;
+}
+
+.form-card-meta p {
   margin: 0;
+  font-size: 12px;
+  color: #9ca3af;
 }
 
 .form-card-actions {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
+/* ── Empty ── */
 .myforms-empty-box {
-  background: white;
+  background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 18px;
-  padding: 40px;
+  border-radius: 14px;
+  padding: 60px 40px;
   text-align: center;
-  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.myforms-empty-icon {
+  color: #e5e7eb;
 }
 
 .myforms-empty {
-  color: #64748b;
-  font-size: 1.1rem;
-  margin-bottom: 20px;
+  color: #9ca3af;
+  font-size: 14px;
+  margin: 0;
 }
 
-.new-form-btn,
-.back-btn,
+/* ── Buttons ── */
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.back-btn:hover {
+  background: #e5e7eb;
+}
+
+.new-form-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #DD6418;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.new-form-btn:hover {
+  background: #c05515;
+  box-shadow: 0 4px 12px rgba(221, 100, 24, 0.25);
+}
+
 .view-btn,
 .edit-btn,
 .delete-btn {
   border: none;
-  border-radius: 10px;
-  padding: 10px 16px;
-  cursor: pointer;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 12px;
   font-weight: 600;
-  transition: 0.2s;
-}
-
-.new-form-btn {
-  background: #4a90e2;
-  color: white;
-}
-
-.new-form-btn:hover {
-  background: #357abd;
-}
-
-.back-btn {
-  background: #e5e7eb;
-  color: #111827;
-}
-
-.back-btn:hover {
-  background: #d1d5db;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
 }
 
 .view-btn {
-  background: #e0f2fe;
-  color: #0369a1;
+  background: #eff6ff;
+  color: #1d4ed8;
 }
 
 .view-btn:hover {
-  background: #bae6fd;
+  background: #dbeafe;
 }
 
 .edit-btn {
-  background: #ede9fe;
-  color: #6d28d9;
+  background: #fff3eb;
+  color: #DD6418;
 }
 
 .edit-btn:hover {
-  background: #ddd6fe;
+  background: #ffedd5;
+  box-shadow: 0 3px 8px rgba(221, 100, 24, 0.15);
 }
 
 .delete-btn {
-  background: #fee2e2;
+  background: #fef2f2;
   color: #b91c1c;
 }
 
 .delete-btn:hover {
-  background: #fecaca;
+  background: #fee2e2;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .myforms-topbar {
+    padding: 0 16px;
+  }
+
+  .myforms-content {
+    padding: 24px 16px;
+  }
+
+  .form-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-card-meta {
+    flex-direction: column;
+    gap: 2px;
+  }
 }
