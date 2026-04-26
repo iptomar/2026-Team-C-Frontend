@@ -132,10 +132,8 @@
 
 /* ── Canvas ── */
 .canvas-wrapper {
-  position: relative;
   flex: 1;
-  padding: 24px;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .canvas {
@@ -228,6 +226,403 @@
   font-weight: 600;
   color: #374151;
   margin: 0;
+}
+
+/* ── Rows / Columns ── */
+.form-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.canvas-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 48px 24px;
+  color: #9ca3af;
+  font-size: 14px;
+  text-align: center;
+  border: 2px dashed #e5e7eb;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.canvas-empty p {
+  margin: 0;
+}
+
+/* ── Linha ── */
+.form-row {
+  background: #ffffff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  transition: border-color 0.15s;
+}
+
+.form-row:hover {
+  border-color: #d1d5db;
+}
+
+.row-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.row-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  flex: 1;
+}
+
+.row-col-btns {
+  display: flex;
+  gap: 4px;
+}
+
+.col-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1.5px solid #e5e7eb;
+  background: #ffffff;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.col-btn:hover {
+  border-color: #DD6418;
+  color: #DD6418;
+}
+
+.col-btn.active {
+  background: #DD6418;
+  border-color: #DD6418;
+  color: #ffffff;
+}
+
+.row-remove-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1.5px solid #fecaca;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.row-remove-btn:hover {
+  background: #fee2e2;
+}
+
+/* ── Células ── */
+.row-cells {
+  display: grid;
+  min-height: 90px;
+}
+
+.form-cell {
+  padding: 10px;
+  border-right: 1px solid #f3f4f6;
+  transition: background 0.15s;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.form-cell:last-child {
+  border-right: none;
+}
+
+.form-cell.empty {
+  background: #fafafa;
+}
+
+.form-cell.over {
+  background: rgba(221, 100, 24, 0.04);
+  border: 1.5px dashed #DD6418;
+  border-radius: 8px;
+}
+
+.cell-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 70px;
+  color: #d1d5db;
+  font-size: 11px;
+  font-weight: 500;
+  border: 2px dashed #e5e7eb;
+  border-radius: 8px;
+  cursor: default;
+  transition: all 0.15s;
+  text-align: center;
+  padding: 8px;
+  box-sizing: border-box;
+  word-break: break-word;
+}
+
+.form-cell.over .cell-placeholder {
+  border-color: #DD6418;
+  color: #DD6418;
+  background: rgba(221, 100, 24, 0.03);
+}
+
+/* ── Campo dentro de célula ── */
+.cell-field {
+  position: relative;
+  padding: 8px 32px 8px 28px;
+  border-radius: 8px;
+  border: 1.5px solid transparent;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  cursor: default;
+}
+
+.cell-field:hover {
+  border-color: #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.cell-field.selected {
+  border-color: #DD6418;
+  box-shadow: 0 0 0 3px rgba(221, 100, 24, 0.1);
+}
+
+.cell-field-drag {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #d1d5db;
+  font-size: 14px;
+  cursor: grab;
+  line-height: 1;
+  user-select: none;
+  padding: 4px 2px;
+}
+
+.cell-field-drag:hover {
+  color: #9ca3af;
+}
+
+.cell-field-drag:active {
+  cursor: grabbing;
+}
+
+.cell-field-content {
+  pointer-events: none;
+}
+
+.cell-field-delete {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: #d1d5db;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  opacity: 0;
+}
+
+.cell-field:hover .cell-field-delete {
+  opacity: 1;
+}
+
+.cell-field-delete:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ── Barra de larguras de colunas ── */
+.row-col-width-bar {
+  display: grid;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 4px 0;
+}
+
+.col-width-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 2px 8px;
+  border-right: 1px solid #e5e7eb;
+}
+
+.col-width-control:last-child {
+  border-right: none;
+}
+
+.col-width-input {
+  width: 46px;
+  padding: 3px 5px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #374151;
+  background: #ffffff;
+  outline: none;
+  text-align: center;
+  transition: border-color 0.15s;
+}
+
+.col-width-input:focus {
+  border-color: #DD6418;
+}
+
+.col-width-unit {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+/* ── Cell wrapper (necessário para posicionar o handle de coluna) ── */
+.cell-wrapper {
+  position: relative;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.cell-wrapper > .form-cell {
+  flex: 1;
+}
+
+/* ── Handle de resize de coluna ── */
+.col-resize-handle {
+  position: absolute;
+  right: -5px;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  cursor: col-resize;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.col-resize-handle::after {
+  content: "";
+  width: 3px;
+  height: 32px;
+  border-radius: 2px;
+  background: #e5e7eb;
+  transition: background 0.15s, height 0.15s;
+}
+
+.col-resize-handle:hover::after {
+  background: #DD6418;
+  height: 48px;
+}
+
+/* ── Handle de resize de altura ── */
+.row-resize-handle {
+  height: 8px;
+  cursor: row-resize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 16px;
+}
+
+.row-resize-handle::after {
+  content: "";
+  width: 40px;
+  height: 3px;
+  border-radius: 2px;
+  background: #e5e7eb;
+  transition: background 0.15s, width 0.15s;
+}
+
+.row-resize-handle:hover::after {
+  background: #DD6418;
+  width: 64px;
+}
+
+/* ── Input de altura manual ── */
+.row-height-control {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.row-height-input {
+  width: 52px;
+  padding: 3px 6px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #374151;
+  background: #ffffff;
+  outline: none;
+  text-align: center;
+  transition: border-color 0.15s;
+}
+
+.row-height-input:focus {
+  border-color: #DD6418;
+}
+
+.row-height-input::placeholder {
+  color: #d1d5db;
+  font-size: 11px;
+}
+
+.row-height-unit {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+/* ── Botão adicionar linha ── */
+.add-row-btn {
+  background: #f9fafb;
+  border: 2px dashed #e5e7eb;
+  border-radius: 10px;
+  padding: 12px;
+  color: #9ca3af;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.15s;
+}
+
+.add-row-btn:hover {
+  border-color: #DD6418;
+  color: #DD6418;
+  background: #fff8f4;
 }
 
 /* ── Editor (sidebar direita) ── */
@@ -339,4 +734,44 @@
 
 .editor-delete-btn:hover {
   background: #fee2e2;
+}
+
+.editor-option-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.editor-option-row .editor-input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.editor-option-remove {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  padding: 0;
+}
+
+.editor-option-remove:hover:not(:disabled) {
+  background: #fee2e2;
+}
+
+.editor-option-remove:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  border-color: #e5e7eb;
+  background: #f9fafb;
+  color: #9ca3af;
 }
