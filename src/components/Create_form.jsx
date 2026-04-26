@@ -10,106 +10,145 @@ import "../css/create_forms.css";
 export default function Create_form() {
   const navigate = useNavigate();
 
+  // Lista de linhas: cada linha tem id, nº colunas, larguras e altura
+  const [rows, setRows] = useState([
+    { id: crypto.randomUUID(), colCount: 1, colWidths: [100], height: null },
+  ]);
+
+  // Campos colocados nas células (rowId + colIndex em vez de x,y)
   const [fields, setFields] = useState([]);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+
   const [selectedFieldId, setSelectedFieldId] = useState(null);
   const [formTitle, setFormTitle] = useState("");
 
   const selectedField = fields.find((f) => f.id === selectedFieldId);
 
-  // 🔹 DRAG START
-  function handleDragStart(event) {
-    const e = event.activatorEvent;
-
-    let clientX = 0;
-    let clientY = 0;
-
-    if (e?.touches && e.touches.length > 0) {
-      clientX = e.touches[0].clientX;
-      clientY = e.touches[0].clientY;
-    } else if (e) {
-      clientX = e.clientX;
-      clientY = e.clientY;
-    }
-
-    setDragStart({ x: clientX, y: clientY });
+  // ── Larguras iguais para N colunas ──────────────────────────────
+  function equalWidths(n) {
+    return Array.from({ length: n }, () => 100 / n);
   }
 
-  // 🔹 DRAG END
+  // ── Adicionar linha ──────────────────────────────────────────────
+  function addRow() {
+    setRows((prev) => [
+      ...prev,
+      { id: crypto.randomUUID(), colCount: 1, colWidths: [100], height: null },
+    ]);
+  }
+
+  // ── Remover linha (e os seus campos) ────────────────────────────
+  function removeRow(rowId) {
+    setRows((prev) => prev.filter((r) => r.id !== rowId));
+    setFields((prev) => prev.filter((f) => f.rowId !== rowId));
+    setSelectedFieldId((prev) => {
+      const fieldInRow = fields.find((f) => f.rowId === rowId && f.id === prev);
+      return fieldInRow ? null : prev;
+    });
+  }
+
+  // ── Mudar nº de colunas (remove campos nas colunas que desaparecem) ──
+  function setRowCols(rowId, colCount) {
+    setFields((prev) =>
+      prev.filter((f) => !(f.rowId === rowId && f.colIndex >= colCount))
+    );
+    setRows((prev) =>
+      prev.map((r) =>
+        r.id === rowId
+          ? { ...r, colCount, colWidths: equalWidths(colCount) }
+          : r
+      )
+    );
+  }
+
+  // ── Atualizar larguras das colunas ───────────────────────────────
+  function setRowColWidths(rowId, colWidths) {
+    setRows((prev) =>
+      prev.map((r) => (r.id === rowId ? { ...r, colWidths } : r))
+    );
+  }
+
+  // ── Atualizar altura da linha ────────────────────────────────────
+  function setRowHeight(rowId, height) {
+    setRows((prev) =>
+      prev.map((r) => (r.id === rowId ? { ...r, height } : r))
+    );
+  }
+
+  // ── Drag end ────────────────────────────────────────────────────
   function handleDragEnd(event) {
-    const { active, delta } = event;
+    const { active, over } = event;
+    if (!over) return;
 
-    const canvas = document.getElementById("form-canvas");
-    if (!canvas) return;
+    const overId = String(over.id);
+    if (!overId.startsWith("cell::")) return;
 
-    const rect = canvas.getBoundingClientRect();
+    // Formato do ID: "cell::rowId::colIndex"
+    const [, rowId, colStr] = overId.split("::");
+    const colIndex = parseInt(colStr, 10);
 
-    const finalX = dragStart.x + delta.x;
-    const finalY = dragStart.y + delta.y;
+    const targetOccupied = fields.find(
+      (f) => f.rowId === rowId && f.colIndex === colIndex
+    );
 
-    const x = finalX - rect.left;
-    const y = finalY - rect.top;
-
-    // 👉 Criar novo campo
+    // Vem da paleta → criar campo novo
     if (active.data.current?.from === "palette") {
+      if (targetOccupied) return; // célula já ocupada
       setFields((prev) => [
         ...prev,
         {
           id: crypto.randomUUID(),
           type: active.data.current.type,
-          x,
-          y,
+          rowId,
+          colIndex,
           label: "Descrição",
           placeholder: "Escreve aqui...",
           options: ["Opção 1", "Opção 2"],
           stars: 5,
+          hasOther: false,
+          otherLabel: "Outros",
         },
       ]);
       return;
     }
 
-    // 👉 Mover campo
-    if (active.data.current?.from === "canvas") {
+    // Vem de outra célula → mover campo
+    if (active.data.current?.from === "cell") {
+      const fieldId = active.id;
+      // Não sobrepor outro campo (a não ser ele próprio)
+      if (targetOccupied && targetOccupied.id !== fieldId) return;
       setFields((prev) =>
-        prev.map((field) =>
-          field.id === active.id
-            ? {
-                ...field,
-                x: field.x + delta.x,
-                y: field.y + delta.y,
-              }
-            : field
+        prev.map((f) =>
+          f.id === fieldId ? { ...f, rowId, colIndex } : f
         )
       );
     }
   }
 
-  // 🔹 UPDATE
+  // ── Atualizar campo ─────────────────────────────────────────────
   function updateField(id, newData) {
     setFields((prev) =>
       prev.map((f) => (f.id === id ? { ...f, ...newData } : f))
     );
   }
 
-  // 🔹 DELETE
+  // ── Eliminar campo ──────────────────────────────────────────────
   function deleteField(id) {
     setFields((prev) => prev.filter((f) => f.id !== id));
     setSelectedFieldId(null);
   }
 
-  // 🔹 DELETE KEY
+  // ── Tecla Delete ────────────────────────────────────────────────
   useEffect(() => {
     function handleKeyDown(e) {
       if (e.key === "Delete" && selectedFieldId) {
         deleteField(selectedFieldId);
       }
     }
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedFieldId]);
 
-  // 🔹 GUARDAR FORM
+  // ── Guardar formulário ──────────────────────────────────────────
   function handleSaveForm() {
     const trimmedTitle = formTitle.trim();
 
@@ -127,26 +166,23 @@ export default function Create_form() {
       id: crypto.randomUUID(),
       title: trimmedTitle,
       createdAt: new Date().toISOString(),
-      fields: fields,
+      rows,
+      fields,
     };
 
-    const existingForms =
-      JSON.parse(localStorage.getItem("myForms")) || [];
-
-    localStorage.setItem(
-      "myForms",
-      JSON.stringify([...existingForms, newForm])
-    );
+    const existingForms = JSON.parse(localStorage.getItem("myForms")) || [];
+    localStorage.setItem("myForms", JSON.stringify([...existingForms, newForm]));
 
     alert("Formulário guardado com sucesso!");
     navigate("/meus-formularios");
   }
 
-  // 🔹 UI
+  // ── UI ──────────────────────────────────────────────────────────
   return (
-    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+    <DndContext onDragEnd={handleDragEnd}>
       <div className="create-form-page">
-        {/* HEADER */}
+
+        {/* Header */}
         <div className="form-header">
           <input
             type="text"
@@ -155,24 +191,29 @@ export default function Create_form() {
             className="form-title-input"
             placeholder="Escreve o título do formulário"
           />
-
           <div className="header-buttons">
             <button className="back-btn" onClick={() => navigate(-1)}>
               Voltar
             </button>
-
             <button className="save-btn" onClick={handleSaveForm}>
               Guardar formulário
             </button>
           </div>
         </div>
 
-        {/* BUILDER */}
+        {/* Builder */}
         <div className="builder">
           <FormCanvas
+            rows={rows}
             fields={fields}
+            onAddRow={addRow}
+            onRemoveRow={removeRow}
+            onSetCols={setRowCols}
+            onSetColWidths={setRowColWidths}
+            onSetHeight={setRowHeight}
             setSelectedField={setSelectedFieldId}
-            selectedFieldId={selectedFieldId} // 🔥 IMPORTANTE
+            selectedFieldId={selectedFieldId}
+            onDeleteField={deleteField}
           />
 
           <FieldPalette />
@@ -183,6 +224,7 @@ export default function Create_form() {
             deleteField={deleteField}
           />
         </div>
+
       </div>
     </DndContext>
   );

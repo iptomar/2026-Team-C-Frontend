@@ -91,15 +91,21 @@ function FormField({ field }) {
         <div className="viewform-field">
           <label>{field.label}</label>
           <div className="viewform-checkbox-group">
-            {field.options?.map((opt, i) => (
+            {(field.options || []).map((opt, i) => (
               <label key={i} className="viewform-checkbox-option">
                 <input type="checkbox" value={opt} />
                 {opt}
               </label>
-            )) ?? (
+            ))}
+            {field.hasOther && (
               <label className="viewform-checkbox-option">
                 <input type="checkbox" />
-                {field.label}
+                <span>{field.otherLabel || "Outros"}</span>
+                <input
+                  type="text"
+                  placeholder="Especifica..."
+                  className="viewform-other-input"
+                />
               </label>
             )}
           </div>
@@ -174,7 +180,7 @@ export default function ViewFormPage() {
           <h1 className="viewform-topbar-title">{form.title}</h1>
         </div>
         <span className="viewform-topbar-meta">
-          {form.fields.length} campos · Criado em {new Date(form.createdAt).toLocaleDateString("pt-PT")}
+          {form.fields.length} campo{form.fields.length !== 1 ? "s" : ""} · Criado em {new Date(form.createdAt).toLocaleDateString("pt-PT")}
         </span>
       </header>
 
@@ -190,9 +196,36 @@ export default function ViewFormPage() {
 
           {/* Campos */}
           <div className="viewform-card">
-            {form.fields.map((field) => (
-              <FormField key={field.id} field={field} />
-            ))}
+            {form.rows ? (
+              /* Novo formato: rows + columns */
+              form.rows.map((row) => (
+                <div
+                  key={row.id}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: `repeat(${row.colCount}, 1fr)`,
+                    gap: "12px",
+                    marginBottom: "8px",
+                  }}
+                >
+                  {Array.from({ length: row.colCount }, (_, colIndex) => {
+                    const field = form.fields.find(
+                      (f) => f.rowId === row.id && f.colIndex === colIndex
+                    );
+                    return (
+                      <div key={colIndex}>
+                        {field ? <FormField field={field} /> : null}
+                      </div>
+                    );
+                  })}
+                </div>
+              ))
+            ) : (
+              /* Formato antigo: lista plana */
+              form.fields.map((field) => (
+                <FormField key={field.id} field={field} />
+              ))
+            )}
           </div>
 
           {/* Ações */}

@@ -39,23 +39,35 @@ export default function FieldEditor({ field, updateField, deleteField }) {
         </div>
       )}
 
-      {(field.type === "radio" || field.type === "select") && (
+      {(field.type === "radio" || field.type === "select" || field.type === "checkbox") && (
         <>
           <hr className="editor-divider" />
           <div className="editor-section">
             <span className="editor-label">Opções</span>
             {field.options.map((opt, i) => (
-              <input
-                key={i}
-                className="editor-input"
-                value={opt}
-                onChange={(e) => {
-                  const newOptions = [...field.options];
-                  newOptions[i] = e.target.value;
-                  updateField(field.id, { options: newOptions });
-                }}
-                placeholder={`Opção ${i + 1}`}
-              />
+              <div key={i} className="editor-option-row">
+                <input
+                  className="editor-input"
+                  value={opt}
+                  onChange={(e) => {
+                    const newOptions = [...field.options];
+                    newOptions[i] = e.target.value;
+                    updateField(field.id, { options: newOptions });
+                  }}
+                  placeholder={`Opção ${i + 1}`}
+                />
+                <button
+                  className="editor-option-remove"
+                  disabled={field.options.length <= 1}
+                  onClick={() => {
+                    const newOptions = field.options.filter((_, j) => j !== i);
+                    updateField(field.id, { options: newOptions });
+                  }}
+                  title="Remover opção"
+                >
+                  ✕
+                </button>
+              </div>
             ))}
             <button
               className="editor-add-btn"
@@ -64,6 +76,33 @@ export default function FieldEditor({ field, updateField, deleteField }) {
               + Adicionar opção
             </button>
           </div>
+
+          {field.type === "checkbox" && (
+            <>
+              <hr className="editor-divider" />
+              <div className="editor-section">
+                <label className="editor-required">
+                  <input
+                    type="checkbox"
+                    checked={!!field.hasOther}
+                    onChange={(e) => updateField(field.id, { hasOther: e.target.checked })}
+                  />
+                  Incluir opção "Outros"
+                </label>
+                {field.hasOther && (
+                  <>
+                    <span className="editor-label" style={{ marginTop: "6px" }}>Texto da opção</span>
+                    <input
+                      className="editor-input"
+                      value={field.otherLabel || ""}
+                      onChange={(e) => updateField(field.id, { otherLabel: e.target.value })}
+                      placeholder="Ex: Outros"
+                    />
+                  </>
+                )}
+              </div>
+            </>
+          )}
         </>
       )}
 

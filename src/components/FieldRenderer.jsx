@@ -1,7 +1,8 @@
 export default function FieldRenderer({ field }) {
   const inputStyle = {
-    width: "180px",
+    width: "100%",
     display: "block",
+    boxSizing: "border-box",
   };
 
   switch (field.type) {
@@ -39,10 +40,28 @@ export default function FieldRenderer({ field }) {
 
     case "checkbox":
       return (
-        <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: "#374151" }}>
-          <input type="checkbox" />
-          {field.label}
-        </label>
+        <div>
+          <label>{field.label}</label>
+          <div style={{ display: "flex", flexDirection: "column", gap: "4px", marginTop: "4px" }}>
+            {(field.options || []).map((opt, i) => (
+              <label key={i} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: "#374151" }}>
+                <input type="checkbox" />
+                {opt}
+              </label>
+            ))}
+            {field.hasOther && (
+              <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: "#374151" }}>
+                <input type="checkbox" />
+                <span>{field.otherLabel || "Outros"}</span>
+                <input
+                  type="text"
+                  placeholder="Especifica..."
+                  style={{ border: "none", borderBottom: "1px solid #d1d5db", outline: "none", fontSize: "13px", width: "80px", background: "transparent" }}
+                />
+              </label>
+            )}
+          </div>
+        </div>
       );
 
     case "radio":
