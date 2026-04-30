@@ -1,72 +1,58 @@
-import { useDroppable, useDraggable } from "@dnd-kit/core";
-import FieldRenderer from "./FieldRenderer";
+import FormRow from "./FormRow";
 
-function DraggableField({ field, onClick, isSelected }) {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: field.id,
-    data: {
-      ...field,
-      from: "canvas",
-    },
-  });
-
-  const style = {
-    position: "absolute",
-    left: field.x,
-    top: field.y,
-    transform: transform
-      ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
-      : undefined,
-  };
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...listeners}
-      {...attributes}
-      className={`canvas-field ${isSelected ? "selected" : ""}`} // ✅ AQUI
-      onMouseDown={(e) => {
-        e.stopPropagation();
-        onClick();
-      }}
-    >
-      <FieldRenderer field={field} />
-    </div>
-  );
-}
-
+/**
+ * COMPONENTE: FormCanvas
+ * O canvas principal do builder. Em vez de posicionamento absoluto,
+ * renderiza uma lista de linhas (rows), cada uma com as suas colunas (cells).
+ */
 export default function FormCanvas({
+  rows,
   fields,
+  onAddRow,
+  onRemoveRow,
+  onSetCols,
+  onSetColWidths,
+  onSetHeight,
   setSelectedField,
-  selectedFieldId, // ✅ NOVO
+  selectedFieldId,
+  onDeleteField,
 }) {
-  const { setNodeRef, isOver } = useDroppable({
-    id: "form-canvas",
-  });
-
   return (
     <div className="canvas-wrapper">
-      <div
-        className="text-layer"
-        contentEditable
-        suppressContentEditableWarning
-      />
+      <div className="form-rows" onClick={() => setSelectedField(null)}>
 
-      <div
-        ref={setNodeRef}
-        id="form-canvas"
-        className={`canvas ${isOver ? "over" : ""}`}
-        onMouseDown={() => setSelectedField(null)}
-      >
-        {fields.map((field) => (
-          <DraggableField
-            key={field.id}
-            field={field}
-            onClick={() => setSelectedField(field.id)}
-            isSelected={field.id === selectedFieldId}
+        {rows.length === 0 && (
+          <div className="canvas-empty">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="3" />
+              <path d="M3 9h18M9 21V9" />
+            </svg>
+            <p>Clica em <strong>+ Adicionar linha</strong> para começar</p>
+          </div>
+        )}
+
+        {rows.map((row) => (
+          <FormRow
+            key={row.id}
+            row={row}
+            fields={fields}
+            onRemoveRow={onRemoveRow}
+            onSetCols={onSetCols}
+            onSetColWidths={onSetColWidths}
+            onSetHeight={onSetHeight}
+            setSelectedField={setSelectedField}
+            selectedFieldId={selectedFieldId}
+            onDeleteField={onDeleteField}
           />
         ))}
+
+        <button
+          className="add-row-btn"
+          onClick={(e) => { e.stopPropagation(); onAddRow(); }}
+        >
+          + Adicionar linha
+        </button>
+
       </div>
     </div>
   );
