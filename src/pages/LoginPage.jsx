@@ -116,6 +116,10 @@ export default function LoginPage() {
             Ainda não tem conta?{" "}
             <Link to="/registo" className="login-register-link">Registe-se</Link>
           </p>
+          <p className="login-register-text">
+            Esqueci-me da password - {" "}
+            <Link to="/passwd" className="login-register-link">Recuperar</Link>
+          </p>
         </div>
       </div>
 
