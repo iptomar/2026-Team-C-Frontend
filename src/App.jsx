@@ -8,7 +8,6 @@ import Create_form from "./components/Create_form";
 import MyFormsPage from "./pages/MyFormsPage";
 import ViewFormPage from "./pages/ViewFormPage";
 
-
 function App() {
   return (
     <Routes>
@@ -36,22 +35,31 @@ function App() {
       />
 
       <Route
-  path="/meus-formularios"
-  element={
-    <PrivateRoute>
-      <MyFormsPage />
-    </PrivateRoute>
-  }
-/>
+        path="/criar-formulario/:id"
+        element={
+          <PrivateRoute>
+            <Create_form />
+          </PrivateRoute>
+        }
+      />
 
-<Route
-  path="/formulario/:id"
-  element={
-    <PrivateRoute>
-      <ViewFormPage />
-    </PrivateRoute>
-  }
-/>
+      <Route
+        path="/meus-formularios"
+        element={
+          <PrivateRoute>
+            <MyFormsPage />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/formulario/:id"
+        element={
+          <PrivateRoute>
+            <ViewFormPage />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 }
