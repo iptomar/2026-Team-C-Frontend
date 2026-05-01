@@ -775,3 +775,86 @@
   background: #f9fafb;
   color: #9ca3af;
 }
+
+/* ── Botão Pré-visualizar ── */
+.preview-btn {
+  padding: 8px 16px;
+  border: 1.5px solid #DD6418;
+  border-radius: 8px;
+  background: transparent;
+  color: #DD6418;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.preview-btn:hover {
+  background: #DD6418;
+  color: #ffffff;
+}
+
+.preview-btn--active {
+  background: #DD6418;
+  color: #ffffff;
+}
+
+/* ── Builder com painel aberto ── */
+.builder--with-preview {
+  display: grid !important;
+  grid-template-columns: 1fr 420px;
+  gap: 0;
+}
+
+/* ── Painel lateral de pré-visualização ── */
+.preview-panel {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #e5e7eb;
+  background: #f8f9fb;
+  height: calc(100vh - 60px); /* altura total menos o header */
+  position: sticky;
+  top: 60px;
+}
+
+.preview-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+  flex-shrink: 0;
+}
+
+.preview-panel-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.preview-panel-close {
+  padding: 6px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  background: transparent;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.preview-panel-close:hover {
+  border-color: #DD6418;
+  color: #DD6418;
+}
+
+.preview-panel-iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: #f8f9fb;
+}
