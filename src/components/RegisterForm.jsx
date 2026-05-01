@@ -54,17 +54,38 @@ function RegisterForm() {
     return newErrors
   }
 
-  function handleSubmit(e) {
-    e.preventDefault()
-    const newErrors = validate()
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const newErrors = validate();
 
     if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors)
-      return
+      setErrors(newErrors);
+      return;
     }
 
-    console.log('Dados do formulário:', formData)
-    setSubmitted(true)
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.nome,
+          email: formData.email.trim().toLowerCase(),
+          password: formData.password,
+        }),
+      });
+
+      const text = await response.text();
+      const data = text ? JSON.parse(text) : {};
+
+      if (!response.ok) {
+        setErrors({ geral: data.error || "Erro ao registar." });
+        return;
+      }
+
+      setSubmitted(true);
+    } catch {
+      setErrors({ geral: "Erro de ligação ao servidor." });
+    }
   }
 
   if (submitted) {
@@ -173,6 +194,7 @@ function RegisterForm() {
         />
       </div>
 
+      {errors.geral && <span className="error">{errors.geral}</span>}
       <button type="submit" className="submit-btn">Registar</button>
     </form>
   )
