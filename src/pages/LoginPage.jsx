@@ -39,12 +39,37 @@ export default function LoginPage() {
     }
 
     try {
-      setLoading(true);
-      saveToken("mock-token");
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.email.trim().toLowerCase(),
+          password: formData.password,
+        }),
+      });
+
+      const text = await response.text();
+
+      if (!text) {
+        throw new Error("O servidor não devolveu resposta.");
+      }
+
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error("Resposta inválida do servidor.");
+      }
+
+      if (!response.ok) {
+        throw new Error(data.error || "Erro ao autenticar.");
+      }
+
+      saveToken(data.token);
       setSuccess("Login efetuado com sucesso.");
       setTimeout(() => navigate("/dashboard"), 1000);
-    } catch {
-      setError("Erro ao autenticar.");
+    } catch (err) {
+      setError(err.message || "Erro ao autenticar.");
     } finally {
       setLoading(false);
     }
@@ -117,7 +142,7 @@ export default function LoginPage() {
             <Link to="/registo" className="login-register-link">Registe-se</Link>
           </p>
           <p className="login-register-text">
-            Esqueci-me da password - {" "}
+            Esqueci-me da password -{" "}
             <Link to="/passwd" className="login-register-link">Recuperar</Link>
           </p>
         </div>
