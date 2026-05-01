@@ -6,9 +6,13 @@ import FormCanvas from "./FormCanvas";
 import FieldPalette from "./FieldPalette";
 import FieldEditor from "./FieldEditor";
 import "../css/create_forms.css";
+import FormRenderer from "./FormRenderer";
+import "../css/ViewFormPage.css";
+import { useParams } from "react-router-dom";
 
 export default function Create_form() {
   const navigate = useNavigate();
+  const { id } = useParams();
 
   // Lista de linhas: cada linha tem id, nº colunas, larguras e altura
   const [rows, setRows] = useState([
@@ -19,6 +23,7 @@ export default function Create_form() {
   const [fields, setFields] = useState([]);
 
   const [selectedFieldId, setSelectedFieldId] = useState(null);
+  const [previewMode, setPreviewMode] = useState(false);
   const [formTitle, setFormTitle] = useState("");
 
   const selectedField = fields.find((f) => f.id === selectedFieldId);
@@ -49,29 +54,27 @@ export default function Create_form() {
   // ── Mudar nº de colunas (remove campos nas colunas que desaparecem) ──
   function setRowCols(rowId, colCount) {
     setFields((prev) =>
-      prev.filter((f) => !(f.rowId === rowId && f.colIndex >= colCount))
+      prev.filter((f) => !(f.rowId === rowId && f.colIndex >= colCount)),
     );
     setRows((prev) =>
       prev.map((r) =>
         r.id === rowId
           ? { ...r, colCount, colWidths: equalWidths(colCount) }
-          : r
-      )
+          : r,
+      ),
     );
   }
 
   // ── Atualizar larguras das colunas ───────────────────────────────
   function setRowColWidths(rowId, colWidths) {
     setRows((prev) =>
-      prev.map((r) => (r.id === rowId ? { ...r, colWidths } : r))
+      prev.map((r) => (r.id === rowId ? { ...r, colWidths } : r)),
     );
   }
 
   // ── Atualizar altura da linha ────────────────────────────────────
   function setRowHeight(rowId, height) {
-    setRows((prev) =>
-      prev.map((r) => (r.id === rowId ? { ...r, height } : r))
-    );
+    setRows((prev) => prev.map((r) => (r.id === rowId ? { ...r, height } : r)));
   }
 
   // ── Drag end ────────────────────────────────────────────────────
@@ -87,7 +90,7 @@ export default function Create_form() {
     const colIndex = parseInt(colStr, 10);
 
     const targetOccupied = fields.find(
-      (f) => f.rowId === rowId && f.colIndex === colIndex
+      (f) => f.rowId === rowId && f.colIndex === colIndex,
     );
 
     // Vem da paleta → criar campo novo
@@ -117,9 +120,7 @@ export default function Create_form() {
       // Não sobrepor outro campo (a não ser ele próprio)
       if (targetOccupied && targetOccupied.id !== fieldId) return;
       setFields((prev) =>
-        prev.map((f) =>
-          f.id === fieldId ? { ...f, rowId, colIndex } : f
-        )
+        prev.map((f) => (f.id === fieldId ? { ...f, rowId, colIndex } : f)),
       );
     }
   }
@@ -127,7 +128,7 @@ export default function Create_form() {
   // ── Atualizar campo ─────────────────────────────────────────────
   function updateField(id, newData) {
     setFields((prev) =>
-      prev.map((f) => (f.id === id ? { ...f, ...newData } : f))
+      prev.map((f) => (f.id === id ? { ...f, ...newData } : f)),
     );
   }
 
@@ -148,6 +149,21 @@ export default function Create_form() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedFieldId]);
 
+  // ── ID ────────────────────────────────────────────────
+  useEffect(() => {
+    if (!id) return;
+
+    const savedForms = JSON.parse(localStorage.getItem("myForms")) || [];
+
+    const existingForm = savedForms.find((f) => f.id === id);
+
+    if (!existingForm) return;
+
+    setFormTitle(existingForm.title || "");
+    setRows(existingForm.rows || []);
+    setFields(existingForm.fields || []);
+  }, [id]);
+
   // ── Guardar formulário ──────────────────────────────────────────
   function handleSaveForm() {
     const trimmedTitle = formTitle.trim();
@@ -162,18 +178,31 @@ export default function Create_form() {
       return;
     }
 
-    const newForm = {
-      id: crypto.randomUUID(),
+    const existingForms = JSON.parse(localStorage.getItem("myForms")) || [];
+
+    const formData = {
+      id: id || crypto.randomUUID(),
       title: trimmedTitle,
       createdAt: new Date().toISOString(),
       rows,
       fields,
     };
 
-    const existingForms = JSON.parse(localStorage.getItem("myForms")) || [];
-    localStorage.setItem("myForms", JSON.stringify([...existingForms, newForm]));
+    let updatedForms;
 
-    alert("Formulário guardado com sucesso!");
+    // EDITAR
+    if (id) {
+      updatedForms = existingForms.map((f) => (f.id === id ? formData : f));
+    }
+    // NOVO
+    else {
+      updatedForms = [...existingForms, formData];
+    }
+
+    localStorage.setItem("myForms", JSON.stringify(updatedForms));
+
+    alert(id ? "Formulário atualizado!" : "Formulário guardado!");
+
     navigate("/meus-formularios");
   }
 
@@ -181,7 +210,6 @@ export default function Create_form() {
   return (
     <DndContext onDragEnd={handleDragEnd}>
       <div className="create-form-page">
-
         {/* Header */}
         <div className="form-header">
           <input
@@ -192,6 +220,23 @@ export default function Create_form() {
             placeholder="Escreve o título do formulário"
           />
           <div className="header-buttons">
+            <div
+              className={`view-switch ${previewMode ? "preview-active" : ""}`}
+            >
+              <button
+                className={!previewMode ? "active" : ""}
+                onClick={() => setPreviewMode(false)}
+              >
+                Editar
+              </button>
+
+              <button
+                className={previewMode ? "active" : ""}
+                onClick={() => setPreviewMode(true)}
+              >
+                Pré-visualizar
+              </button>
+            </div>
             <button className="back-btn" onClick={() => navigate(-1)}>
               Voltar
             </button>
@@ -202,29 +247,51 @@ export default function Create_form() {
         </div>
 
         {/* Builder */}
-        <div className="builder">
-          <FormCanvas
-            rows={rows}
-            fields={fields}
-            onAddRow={addRow}
-            onRemoveRow={removeRow}
-            onSetCols={setRowCols}
-            onSetColWidths={setRowColWidths}
-            onSetHeight={setRowHeight}
-            setSelectedField={setSelectedFieldId}
-            selectedFieldId={selectedFieldId}
-            onDeleteField={deleteField}
-          />
+        {previewMode ? (
+          <div className="viewform-page">
+            <main className="viewform-content">
+              <div className="viewform-container">
+                <div className="viewform-intro">
+                  <h1>{formTitle || "Formulário sem título"}</h1>
+                  <p>Preencha todos os campos e submeta o formulário.</p>
+                </div>
 
-          <FieldPalette />
+                <div className="viewform-card">
+                  <FormRenderer rows={rows} fields={fields} />
+                </div>
 
-          <FieldEditor
-            field={selectedField}
-            updateField={updateField}
-            deleteField={deleteField}
-          />
-        </div>
+                <div className="viewform-actions">
+                  <button className="viewform-submit">
+                    Submeter formulário
+                  </button>
+                </div>
+              </div>
+            </main>
+          </div>
+        ) : (
+          <div className="builder">
+            <FormCanvas
+              rows={rows}
+              fields={fields}
+              onAddRow={addRow}
+              onRemoveRow={removeRow}
+              onSetCols={setRowCols}
+              onSetColWidths={setRowColWidths}
+              onSetHeight={setRowHeight}
+              setSelectedField={setSelectedFieldId}
+              selectedFieldId={selectedFieldId}
+              onDeleteField={deleteField}
+            />
 
+            <FieldPalette />
+
+            <FieldEditor
+              field={selectedField}
+              updateField={updateField}
+              deleteField={deleteField}
+            />
+          </div>
+        )}
       </div>
     </DndContext>
   );

@@ -775,3 +775,63 @@
   background: #f9fafb;
   color: #9ca3af;
 }
+
+.view-switch {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #f3f4f6;
+  border-radius: 999px;
+  padding: 4px;
+  min-width: 220px;
+  height: 42px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.view-switch::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  height: calc(100% - 8px);
+  background: #DD6418;
+  color: #ffffff;
+  border-radius: 999px;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.06),
+    0 6px 18px rgba(0,0,0,0.08);
+  transition:
+    transform 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.2s ease;
+}
+
+.view-switch.preview-active::before {
+  transform: translateX(100%);
+}
+
+.view-switch button {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  border: none;
+  background: transparent;
+  height: 100%;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  color: #6b7280;
+  transition:
+    color 0.22s ease,
+    transform 0.18s ease;
+}
+
+.view-switch button:hover {
+  transform: scale(1.02);
+}
+
+.view-switch button.active {
+  color: #ffffff;
+}

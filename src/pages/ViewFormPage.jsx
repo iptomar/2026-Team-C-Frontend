@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../css/ViewFormPage.css";
+import FormRenderer from "../components/FormRenderer";
 
 function StarRating({ count }) {
   const [hovered, setHovered] = useState(0);
@@ -23,7 +24,7 @@ function StarRating({ count }) {
   );
 }
 
-function FormField({ field }) {
+export function FormField({ field }) {
   switch (field.type) {
     case "text":
       return (
@@ -127,8 +128,18 @@ function FormField({ field }) {
       );
     case "title":
       return (
-        <div className="viewform-field" style={{ borderTop: "none", paddingTop: 0 }}>
-          <h2 style={{ margin: 0, fontSize: "18px", fontWeight: 700, color: "#111827" }}>
+        <div
+          className="viewform-field"
+          style={{ borderTop: "none", paddingTop: 0 }}
+        >
+          <h2
+            style={{
+              margin: 0,
+              fontSize: "18px",
+              fontWeight: 700,
+              color: "#111827",
+            }}
+          >
             {field.label}
           </h2>
         </div>
@@ -152,12 +163,24 @@ export default function ViewFormPage() {
   if (!form) {
     return (
       <div className="viewform-not-found">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          width="40"
+          height="40"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#d1d5db"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
           <polyline points="14 2 14 8 20 8" />
         </svg>
         <p>Formulário não encontrado.</p>
-        <button className="viewform-back-btn" onClick={() => navigate("/meus-formularios")}>
+        <button
+          className="viewform-back-btn"
+          onClick={() => navigate("/meus-formularios")}
+        >
           Voltar aos formulários
         </button>
       </div>
@@ -166,12 +189,23 @@ export default function ViewFormPage() {
 
   return (
     <div className="viewform-page">
-
       {/* Topbar */}
       <header className="viewform-topbar">
         <div className="viewform-topbar-left">
-          <button className="viewform-back-btn" onClick={() => navigate("/meus-formularios")}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <button
+            className="viewform-back-btn"
+            onClick={() => navigate("/meus-formularios")}
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <polyline points="15 18 9 12 15 6" />
             </svg>
             Voltar
@@ -180,14 +214,14 @@ export default function ViewFormPage() {
           <h1 className="viewform-topbar-title">{form.title}</h1>
         </div>
         <span className="viewform-topbar-meta">
-          {form.fields.length} campo{form.fields.length !== 1 ? "s" : ""} · Criado em {new Date(form.createdAt).toLocaleDateString("pt-PT")}
+          {form.fields.length} campo{form.fields.length !== 1 ? "s" : ""} ·
+          Criado em {new Date(form.createdAt).toLocaleDateString("pt-PT")}
         </span>
       </header>
 
       {/* Content */}
       <main className="viewform-content">
         <div className="viewform-container">
-
           {/* Intro */}
           <div className="viewform-intro">
             <h1>{form.title}</h1>
@@ -196,46 +230,15 @@ export default function ViewFormPage() {
 
           {/* Campos */}
           <div className="viewform-card">
-            {form.rows ? (
-              /* Novo formato: rows + columns */
-              form.rows.map((row) => (
-                <div
-                  key={row.id}
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: `repeat(${row.colCount}, 1fr)`,
-                    gap: "12px",
-                    marginBottom: "8px",
-                  }}
-                >
-                  {Array.from({ length: row.colCount }, (_, colIndex) => {
-                    const field = form.fields.find(
-                      (f) => f.rowId === row.id && f.colIndex === colIndex
-                    );
-                    return (
-                      <div key={colIndex}>
-                        {field ? <FormField field={field} /> : null}
-                      </div>
-                    );
-                  })}
-                </div>
-              ))
-            ) : (
-              /* Formato antigo: lista plana */
-              form.fields.map((field) => (
-                <FormField key={field.id} field={field} />
-              ))
-            )}
+            <FormRenderer rows={form.rows} fields={form.fields} />
           </div>
 
           {/* Ações */}
           <div className="viewform-actions">
             <button className="viewform-submit">Submeter formulário</button>
           </div>
-
         </div>
       </main>
-
     </div>
   );
 }
