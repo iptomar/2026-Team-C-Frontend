@@ -7,6 +7,8 @@ import PrivateRoute from "./components/PrivateRoute";
 import Create_form from "./components/Create_form";
 import MyFormsPage from "./pages/MyFormsPage";
 import ViewFormPage from "./pages/ViewFormPage";
+import SendEmailPage from "./pages/SendEmailPage";
+import PasswordResetPage from "./pages/PasswordResetPage";
 
 function App() {
   return (
@@ -14,7 +16,8 @@ function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/registo" element={<RegisterPage />} />
-      <Route path="/passwd" element={<HomePage />} />
+      <Route path="/passwd" element={<SendEmailPage />} />
+      <Route path="/passwd/:id" element={<PasswordResetPage />} />
 
       <Route
         path="/dashboard"
