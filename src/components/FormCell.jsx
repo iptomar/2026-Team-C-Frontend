@@ -77,24 +77,95 @@ export default function FormCell({
   onAddField,
 }) {
   const [showMenu, setShowMenu] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [search, setSearch] = useState("");
 
   const cellId = `cell::${rowId}::${colIndex}`;
   const { isOver, setNodeRef } = useDroppable({ id: cellId });
 
-  function handleKeyDown(e) {
-    if (e.key === "/" && !field) {
-      e.preventDefault();
-      setShowMenu(true);
-    }
+  const filteredFields = quickFields.filter((item) =>
+    item.label.toLowerCase().includes(search.toLowerCase())
+  );
 
-    if (e.key === "Escape") {
-      setShowMenu(false);
-    }
+  function openMenu() {
+    setShowMenu(true);
+    setActiveIndex(0);
+    setSearch("");
+  }
+
+  function closeMenu() {
+    setShowMenu(false);
+    setActiveIndex(0);
+    setSearch("");
   }
 
   function addQuickField(type) {
     onAddField(type, rowId, colIndex);
-    setShowMenu(false);
+    closeMenu();
+  }
+
+  function handleKeyDown(e) {
+    if (e.key === "/" && !field && !showMenu) {
+      e.preventDefault();
+      openMenu();
+      return;
+    }
+
+    if (!showMenu) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveIndex((prev) =>
+        filteredFields.length === 0
+          ? 0
+          : prev === filteredFields.length - 1
+          ? 0
+          : prev + 1
+      );
+      return;
+    }
+
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIndex((prev) =>
+        filteredFields.length === 0
+          ? 0
+          : prev === 0
+          ? filteredFields.length - 1
+          : prev - 1
+      );
+      return;
+    }
+
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const selected = filteredFields[activeIndex];
+
+      if (selected) {
+        addQuickField(selected.type);
+      }
+
+      return;
+    }
+
+    if (e.key === "Backspace") {
+      e.preventDefault();
+      setSearch((prev) => prev.slice(0, -1));
+      setActiveIndex(0);
+      return;
+    }
+
+    if (e.key === "Escape") {
+      e.preventDefault();
+      closeMenu();
+      return;
+    }
+
+    if (e.key.length === 1) {
+      e.preventDefault();
+      setSearch((prev) => prev + e.key);
+      setActiveIndex(0);
+    }
   }
 
   return (
@@ -125,18 +196,30 @@ export default function FormCell({
 
       {showMenu && !field && (
         <div className="quick-insert-menu">
-          {quickFields.map((item) => (
-            <button
-              key={item.type}
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                addQuickField(item.type);
-              }}
-            >
-              {item.label}
-            </button>
-          ))}
+          <div className="quick-insert-search">
+            /{search || " pesquisar..."}
+          </div>
+
+          {filteredFields.length > 0 ? (
+            filteredFields.map((item, index) => (
+              <button
+                key={item.type}
+                type="button"
+                className={index === activeIndex ? "active" : ""}
+                onMouseEnter={() => setActiveIndex(index)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  addQuickField(item.type);
+                }}
+              >
+                {item.label}
+              </button>
+            ))
+          ) : (
+            <div className="quick-insert-empty">
+              Nenhum bloco encontrado
+            </div>
+          )}
         </div>
       )}
     </div>
