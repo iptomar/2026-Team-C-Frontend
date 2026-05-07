@@ -1,16 +1,11 @@
 import { useRef, useState, useEffect } from "react";
 import FormCell from "./FormCell";
 
-/**
- * Input de altura com estado local — só valida ao sair do campo (onBlur),
- * para não interferir com o que o utilizador está a escrever.
- */
 const MIN_HEIGHT = 90;
 
 function HeightInput({ value, onChange }) {
   const [raw, setRaw] = useState(value?.toString() ?? "");
 
-  // Sincroniza quando o valor muda externamente (ex: drag)
   useEffect(() => {
     setRaw(value?.toString() ?? "");
   }, [value]);
@@ -20,23 +15,24 @@ function HeightInput({ value, onChange }) {
     setRaw(val);
 
     if (!val.trim()) {
-      onChange(null); // campo vazio → auto
+      onChange(null);
       return;
     }
+
     const num = parseInt(val, 10);
+
     if (!isNaN(num) && num >= MIN_HEIGHT) {
-      onChange(num); // atualiza em tempo real se válido
+      onChange(num);
     }
-    // Se < mínimo enquanto escreve, não atualiza (espera pelo blur)
   }
 
   function handleBlur() {
     const num = parseInt(raw, 10);
+
     if (!raw.trim() || isNaN(num) || num <= 0) {
       onChange(null);
       setRaw("");
     } else if (num < MIN_HEIGHT) {
-      // Força o mínimo ao sair do campo
       onChange(MIN_HEIGHT);
       setRaw(MIN_HEIGHT.toString());
     } else {
@@ -62,10 +58,6 @@ function HeightInput({ value, onChange }) {
   );
 }
 
-/**
- * Input de largura de coluna — só valida ao sair do campo.
- * Distribui o restante igualmente pelas outras colunas.
- */
 const MIN_COL = 10;
 
 function ColWidthInput({ colIndex, colWidths, rowId, onSetColWidths }) {
@@ -80,9 +72,11 @@ function ColWidthInput({ colIndex, colWidths, rowId, onSetColWidths }) {
     const maxPct = 100 - (n - 1) * MIN_COL;
     const clamped = Math.min(maxPct, Math.max(MIN_COL, num));
     const remaining = 100 - clamped;
+
     const newWidths = colWidths.map((w, i) =>
       i === colIndex ? clamped : remaining / (n - 1)
     );
+
     onSetColWidths(rowId, newWidths);
     return clamped;
   }
@@ -92,17 +86,20 @@ function ColWidthInput({ colIndex, colWidths, rowId, onSetColWidths }) {
     setRaw(val);
 
     const num = parseFloat(val);
+
     if (!isNaN(num) && num >= MIN_COL) {
-      applyWidth(num); // atualiza em tempo real se válido
+      applyWidth(num);
     }
   }
 
   function handleBlur() {
     const num = parseFloat(raw);
+
     if (isNaN(num) || num <= 0) {
       setRaw(Math.round(colWidths[colIndex]).toString());
       return;
     }
+
     const clamped = applyWidth(num);
     setRaw(Math.round(clamped).toString());
   }
@@ -124,9 +121,6 @@ function ColWidthInput({ colIndex, colWidths, rowId, onSetColWidths }) {
   );
 }
 
-/**
- * COMPONENTE: FormRow
- */
 export default function FormRow({
   row,
   fields,
@@ -137,10 +131,10 @@ export default function FormRow({
   setSelectedField,
   selectedFieldId,
   onDeleteField,
+  onAddField,
 }) {
   const rowCellsRef = useRef(null);
 
-  // ── Resize de colunas por drag ─────────────────────────────────
   function startColResize(e, colIndex) {
     e.preventDefault();
     e.stopPropagation();
@@ -153,11 +147,14 @@ export default function FormRow({
     function onMove(e) {
       const dPct = ((e.clientX - startX) / containerWidth) * 100;
 
-      // Soma das duas colunas adjacentes — mantém-se constante durante o drag
-      const totalOfTwo = startWidths[colIndex] + startWidths[colIndex + 1];
+      const totalOfTwo =
+        startWidths[colIndex] + startWidths[colIndex + 1];
 
-      // Clamp: esquerda entre minPct e (total - minPct), garantindo que a direita também fica >= minPct
-      const newLeft = Math.max(minPct, Math.min(totalOfTwo - minPct, startWidths[colIndex] + dPct));
+      const newLeft = Math.max(
+        minPct,
+        Math.min(totalOfTwo - minPct, startWidths[colIndex] + dPct)
+      );
+
       const newRight = totalOfTwo - newLeft;
 
       const next = [...startWidths];
@@ -176,7 +173,6 @@ export default function FormRow({
     window.addEventListener("pointerup", onUp);
   }
 
-  // ── Resize de altura por drag ──────────────────────────────────
   function startRowResize(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -186,7 +182,10 @@ export default function FormRow({
       row.height || rowCellsRef.current.getBoundingClientRect().height;
 
     function onMove(e) {
-      onSetHeight(row.id, Math.max(MIN_HEIGHT, startHeight + (e.clientY - startY)));
+      onSetHeight(
+        row.id,
+        Math.max(MIN_HEIGHT, startHeight + (e.clientY - startY))
+      );
     }
 
     function onUp() {
@@ -202,8 +201,6 @@ export default function FormRow({
 
   return (
     <div className="form-row">
-
-      {/* Controlos principais */}
       <div className="row-controls">
         <span className="row-label">Linha</span>
 
@@ -220,7 +217,10 @@ export default function FormRow({
           ))}
         </div>
 
-        <HeightInput value={row.height} onChange={(h) => onSetHeight(row.id, h)} />
+        <HeightInput
+          value={row.height}
+          onChange={(h) => onSetHeight(row.id, h)}
+        />
 
         <button
           className="row-remove-btn"
@@ -231,7 +231,6 @@ export default function FormRow({
         </button>
       </div>
 
-      {/* Inputs de largura por coluna (só quando há mais de 1 coluna) */}
       {row.colCount > 1 && (
         <div
           className="row-col-width-bar"
@@ -249,7 +248,6 @@ export default function FormRow({
         </div>
       )}
 
-      {/* Células */}
       <div
         ref={rowCellsRef}
         className="row-cells"
@@ -274,6 +272,7 @@ export default function FormRow({
                 isSelected={field?.id === selectedFieldId}
                 setSelectedField={setSelectedField}
                 onDeleteField={onDeleteField}
+                onAddField={onAddField}
               />
 
               {colIndex < row.colCount - 1 && (
@@ -288,13 +287,11 @@ export default function FormRow({
         })}
       </div>
 
-      {/* Handle de resize de altura */}
       <div
         className="row-resize-handle"
         onPointerDown={startRowResize}
         title="Arrastar para redimensionar altura"
       />
-
     </div>
   );
 }

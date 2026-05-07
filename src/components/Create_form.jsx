@@ -60,9 +60,7 @@ function generatePreviewHTML(title, rows, fields) {
             <label>${field.label}</label>
             <select disabled>
               <option>Seleciona uma opção</option>
-              ${(field.options || [])
-                .map((o) => `<option>${o}</option>`)
-                .join("")}
+              ${(field.options || []).map((o) => `<option>${o}</option>`).join("")}
             </select>
           </div>
         `;
@@ -79,7 +77,7 @@ function generatePreviewHTML(title, rows, fields) {
                     <input type="radio" disabled />
                     ${o}
                   </label>
-                `,
+                `
                 )
                 .join("")}
             </div>
@@ -90,7 +88,6 @@ function generatePreviewHTML(title, rows, fields) {
         return `
           <div class="viewform-field">
             <label>${field.label}</label>
-
             <div class="viewform-checkbox-group">
               ${(field.options || [])
                 .map(
@@ -99,7 +96,7 @@ function generatePreviewHTML(title, rows, fields) {
                     <input type="checkbox" disabled />
                     ${o}
                   </label>
-                `,
+                `
                 )
                 .join("")}
 
@@ -109,7 +106,6 @@ function generatePreviewHTML(title, rows, fields) {
                   <label class="viewform-checkbox-option">
                     <input type="checkbox" disabled />
                     ${field.otherLabel || "Outros"}
-
                     <input
                       type="text"
                       class="viewform-other-input"
@@ -136,7 +132,6 @@ function generatePreviewHTML(title, rows, fields) {
         return `
           <div class="viewform-field">
             <label>${field.label}</label>
-
             <div class="viewform-stars">
               ${Array.from({ length: field.stars || 5 })
                 .map(() => `<span class="viewform-star">★</span>`)
@@ -161,16 +156,13 @@ function generatePreviewHTML(title, rows, fields) {
 
   const rowsHTML = rows
     .map((row) => {
-      const cols = Array.from(
-        { length: row.colCount },
-        (_, colIndex) => {
-          const field = fields.find(
-            (f) => f.rowId === row.id && f.colIndex === colIndex,
-          );
+      const cols = Array.from({ length: row.colCount }, (_, colIndex) => {
+        const field = fields.find(
+          (f) => f.rowId === row.id && f.colIndex === colIndex
+        );
 
-          return `<div>${field ? renderField(field) : ""}</div>`;
-        },
-      ).join("");
+        return `<div>${field ? renderField(field) : ""}</div>`;
+      }).join("");
 
       return `
         <div
@@ -194,9 +186,7 @@ function generatePreviewHTML(title, rows, fields) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{ box-sizing:border-box; }
 
 body{
   margin:0;
@@ -271,9 +261,7 @@ body{
   font-size:14px;
 }
 
-.viewform-field textarea{
-  min-height:90px;
-}
+.viewform-field textarea{ min-height:90px; }
 
 .viewform-radio-group,
 .viewform-checkbox-group{
@@ -312,7 +300,6 @@ body{
 <body>
 <div class="viewform-content">
   <div class="viewform-container">
-
     <div class="viewform-intro">
       <h1>${title || "Formulário sem título"}</h1>
       <p>Preencha todos os campos e submeta o formulário.</p>
@@ -321,7 +308,6 @@ body{
     <div class="viewform-card">
       ${rowsHTML}
     </div>
-
   </div>
 </div>
 </body>
@@ -332,7 +318,6 @@ body{
 export default function Create_form() {
   const navigate = useNavigate();
   const { id } = useParams();
-
   const iframeRef = useRef(null);
 
   const [rows, setRows] = useState([
@@ -352,16 +337,11 @@ export default function Create_form() {
 
   const selectedField = fields.find((f) => f.id === selectedFieldId);
 
-  // ── Atualizar iframe ───────────────────────────────────────────
   useEffect(() => {
     if (!showPreview || !iframeRef.current) return;
 
     const html = generatePreviewHTML(formTitle, rows, fields);
-
-    const blob = new Blob([html], {
-      type: "text/html",
-    });
-
+    const blob = new Blob([html], { type: "text/html" });
     const url = URL.createObjectURL(blob);
 
     iframeRef.current.src = url;
@@ -369,13 +349,10 @@ export default function Create_form() {
     return () => URL.revokeObjectURL(url);
   }, [showPreview, formTitle, rows, fields]);
 
-  // ── Carregar formulário ────────────────────────────────────────
   useEffect(() => {
     if (!id) return;
 
-    const savedForms =
-      JSON.parse(localStorage.getItem("myForms")) || [];
-
+    const savedForms = JSON.parse(localStorage.getItem("myForms")) || [];
     const existingForm = savedForms.find((f) => f.id === id);
 
     if (!existingForm) return;
@@ -385,7 +362,6 @@ export default function Create_form() {
     setFields(existingForm.fields || []);
   }, [id]);
 
-  // ── Delete key ─────────────────────────────────────────────────
   useEffect(() => {
     function handleKeyDown(e) {
       if (e.key === "Delete" && selectedFieldId) {
@@ -398,9 +374,7 @@ export default function Create_form() {
     }
 
     window.addEventListener("keydown", handleKeyDown);
-
-    return () =>
-      window.removeEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedFieldId]);
 
   function equalWidths(n) {
@@ -421,18 +395,12 @@ export default function Create_form() {
 
   function removeRow(rowId) {
     setRows((prev) => prev.filter((r) => r.id !== rowId));
-
-    setFields((prev) =>
-      prev.filter((f) => f.rowId !== rowId),
-    );
+    setFields((prev) => prev.filter((f) => f.rowId !== rowId));
   }
 
   function setRowCols(rowId, colCount) {
     setFields((prev) =>
-      prev.filter(
-        (f) =>
-          !(f.rowId === rowId && f.colIndex >= colCount),
-      ),
+      prev.filter((f) => !(f.rowId === rowId && f.colIndex >= colCount))
     );
 
     setRows((prev) =>
@@ -443,46 +411,58 @@ export default function Create_form() {
               colCount,
               colWidths: equalWidths(colCount),
             }
-          : r,
-      ),
+          : r
+      )
     );
   }
 
   function setRowColWidths(rowId, colWidths) {
     setRows((prev) =>
-      prev.map((r) =>
-        r.id === rowId
-          ? { ...r, colWidths }
-          : r,
-      ),
+      prev.map((r) => (r.id === rowId ? { ...r, colWidths } : r))
     );
   }
 
   function setRowHeight(rowId, height) {
     setRows((prev) =>
-      prev.map((r) =>
-        r.id === rowId ? { ...r, height } : r,
-      ),
+      prev.map((r) => (r.id === rowId ? { ...r, height } : r))
     );
   }
 
   function updateField(id, newData) {
     setFields((prev) =>
-      prev.map((f) =>
-        f.id === id ? { ...f, ...newData } : f,
-      ),
+      prev.map((f) => (f.id === id ? { ...f, ...newData } : f))
     );
   }
 
   function deleteField(id) {
-    setFields((prev) =>
-      prev.filter((f) => f.id !== id),
-    );
-
+    setFields((prev) => prev.filter((f) => f.id !== id));
     setSelectedFieldId(null);
   }
 
-  // ── Drag End ───────────────────────────────────────────────────
+  function addFieldToCell(type, rowId, colIndex) {
+    const targetOccupied = fields.find(
+      (f) => f.rowId === rowId && f.colIndex === colIndex
+    );
+
+    if (targetOccupied) return;
+
+    setFields((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        type,
+        rowId,
+        colIndex,
+        label: "Descrição",
+        placeholder: "Escreve aqui...",
+        options: ["Opção 1", "Opção 2"],
+        stars: 5,
+        hasOther: false,
+        otherLabel: "Outros",
+      },
+    ]);
+  }
+
   function handleDragEnd(event) {
     const { active, over } = event;
 
@@ -493,16 +473,12 @@ export default function Create_form() {
     if (!overId.startsWith("cell::")) return;
 
     const [, rowId, colStr] = overId.split("::");
-
     const colIndex = parseInt(colStr, 10);
 
     const targetOccupied = fields.find(
-      (f) =>
-        f.rowId === rowId &&
-        f.colIndex === colIndex,
+      (f) => f.rowId === rowId && f.colIndex === colIndex
     );
 
-    // Novo campo
     if (active.data.current?.from === "palette") {
       if (targetOccupied) return;
 
@@ -525,39 +501,28 @@ export default function Create_form() {
       return;
     }
 
-    // Mover campo
     if (active.data.current?.from === "cell") {
       const fieldId = active.id;
 
-      if (
-        targetOccupied &&
-        targetOccupied.id !== fieldId
-      )
-        return;
+      if (targetOccupied && targetOccupied.id !== fieldId) return;
 
       setFields((prev) =>
         prev.map((f) =>
-          f.id === fieldId
-            ? { ...f, rowId, colIndex }
-            : f,
-        ),
+          f.id === fieldId ? { ...f, rowId, colIndex } : f
+        )
       );
     }
   }
 
-  // ── Preview ────────────────────────────────────────────────────
   function handlePreview() {
     if (fields.length === 0) {
-      alert(
-        "Adiciona pelo menos um campo para pré-visualizar.",
-      );
+      alert("Adiciona pelo menos um campo para pré-visualizar.");
       return;
     }
 
     setShowPreview(true);
   }
 
-  // ── Guardar ────────────────────────────────────────────────────
   function handleSaveForm() {
     const trimmedTitle = formTitle.trim();
 
@@ -567,14 +532,11 @@ export default function Create_form() {
     }
 
     if (fields.length === 0) {
-      alert(
-        "Adiciona pelo menos um campo antes de guardar.",
-      );
+      alert("Adiciona pelo menos um campo antes de guardar.");
       return;
     }
 
-    const existingForms =
-      JSON.parse(localStorage.getItem("myForms")) || [];
+    const existingForms = JSON.parse(localStorage.getItem("myForms")) || [];
 
     const formData = {
       id: id || crypto.randomUUID(),
@@ -584,53 +546,30 @@ export default function Create_form() {
       fields,
     };
 
-    let updatedForms;
+    const updatedForms = id
+      ? existingForms.map((f) => (f.id === id ? formData : f))
+      : [...existingForms, formData];
 
-    if (id) {
-      updatedForms = existingForms.map((f) =>
-        f.id === id ? formData : f,
-      );
-    } else {
-      updatedForms = [...existingForms, formData];
-    }
+    localStorage.setItem("myForms", JSON.stringify(updatedForms));
 
-    localStorage.setItem(
-      "myForms",
-      JSON.stringify(updatedForms),
-    );
-
-    alert(
-      id
-        ? "Formulário atualizado!"
-        : "Formulário guardado!",
-    );
-
+    alert(id ? "Formulário atualizado!" : "Formulário guardado!");
     navigate("/meus-formularios");
   }
 
   return (
     <DndContext onDragEnd={handleDragEnd}>
       <div className="create-form-page">
-
-        {/* HEADER */}
         <div className="form-header">
           <input
             type="text"
             value={formTitle}
-            onChange={(e) =>
-              setFormTitle(e.target.value)
-            }
+            onChange={(e) => setFormTitle(e.target.value)}
             className="form-title-input"
             placeholder="Escreve o título do formulário"
           />
 
           <div className="header-buttons">
-
-            <div
-              className={`view-switch ${
-                previewMode ? "preview-active" : ""
-              }`}
-            >
+            <div className={`view-switch ${previewMode ? "preview-active" : ""}`}>
               <button
                 className={!previewMode ? "active" : ""}
                 onClick={() => setPreviewMode(false)}
@@ -646,63 +585,34 @@ export default function Create_form() {
               </button>
             </div>
 
-            <button
-              className="back-btn"
-              onClick={() => navigate(-1)}
-            >
+            <button className="back-btn" onClick={() => navigate(-1)}>
               Voltar
             </button>
 
             <button
-              className={`preview-btn ${
-                showPreview
-                  ? "preview-btn--active"
-                  : ""
-              }`}
-              onClick={() =>
-                showPreview
-                  ? setShowPreview(false)
-                  : handlePreview()
-              }
+              className={`preview-btn ${showPreview ? "preview-btn--active" : ""}`}
+              onClick={() => (showPreview ? setShowPreview(false) : handlePreview())}
             >
-              {showPreview
-                ? "Fechar preview"
-                : "Abrir preview"}
+              {showPreview ? "Fechar preview" : "Abrir preview"}
             </button>
 
-            <button
-              className="save-btn"
-              onClick={handleSaveForm}
-            >
+            <button className="save-btn" onClick={handleSaveForm}>
               Guardar formulário
             </button>
-
           </div>
         </div>
 
-        {/* CONTEÚDO */}
         {previewMode ? (
           <div className="viewform-page">
             <main className="viewform-content">
               <div className="viewform-container">
-
                 <div className="viewform-intro">
-                  <h1>
-                    {formTitle ||
-                      "Formulário sem título"}
-                  </h1>
-
-                  <p>
-                    Preencha todos os campos e
-                    submeta o formulário.
-                  </p>
+                  <h1>{formTitle || "Formulário sem título"}</h1>
+                  <p>Preencha todos os campos e submeta o formulário.</p>
                 </div>
 
                 <div className="viewform-card">
-                  <FormRenderer
-                    rows={rows}
-                    fields={fields}
-                  />
+                  <FormRenderer rows={rows} fields={fields} />
                 </div>
 
                 <div className="viewform-actions">
@@ -710,13 +620,11 @@ export default function Create_form() {
                     Submeter formulário
                   </button>
                 </div>
-
               </div>
             </main>
           </div>
         ) : (
           <div className="builder">
-
             <FormCanvas
               rows={rows}
               fields={fields}
@@ -725,11 +633,10 @@ export default function Create_form() {
               onSetCols={setRowCols}
               onSetColWidths={setRowColWidths}
               onSetHeight={setRowHeight}
-              setSelectedField={
-                setSelectedFieldId
-              }
+              setSelectedField={setSelectedFieldId}
               selectedFieldId={selectedFieldId}
               onDeleteField={deleteField}
+              onAddField={addFieldToCell}
             />
 
             <FieldPalette />
@@ -739,29 +646,21 @@ export default function Create_form() {
               updateField={updateField}
               deleteField={deleteField}
             />
-
           </div>
         )}
 
-        {/* OVERLAY PREVIEW */}
         {showPreview && (
           <div className="preview-overlay">
-
             <div className="preview-panel">
-
               <div className="preview-panel-header">
-
                 <h2>Pré-visualização</h2>
 
                 <button
                   className="preview-close-btn"
-                  onClick={() =>
-                    setShowPreview(false)
-                  }
+                  onClick={() => setShowPreview(false)}
                 >
                   ✕
                 </button>
-
               </div>
 
               <iframe
@@ -769,9 +668,7 @@ export default function Create_form() {
                 title="preview"
                 className="preview-iframe"
               />
-
             </div>
-
           </div>
         )}
       </div>
