@@ -1,5 +1,5 @@
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { useState , useEffect} from "react";
+import { useState } from "react";
 import "../css/SendEmailPage.css";
 
 export default function SendEmailPage() {
@@ -7,9 +7,10 @@ export default function SendEmailPage() {
   const [hasSentEmail, setHasSentEmail] = useState(false);
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -18,7 +19,27 @@ export default function SendEmailPage() {
       return;
     }
 
-    setHasSentEmail(true);
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/auth/password-reset-link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Erro ao enviar o email. Tente novamente.");
+        return;
+      }
+
+      setHasSentEmail(true);
+    } catch (err) {
+      setError("Erro de ligação ao servidor. Tente novamente.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
