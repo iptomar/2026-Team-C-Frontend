@@ -16,7 +16,7 @@ export default function PasswordResetPage() {
     setError("");
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     setError("");
 
@@ -33,8 +33,25 @@ export default function PasswordResetPage() {
       return;
     }
 
-    setSuccess(true);
-    setTimeout(() => navigate("/login"), 3000);
+    try {
+      const response = await fetch("/api/auth/password-reset", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: id, newPassword: formData.password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Erro ao redefinir a palavra-passe.");
+        return;
+      }
+
+      setSuccess(true);
+      setTimeout(() => navigate("/login"), 3000);
+    } catch (err) {
+      setError("Erro de ligação ao servidor. Tente novamente.");
+    }
   }
 
   return (
@@ -119,8 +136,8 @@ export default function PasswordResetPage() {
                       {formData.password.length < 8
                         ? "Fraca"
                         : formData.password.length < 12 || !/[^a-zA-Z0-9]/.test(formData.password)
-                        ? "Média"
-                        : "Forte"}
+                          ? "Média"
+                          : "Forte"}
                     </span>
                   </div>
                 )}
