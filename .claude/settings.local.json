@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(git checkout *)",
-      "Bash(cd \"C:\\\\Users\\\\pedro\\\\Desktop\\\\Universidade\\\\IPT\\\\3º Ano\\\\2º Semestre\\\\Gestão de Projetos\\\\2026-Team-C-Backend\" && ls -la)",
-      "Bash(dir)"
-    ]
-  }
-}
