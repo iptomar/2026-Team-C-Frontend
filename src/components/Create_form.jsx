@@ -538,10 +538,13 @@ export default function Create_form() {
 
     const existingForms = JSON.parse(localStorage.getItem("myForms")) || [];
 
+    const existingForm = id ? existingForms.find((f) => f.id === id) : null;
+
     const formData = {
       id: id || crypto.randomUUID(),
       title: trimmedTitle,
-      createdAt: new Date().toISOString(),
+      createdAt: existingForm?.createdAt || new Date().toISOString(),
+      status: existingForm?.status || "ativo",
       rows,
       fields,
     };
