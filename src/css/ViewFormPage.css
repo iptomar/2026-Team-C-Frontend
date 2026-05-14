@@ -49,9 +49,74 @@
   margin: 0;
 }
 
+.viewform-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .viewform-topbar-meta {
   font-size: 12px;
   color: #9ca3af;
+}
+
+/* ── Status badge (shared with MyFormsPage) ── */
+.form-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.form-status-badge::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.status-ativo {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.status-arquivado {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* ── Archive/activate button ── */
+.archive-btn {
+  background: #f3f4f6;
+  color: #374151;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.archive-btn:hover {
+  background: #e5e7eb;
+}
+
+.activate-btn {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.activate-btn:hover {
+  background: #bbf7d0;
 }
 
 /* ── Content ── */

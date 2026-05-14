@@ -18,6 +18,16 @@ export default function MyFormsPage() {
     localStorage.setItem("myForms", JSON.stringify(updated));
   }
 
+  function handleToggleStatus(formId) {
+    const updated = forms.map((f) => {
+      if (f.id !== formId) return f;
+      const currentStatus = f.status || "ativo";
+      return { ...f, status: currentStatus === "ativo" ? "arquivado" : "ativo" };
+    });
+    setForms(updated);
+    localStorage.setItem("myForms", JSON.stringify(updated));
+  }
+
   return (
     <div className="myforms-page">
 
@@ -86,6 +96,9 @@ export default function MyFormsPage() {
                       <div className="form-card-meta">
                         <p>{form.fields.length} campo{form.fields.length !== 1 ? "s" : ""}</p>
                         <p>Criado em {new Date(form.createdAt).toLocaleDateString("pt-PT")}</p>
+                        <span className={`form-status-badge status-${form.status || "ativo"}`}>
+                          {(form.status || "ativo") === "ativo" ? "Ativo" : "Arquivado"}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -93,6 +106,12 @@ export default function MyFormsPage() {
                   <div className="form-card-actions">
                     <button className="view-btn" onClick={() => navigate(`/formulario/${form.id}`)}>Ver</button>
                     <button className="edit-btn" onClick={() => navigate(`/criar-formulario/${form.id}`)}>Editar</button>
+                    <button
+                      className={`archive-btn${(form.status || "ativo") === "arquivado" ? " activate-btn" : ""}`}
+                      onClick={() => handleToggleStatus(form.id)}
+                    >
+                      {(form.status || "ativo") === "ativo" ? "Arquivar" : "Ativar"}
+                    </button>
                     <button className="delete-btn" onClick={() => handleDeleteForm(form.id)}>Eliminar</button>
                   </div>
                 </div>

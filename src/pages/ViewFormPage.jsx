@@ -160,6 +160,15 @@ export default function ViewFormPage() {
     setForm(found || null);
   }, [id]);
 
+  function handleToggleStatus() {
+    const savedForms = JSON.parse(localStorage.getItem("myForms")) || [];
+    const currentStatus = form.status || "ativo";
+    const newStatus = currentStatus === "ativo" ? "arquivado" : "ativo";
+    const updated = savedForms.map((f) => (f.id === id ? { ...f, status: newStatus } : f));
+    localStorage.setItem("myForms", JSON.stringify(updated));
+    setForm({ ...form, status: newStatus });
+  }
+
   if (!form) {
     return (
       <div className="viewform-not-found">
@@ -213,10 +222,21 @@ export default function ViewFormPage() {
           <span style={{ color: "#e5e7eb" }}>|</span>
           <h1 className="viewform-topbar-title">{form.title}</h1>
         </div>
-        <span className="viewform-topbar-meta">
-          {form.fields.length} campo{form.fields.length !== 1 ? "s" : ""} ·
-          Criado em {new Date(form.createdAt).toLocaleDateString("pt-PT")}
-        </span>
+        <div className="viewform-topbar-right">
+          <span className={`form-status-badge status-${form.status || "ativo"}`}>
+            {(form.status || "ativo") === "ativo" ? "Ativo" : "Arquivado"}
+          </span>
+          <span className="viewform-topbar-meta">
+            {form.fields.length} campo{form.fields.length !== 1 ? "s" : ""} ·
+            Criado em {new Date(form.createdAt).toLocaleDateString("pt-PT")}
+          </span>
+          <button
+            className={`archive-btn${(form.status || "ativo") === "arquivado" ? " activate-btn" : ""}`}
+            onClick={handleToggleStatus}
+          >
+            {(form.status || "ativo") === "ativo" ? "Arquivar" : "Ativar"}
+          </button>
+        </div>
       </header>
 
       {/* Content */}
