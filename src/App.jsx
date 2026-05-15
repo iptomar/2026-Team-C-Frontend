@@ -9,7 +9,7 @@ import MyFormsPage from "./pages/MyFormsPage";
 import ViewFormPage from "./pages/ViewFormPage";
 import SendEmailPage from "./pages/SendEmailPage";
 import PasswordResetPage from "./pages/PasswordResetPage";
-
+import UserPage from "./pages/UserPage";
 function App() {
   return (
     <Routes>
@@ -33,6 +33,13 @@ function App() {
         element={
           <PrivateRoute>
             <Create_form />
+          </PrivateRoute>
+        }
+      />
+      <Route path="profile"
+        element={
+          <PrivateRoute>
+            <UserPage/>
           </PrivateRoute>
         }
       />
