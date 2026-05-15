@@ -23,6 +23,7 @@ export default function MyFormsPage() {
   const [forms, setForms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState("ativos"); // Novidade: Estado para gerir a aba ativa ("ativos" ou "arquivados")
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -79,6 +80,11 @@ export default function MyFormsPage() {
     }
   }
 
+  // Filtragem dos formulários com base na aba selecionada
+  const filteredForms = forms.filter((form) => 
+    activeTab === "arquivados" ? form.archived : !form.archived
+  );
+
   return (
     <div className="myforms-page">
 
@@ -113,11 +119,27 @@ export default function MyFormsPage() {
               <p className="myforms-count">
                 {loading
                   ? "A carregar..."
-                  : forms.length === 0
-                    ? "Sem formulários"
-                    : `${forms.length} formulário${forms.length !== 1 ? "s" : ""}`}
+                  : filteredForms.length === 0
+                    ? `Sem formulários ${activeTab}`
+                    : `${filteredForms.length} formulário${filteredForms.length !== 1 ? "s" : ""} ${activeTab}`}
               </p>
             </div>
+          </div>
+
+          {/* Novidade: Seletor de Abas (Tabs) */}
+          <div className="myforms-tabs">
+            <button 
+              className={`tab-btn ${activeTab === "ativos" ? "active" : ""}`} 
+              onClick={() => setActiveTab("ativos")}
+            >
+              Ativos ({forms.filter(f => !f.archived).length})
+            </button>
+            <button 
+              className={`tab-btn ${activeTab === "arquivados" ? "active" : ""}`} 
+              onClick={() => setActiveTab("arquivados")}
+            >
+              Arquivados ({forms.filter(f => f.archived).length})
+            </button>
           </div>
 
           {loading ? (
@@ -131,7 +153,7 @@ export default function MyFormsPage() {
                 Tentar novamente
               </button>
             </div>
-          ) : forms.length === 0 ? (
+          ) : filteredForms.length === 0 ? (
             <div className="myforms-empty-box">
               <svg className="myforms-empty-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -139,14 +161,20 @@ export default function MyFormsPage() {
                 <line x1="12" y1="18" x2="12" y2="12" />
                 <line x1="9" y1="15" x2="15" y2="15" />
               </svg>
-              <p className="myforms-empty">Ainda não tens formulários guardados.</p>
-              <button className="new-form-btn" onClick={() => navigate("/criar-formulario")}>
-                Criar primeiro formulário
-              </button>
+              <p className="myforms-empty">
+                {activeTab === "arquivados" 
+                  ? "Não tens formulários arquivados." 
+                  : "Ainda não tens formulários guardados."}
+              </p>
+              {activeTab === "ativos" && (
+                <button className="new-form-btn" onClick={() => navigate("/criar-formulario")}>
+                  Criar primeiro formulário
+                </button>
+              )}
             </div>
           ) : (
             <div className="myforms-list">
-              {forms.map((form) => (
+              {filteredForms.map((form) => (
                 <div key={form.id} className="form-card">
                   <div className="form-card-left">
                     <div className="form-card-icon">
