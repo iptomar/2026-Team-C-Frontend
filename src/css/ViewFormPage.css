@@ -1,8 +1,9 @@
 .viewform-page {
-  min-height: 100vh;
+  height: 100vh;
   background: #f8f9fb;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 /* ── Topbar ── */
@@ -125,6 +126,7 @@
   display: flex;
   justify-content: center;
   padding: 40px 24px;
+  overflow: hidden
 }
 
 .viewform-container {
