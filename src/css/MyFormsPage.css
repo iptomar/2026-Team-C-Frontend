@@ -349,3 +349,39 @@
   background: #fff3eb;
   color: #DD6418;
 }
+
+
+.myforms-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: rgba(255, 243, 235, 0.85); /* Fundo Laranja Transparente */
+  backdrop-filter: blur(8px); /* Efeito suave de desfoque */
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(221, 100, 24, 0.3);
+  color: #DD6418; /* Letras Laranja Escuro */
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(221, 100, 24, 0.12);
+  z-index: 9999;
+  pointer-events: none; /* Não bloqueia cliques na página */
+  
+  /* Animação suave de subida e opacidade */
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.myforms-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Variante caso queiras destacar um erro (opcional, tons avermelhados transparentes) */
+.myforms-toast.toast-error {
+  background: rgba(254, 242, 242, 0.85);
+  border-color: rgba(185, 28, 28, 0.3);
+  color: #b91c1c;
+}
