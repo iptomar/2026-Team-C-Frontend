@@ -1,4 +1,4 @@
-import { FormField } from "../pages/ViewFormPage";
+import { FormField } from "./FormField";
 
 export default function FormRenderer({ rows = [], fields = [] }) {
   return (
@@ -18,18 +18,11 @@ export default function FormRenderer({ rows = [], fields = [] }) {
         >
           {Array.from({ length: row.colCount }, (_, colIndex) => {
             const field = fields.find(
-              (f) =>
-                f.rowId === row.id &&
-                f.colIndex === colIndex
+              (f) => f.rowId === row.id && f.colIndex === colIndex
             );
-
             return (
               <div key={colIndex}>
-                {field ? (
-                  <FormField field={field} />
-                ) : (
-                  <div style={{ minHeight: "20px" }} />
-                )}
+                {field ? <FormField field={field} /> : <div style={{ minHeight: "20px" }} />}
               </div>
             );
           })}
