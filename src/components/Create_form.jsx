@@ -7,8 +7,28 @@ import FieldPalette from "./FieldPalette";
 import FieldEditor from "./FieldEditor";
 import FormRenderer from "./FormRenderer";
 
+import { getToken } from "../utils/session";
+
 import "../css/create_forms.css";
 import "../css/ViewFormPage.css";
+
+function getOwnerId() {
+  const token = getToken();
+  if (!token) return null;
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return payload.userId;
+  } catch {
+    return null;
+  }
+}
+
+function authHeaders() {
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${getToken()}`,
+  };
+}
 
 // ── Gerador HTML Preview ─────────────────────────────────────────
 function generatePreviewHTML(title, rows, fields) {
@@ -21,7 +41,6 @@ function generatePreviewHTML(title, rows, fields) {
             <input type="text" placeholder="${field.placeholder ?? ""}" disabled />
           </div>
         `;
-
       case "textarea":
         return `
           <div class="viewform-field">
@@ -29,7 +48,6 @@ function generatePreviewHTML(title, rows, fields) {
             <textarea placeholder="${field.placeholder ?? ""}" disabled></textarea>
           </div>
         `;
-
       case "number":
         return `
           <div class="viewform-field">
@@ -37,7 +55,6 @@ function generatePreviewHTML(title, rows, fields) {
             <input type="number" disabled />
           </div>
         `;
-
       case "email":
         return `
           <div class="viewform-field">
@@ -45,7 +62,6 @@ function generatePreviewHTML(title, rows, fields) {
             <input type="email" placeholder="exemplo@email.com" disabled />
           </div>
         `;
-
       case "date":
         return `
           <div class="viewform-field">
@@ -53,7 +69,6 @@ function generatePreviewHTML(title, rows, fields) {
             <input type="date" disabled />
           </div>
         `;
-
       case "select":
         return `
           <div class="viewform-field">
@@ -64,45 +79,41 @@ function generatePreviewHTML(title, rows, fields) {
             </select>
           </div>
         `;
-
       case "radio":
         return `
           <div class="viewform-field">
             <label>${field.label}</label>
             <div class="viewform-radio-group">
               ${(field.options || [])
-                .map(
-                  (o) => `
+            .map(
+              (o) => `
                   <label class="viewform-radio-option">
                     <input type="radio" disabled />
                     ${o}
                   </label>
                 `
-                )
-                .join("")}
+            )
+            .join("")}
             </div>
           </div>
         `;
-
       case "checkbox":
         return `
           <div class="viewform-field">
             <label>${field.label}</label>
             <div class="viewform-checkbox-group">
               ${(field.options || [])
-                .map(
-                  (o) => `
+            .map(
+              (o) => `
                   <label class="viewform-checkbox-option">
                     <input type="checkbox" disabled />
                     ${o}
                   </label>
                 `
-                )
-                .join("")}
-
-              ${
-                field.hasOther
-                  ? `
+            )
+            .join("")}
+              ${field.hasOther
+            ? `
                   <label class="viewform-checkbox-option">
                     <input type="checkbox" disabled />
                     ${field.otherLabel || "Outros"}
@@ -114,12 +125,11 @@ function generatePreviewHTML(title, rows, fields) {
                     />
                   </label>
                 `
-                  : ""
-              }
+            : ""
+          }
             </div>
           </div>
         `;
-
       case "file":
         return `
           <div class="viewform-field">
@@ -127,19 +137,17 @@ function generatePreviewHTML(title, rows, fields) {
             <input type="file" disabled />
           </div>
         `;
-
       case "rating":
         return `
           <div class="viewform-field">
             <label>${field.label}</label>
             <div class="viewform-stars">
               ${Array.from({ length: field.stars || 5 })
-                .map(() => `<span class="viewform-star">★</span>`)
-                .join("")}
+            .map(() => `<span class="viewform-star">★</span>`)
+            .join("")}
             </div>
           </div>
         `;
-
       case "title":
         return `
           <div class="viewform-field" style="border-top:none;padding-top:0;">
@@ -148,7 +156,6 @@ function generatePreviewHTML(title, rows, fields) {
             </h2>
           </div>
         `;
-
       default:
         return "";
     }
@@ -160,18 +167,11 @@ function generatePreviewHTML(title, rows, fields) {
         const field = fields.find(
           (f) => f.rowId === row.id && f.colIndex === colIndex
         );
-
         return `<div>${field ? renderField(field) : ""}</div>`;
       }).join("");
 
       return `
-        <div
-          style="
-            display:grid;
-            grid-template-columns:repeat(${row.colCount},1fr);
-            gap:12px;
-          "
-        >
+        <div style="display:grid;grid-template-columns:repeat(${row.colCount},1fr);gap:12px;">
           ${cols}
         </div>
       `;
@@ -184,119 +184,26 @@ function generatePreviewHTML(title, rows, fields) {
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
 <style>
 *{ box-sizing:border-box; }
-
-body{
-  margin:0;
-  background:#f8f9fb;
-  font-family:Inter,system-ui,sans-serif;
-}
-
-.viewform-content{
-  display:flex;
-  justify-content:center;
-  padding:32px 20px;
-}
-
-.viewform-container{
-  width:100%;
-  max-width:700px;
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-}
-
-.viewform-intro{
-  background:#fff;
-  border:1px solid #e5e7eb;
-  border-top:4px solid #DD6418;
-  border-radius:14px;
-  padding:24px;
-}
-
-.viewform-intro h1{
-  margin:0 0 4px;
-  font-size:22px;
-  color:#111827;
-}
-
-.viewform-intro p{
-  margin:0;
-  color:#9ca3af;
-  font-size:13px;
-}
-
-.viewform-card{
-  background:#fff;
-  border:1px solid #e5e7eb;
-  border-radius:14px;
-  padding:24px;
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-}
-
-.viewform-field{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
-
-.viewform-field label{
-  font-size:13px;
-  font-weight:600;
-  color:#374151;
-}
-
-.viewform-field input,
-.viewform-field textarea,
-.viewform-field select{
-  width:100%;
-  padding:10px 14px;
-  border-radius:10px;
-  border:1.5px solid #e5e7eb;
-  background:#f9fafb;
-  font-size:14px;
-}
-
+body{ margin:0; background:#f8f9fb; font-family:Inter,system-ui,sans-serif; }
+.viewform-content{ display:flex; justify-content:center; padding:32px 20px; }
+.viewform-container{ width:100%; max-width:700px; display:flex; flex-direction:column; gap:14px; }
+.viewform-intro{ background:#fff; border:1px solid #e5e7eb; border-top:4px solid #DD6418; border-radius:14px; padding:24px; }
+.viewform-intro h1{ margin:0 0 4px; font-size:22px; color:#111827; }
+.viewform-intro p{ margin:0; color:#9ca3af; font-size:13px; }
+.viewform-card{ background:#fff; border:1px solid #e5e7eb; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:20px; }
+.viewform-field{ display:flex; flex-direction:column; gap:6px; }
+.viewform-field label{ font-size:13px; font-weight:600; color:#374151; }
+.viewform-field input, .viewform-field textarea, .viewform-field select{ width:100%; padding:10px 14px; border-radius:10px; border:1.5px solid #e5e7eb; background:#f9fafb; font-size:14px; }
 .viewform-field textarea{ min-height:90px; }
-
-.viewform-radio-group,
-.viewform-checkbox-group{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.viewform-radio-option,
-.viewform-checkbox-option{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-size:14px;
-}
-
-.viewform-stars{
-  display:flex;
-  gap:4px;
-}
-
-.viewform-star{
-  color:#DD6418;
-  font-size:24px;
-}
-
-.viewform-other-input{
-  border:none;
-  border-bottom:1px solid #d1d5db;
-  background:transparent;
-  width:120px;
-}
+.viewform-radio-group, .viewform-checkbox-group{ display:flex; flex-direction:column; gap:8px; }
+.viewform-radio-option, .viewform-checkbox-option{ display:flex; align-items:center; gap:10px; font-size:14px; }
+.viewform-stars{ display:flex; gap:4px; }
+.viewform-star{ color:#DD6418; font-size:24px; }
+.viewform-other-input{ border:none; border-bottom:1px solid #d1d5db; background:transparent; width:120px; }
 </style>
 </head>
-
 <body>
 <div class="viewform-content">
   <div class="viewform-container">
@@ -304,7 +211,6 @@ body{
       <h1>${title || "Formulário sem título"}</h1>
       <p>Preencha todos os campos e submeta o formulário.</p>
     </div>
-
     <div class="viewform-card">
       ${rowsHTML}
     </div>
@@ -341,25 +247,42 @@ export default function Create_form() {
     if (!showPreview || !iframeRef.current) return;
 
     const html = generatePreviewHTML(formTitle, rows, fields);
-    const blob = new Blob([html], { type: "text/html" });
-    const url = URL.createObjectURL(blob);
 
-    iframeRef.current.src = url;
-
-    return () => URL.revokeObjectURL(url);
+    fetch("/api/forms/preview", {
+      method: "POST",
+      headers: authHeaders(),
+      body: JSON.stringify({ html, css: "" }),
+    })
+      .then((res) => res.blob())
+      .then((blob) => {
+        const url = URL.createObjectURL(blob);
+        iframeRef.current.src = url;
+        return () => URL.revokeObjectURL(url);
+      })
+      .catch((err) => console.error("Erro no preview:", err));
   }, [showPreview, formTitle, rows, fields]);
 
   useEffect(() => {
     if (!id) return;
 
-    const savedForms = JSON.parse(localStorage.getItem("myForms")) || [];
-    const existingForm = savedForms.find((f) => f.id === id);
-
-    if (!existingForm) return;
-
-    setFormTitle(existingForm.title || "");
-    setRows(existingForm.rows || []);
-    setFields(existingForm.fields || []);
+    fetch(`/api/forms/${id}`, {
+      headers: authHeaders(),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Formulário não encontrado");
+        return res.json();
+      })
+      .then((form) => {
+        setFormTitle(form.name || "");
+        try {
+          const estrutura = JSON.parse(form.css);
+          setRows(estrutura.rows || []);
+          setFields(estrutura.fields || []);
+        } catch {
+          console.error("Não foi possível reconstruir a estrutura do formulário.");
+        }
+      })
+      .catch((err) => console.error("Erro ao carregar formulário:", err));
   }, [id]);
 
   useEffect(() => {
@@ -367,7 +290,6 @@ export default function Create_form() {
       if (e.key === "Delete" && selectedFieldId) {
         deleteField(selectedFieldId);
       }
-
       if (e.key === "Escape") {
         setShowPreview(false);
       }
@@ -384,12 +306,7 @@ export default function Create_form() {
   function addRow() {
     setRows((prev) => [
       ...prev,
-      {
-        id: crypto.randomUUID(),
-        colCount: 1,
-        colWidths: [100],
-        height: null,
-      },
+      { id: crypto.randomUUID(), colCount: 1, colWidths: [100], height: null },
     ]);
   }
 
@@ -402,16 +319,9 @@ export default function Create_form() {
     setFields((prev) =>
       prev.filter((f) => !(f.rowId === rowId && f.colIndex >= colCount))
     );
-
     setRows((prev) =>
       prev.map((r) =>
-        r.id === rowId
-          ? {
-              ...r,
-              colCount,
-              colWidths: equalWidths(colCount),
-            }
-          : r
+        r.id === rowId ? { ...r, colCount, colWidths: equalWidths(colCount) } : r
       )
     );
   }
@@ -443,7 +353,6 @@ export default function Create_form() {
     const targetOccupied = fields.find(
       (f) => f.rowId === rowId && f.colIndex === colIndex
     );
-
     if (targetOccupied) return;
 
     setFields((prev) => [
@@ -465,11 +374,9 @@ export default function Create_form() {
 
   function handleDragEnd(event) {
     const { active, over } = event;
-
     if (!over) return;
 
     const overId = String(over.id);
-
     if (!overId.startsWith("cell::")) return;
 
     const [, rowId, colStr] = overId.split("::");
@@ -481,7 +388,6 @@ export default function Create_form() {
 
     if (active.data.current?.from === "palette") {
       if (targetOccupied) return;
-
       setFields((prev) => [
         ...prev,
         {
@@ -497,19 +403,14 @@ export default function Create_form() {
           otherLabel: "Outros",
         },
       ]);
-
       return;
     }
 
     if (active.data.current?.from === "cell") {
       const fieldId = active.id;
-
       if (targetOccupied && targetOccupied.id !== fieldId) return;
-
       setFields((prev) =>
-        prev.map((f) =>
-          f.id === fieldId ? { ...f, rowId, colIndex } : f
-        )
+        prev.map((f) => (f.id === fieldId ? { ...f, rowId, colIndex } : f))
       );
     }
   }
@@ -519,11 +420,10 @@ export default function Create_form() {
       alert("Adiciona pelo menos um campo para pré-visualizar.");
       return;
     }
-
     setShowPreview(true);
   }
 
-  function handleSaveForm() {
+  async function handleSaveForm() {
     const trimmedTitle = formTitle.trim();
 
     if (!trimmedTitle) {
@@ -536,27 +436,45 @@ export default function Create_form() {
       return;
     }
 
-    const existingForms = JSON.parse(localStorage.getItem("myForms")) || [];
+    const ownerId = getOwnerId();
+    if (!ownerId) {
+      alert("Sessão expirada. Faz login novamente.");
+      navigate("/login");
+      return;
+    }
 
-    const existingForm = id ? existingForms.find((f) => f.id === id) : null;
+    const html = generatePreviewHTML(trimmedTitle, rows, fields);
+    const css = JSON.stringify({ rows, fields });
 
-    const formData = {
-      id: id || crypto.randomUUID(),
-      title: trimmedTitle,
-      createdAt: existingForm?.createdAt || new Date().toISOString(),
-      status: existingForm?.status || "ativo",
-      rows,
-      fields,
-    };
+    try {
+      let res;
 
-    const updatedForms = id
-      ? existingForms.map((f) => (f.id === id ? formData : f))
-      : [...existingForms, formData];
+      if (id) {
+        res = await fetch(`/api/forms/${id}`, {
+          method: "PUT",
+          headers: authHeaders(),
+          body: JSON.stringify({ name: trimmedTitle, html, css }),
+        });
+      } else {
+        res = await fetch("/api/forms", {
+          method: "POST",
+          headers: authHeaders(),
+          body: JSON.stringify({ name: trimmedTitle, html, css, ownerId }),
+        });
+      }
 
-    localStorage.setItem("myForms", JSON.stringify(updatedForms));
+      if (!res.ok) {
+        const erro = await res.json();
+        alert(`Erro: ${erro.erro || "Erro desconhecido"}`);
+        return;
+      }
 
-    alert(id ? "Formulário atualizado!" : "Formulário guardado!");
-    navigate("/meus-formularios");
+      alert(id ? "Formulário atualizado!" : "Formulário guardado!");
+      navigate("/meus-formularios");
+    } catch (err) {
+      console.error("Erro ao guardar formulário:", err);
+      alert("Erro de ligação ao servidor.");
+    }
   }
 
   return (
@@ -579,7 +497,6 @@ export default function Create_form() {
               >
                 Editar
               </button>
-
               <button
                 className={previewMode ? "active" : ""}
                 onClick={() => setPreviewMode(true)}
@@ -613,15 +530,11 @@ export default function Create_form() {
                   <h1>{formTitle || "Formulário sem título"}</h1>
                   <p>Preencha todos os campos e submeta o formulário.</p>
                 </div>
-
                 <div className="viewform-card">
                   <FormRenderer rows={rows} fields={fields} />
                 </div>
-
                 <div className="viewform-actions">
-                  <button className="viewform-submit">
-                    Submeter formulário
-                  </button>
+                  <button className="viewform-submit">Submeter formulário</button>
                 </div>
               </div>
             </main>
@@ -641,9 +554,7 @@ export default function Create_form() {
               onDeleteField={deleteField}
               onAddField={addFieldToCell}
             />
-
             <FieldPalette />
-
             <FieldEditor
               field={selectedField}
               updateField={updateField}
@@ -657,7 +568,6 @@ export default function Create_form() {
             <div className="preview-panel">
               <div className="preview-panel-header">
                 <h2>Pré-visualização</h2>
-
                 <button
                   className="preview-close-btn"
                   onClick={() => setShowPreview(false)}
@@ -665,7 +575,6 @@ export default function Create_form() {
                   ✕
                 </button>
               </div>
-
               <iframe
                 ref={iframeRef}
                 title="preview"
