@@ -1,0 +1,294 @@
+/* ── Layout ─────────────────────────────────────────────── */
+.fill-page {
+  min-height: 100vh;
+  background: #f3f4f6;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Topbar ─────────────────────────────────────────────── */
+.fill-topbar {
+  height: 56px;
+  background: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.fill-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fill-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: transparent;
+  color: #e5e7eb;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.fill-back-btn:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.fill-topbar-title {
+  color: #f9fafb;
+  font-size: 14.5px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.fill-draft-badge {
+  background: #f59e0b;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+}
+
+/* ── Content ─────────────────────────────────────────────── */
+.fill-content {
+  flex: 1;
+  padding: 36px 24px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fill-container {
+  width: 100%;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── Intro ─────────────────────────────────────────────── */
+.fill-intro h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 6px;
+}
+
+.fill-intro p {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* ── Card ─────────────────────────────────────────────── */
+.fill-card {
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* ── Fields ─────────────────────────────────────────────── */
+.fill-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fill-field label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.fill-required {
+  color: #ef4444;
+  margin-left: 3px;
+}
+
+.fill-field input[type="text"],
+.fill-field input[type="number"],
+.fill-field input[type="email"],
+.fill-field input[type="date"],
+.fill-field textarea,
+.fill-field select {
+  padding: 9px 12px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #111827;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.fill-field input:focus,
+.fill-field textarea:focus,
+.fill-field select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+.fill-field textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* ── Radio & Checkbox ─────────────────────────────────── */
+.fill-radio-group,
+.fill-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fill-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background 0.12s;
+}
+
+.fill-option:hover {
+  background: #f9fafb;
+}
+
+.fill-option input[type="radio"],
+.fill-option input[type="checkbox"] {
+  accent-color: #3b82f6;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.fill-other-input {
+  margin-left: 4px;
+  padding: 4px 10px !important;
+  border: 1.5px solid #d1d5db !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  width: auto !important;
+  min-width: 160px;
+}
+
+/* ── Title field ─────────────────────────────────────── */
+.fill-title-field h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  padding-top: 4px;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 10px;
+}
+
+/* ── Actions ─────────────────────────────────────────── */
+.fill-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.fill-draft-btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1.5px solid #d1d5db;
+  background: #fff;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.fill-draft-btn:hover:not(:disabled) {
+  border-color: #9ca3af;
+  background: #f9fafb;
+}
+
+.fill-draft-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.fill-submit-btn {
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.fill-submit-btn:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.fill-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Loading ─────────────────────────────────────────── */
+.fill-loading {
+  margin: 80px auto;
+  font-size: 15px;
+  color: #6b7280;
+}
+
+/* ── Toast ─────────────────────────────────────────────── */
+.fill-toast {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  background: #111827;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.25s, transform 0.25s;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.fill-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fill-toast.toast-error {
+  background: #dc2626;
+}
