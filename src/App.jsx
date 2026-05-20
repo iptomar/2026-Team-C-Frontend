@@ -9,6 +9,9 @@ import MyFormsPage from "./pages/MyFormsPage";
 import ViewFormPage from "./pages/ViewFormPage";
 import SendEmailPage from "./pages/SendEmailPage";
 import PasswordResetPage from "./pages/PasswordResetPage";
+import UserDashboardPage from "./pages/UserDashboardPage";
+import MySubmissionsPage from "./pages/MySubmissionsPage";
+import FillFormPage from "./pages/FillFormPage";
 
 function App() {
   return (
@@ -60,6 +63,42 @@ function App() {
         element={
           <PrivateRoute>
             <ViewFormPage />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/inicio"
+        element={
+          <PrivateRoute>
+            <UserDashboardPage />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/inicio/preenchimentos"
+        element={
+          <PrivateRoute>
+            <MySubmissionsPage />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/preencher/:id"
+        element={
+          <PrivateRoute>
+            <FillFormPage />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/preencher/:id/continuar/:submissionId"
+        element={
+          <PrivateRoute>
+            <FillFormPage />
           </PrivateRoute>
         }
       />

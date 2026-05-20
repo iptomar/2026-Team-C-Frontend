@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getUserRole } from "../utils/session";
 import "../css/DashboardPage.css";
 
 const navItems = [
@@ -69,6 +71,12 @@ const ArrowIcon = () => (
 
 export default function DashboardPage() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (getUserRole() === "USER") {
+      navigate("/inicio", { replace: true });
+    }
+  }, []);
 
   return (
     <div className="dashboard-container">

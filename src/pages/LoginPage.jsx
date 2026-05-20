@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { saveToken } from "../utils/session";
+import { saveToken, getUserRole } from "../utils/session";
 import "../css/LoginPage.css";
 
 export default function LoginPage() {
@@ -38,6 +38,17 @@ export default function LoginPage() {
       return;
     }
 
+    // ⚠️ BYPASS TEMPORÁRIO — remover antes do merge
+    if (formData.email.trim().toLowerCase() === "user@teste.com" && formData.password === "teste1234") {
+      // Token falso com role USER (header.payload.signature — apenas para testes visuais)
+      const fakeToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidXNlckB0ZXN0ZS5jb20iLCJyb2xlIjoiVVNFUiJ9.mock-signature";
+      saveToken(fakeToken);
+      setSuccess("Login efetuado com sucesso.");
+      setTimeout(() => navigate("/inicio"), 1000);
+      return;
+    }
+    // ── fim bypass ──
+
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
@@ -67,7 +78,8 @@ export default function LoginPage() {
 
       saveToken(data.token);
       setSuccess("Login efetuado com sucesso.");
-      setTimeout(() => navigate("/dashboard"), 1000);
+      const role = getUserRole();
+      setTimeout(() => navigate(role === "USER" ? "/inicio" : "/dashboard"), 1000);
     } catch (err) {
       setError(err.message || "Erro ao autenticar.");
     } finally {
