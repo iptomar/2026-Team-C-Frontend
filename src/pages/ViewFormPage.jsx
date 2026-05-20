@@ -58,9 +58,7 @@ export default function ViewFormPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/api/forms/${id}`, {
-        headers: authHeaders(),
-      });
+      const res = await fetch(`/api/forms/${id}`, { headers: authHeaders() });
       if (!res.ok) throw new Error("Formulário não encontrado");
       const data = await res.json();
       setForm(data);
@@ -75,7 +73,6 @@ export default function ViewFormPage() {
     const endpoint = form.archived
       ? `/api/forms/${id}/unarchive`
       : `/api/forms/${id}/archive`;
-
     try {
       const res = await fetch(endpoint, {
         method: "PATCH",
@@ -148,7 +145,7 @@ export default function ViewFormPage() {
       </header>
 
       {/* Preview via iframe */}
-      <main className="viewform-content">
+      <main className="viewform-content" style={{ padding: 0 }}>
         {previewUrl ? (
           <iframe
             ref={iframeRef}

@@ -129,6 +129,13 @@
   overflow: hidden
 }
 
+.preview-iframe {
+  width: 100%;
+  flex: 1;
+  border: none;
+  display: block;
+}
+
 .viewform-container {
   width: 100%;
   max-width: 640px;
