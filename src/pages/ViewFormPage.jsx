@@ -86,6 +86,13 @@ export default function ViewFormPage() {
     }
   }
 
+  function handleExportPDF() {
+    if (iframeRef.current && iframeRef.current.contentWindow) {
+      // Abre a janela de impressão focada apenas no conteúdo do iframe
+      iframeRef.current.contentWindow.print();
+    }
+  }
+
   if (loading) {
     return (
       <div className="viewform-not-found">
@@ -135,6 +142,16 @@ export default function ViewFormPage() {
             {fieldCount} campo{fieldCount !== 1 ? "s" : ""} ·
             Criado em {new Date(form.createdAt).toLocaleDateString("pt-PT")}
           </span>
+
+          <button className="export-pdf-btn" onClick={handleExportPDF}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '6px' }}>
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Exportar PDF
+          </button>
+
           <button
             className={`archive-btn${form.archived ? " activate-btn" : ""}`}
             onClick={handleToggleStatus}
