@@ -38,17 +38,6 @@ export default function LoginPage() {
       return;
     }
 
-    // ⚠️ BYPASS TEMPORÁRIO — remover antes do merge
-    if (formData.email.trim().toLowerCase() === "user@teste.com" && formData.password === "teste1234") {
-      // Token falso com role USER (header.payload.signature — apenas para testes visuais)
-      const fakeToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidXNlckB0ZXN0ZS5jb20iLCJyb2xlIjoiVVNFUiJ9.mock-signature";
-      saveToken(fakeToken);
-      setSuccess("Login efetuado com sucesso.");
-      setTimeout(() => navigate("/inicio"), 1000);
-      return;
-    }
-    // ── fim bypass ──
-
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
