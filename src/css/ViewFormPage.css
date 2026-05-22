@@ -129,6 +129,13 @@
   overflow: hidden
 }
 
+.preview-iframe {
+  width: 100%;
+  flex: 1;
+  border: none;
+  display: block;
+}
+
 .viewform-container {
   width: 100%;
   max-width: 640px;
@@ -323,3 +330,25 @@
   }
 }
 .viewform-other-input { border: none; border-bottom: 1px solid #d1d5db; outline: none; font-size: 14px; padding: 2px 4px; background: transparent; color: #374151; width: 120px; margin-left: 4px; }
+
+
+
+/* ── Export PDF button ── */
+.export-pdf-btn {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.export-pdf-btn:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { saveToken } from "../utils/session";
+import { saveToken, getUserRole } from "../utils/session";
 import "../css/LoginPage.css";
 
 export default function LoginPage() {
@@ -67,7 +67,8 @@ export default function LoginPage() {
 
       saveToken(data.token);
       setSuccess("Login efetuado com sucesso.");
-      setTimeout(() => navigate("/dashboard"), 1000);
+      const role = getUserRole();
+      setTimeout(() => navigate(role === "USER" ? "/inicio" : "/dashboard"), 1000);
     } catch (err) {
       setError(err.message || "Erro ao autenticar.");
     } finally {

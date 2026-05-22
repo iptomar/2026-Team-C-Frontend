@@ -23,9 +23,7 @@ export default function MyFormsPage() {
   const [forms, setForms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState("ativos"); // "ativos", "arquivados" ou "todos"
-  
-  // Estado para a notificação discreta (Toast)
+  const [activeTab, setActiveTab] = useState("ativos");
   const [toast, setToast] = useState({ show: false, message: "", isError: false });
   const navigate = useNavigate();
 
@@ -33,21 +31,16 @@ export default function MyFormsPage() {
     fetchForms();
   }, []);
 
-  // Função auxiliar para mostrar a notificação temporária
   function showToast(message, isError = false) {
     setToast({ show: true, message, isError });
-    setTimeout(() => {
-      setToast({ show: false, message: "", isError: false });
-    }, 3000); // Desaparece após 3 segundos
+    setTimeout(() => setToast({ show: false, message: "", isError: false }), 3000);
   }
 
   async function fetchForms() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/forms", {
-        headers: authHeaders(),
-      });
+      const res = await fetch("/api/forms", { headers: authHeaders() });
       if (!res.ok) throw new Error("Erro ao carregar formulários");
       const data = await res.json();
       setForms(data);
@@ -74,11 +67,9 @@ export default function MyFormsPage() {
   }
 
   async function handleToggleStatus(form) {
-    const isArchived = form.archived;
-    const endpoint = isArchived
+    const endpoint = form.archived
       ? `/api/forms/${form.id}/unarchive`
       : `/api/forms/${form.id}/archive`;
-
     try {
       const res = await fetch(endpoint, {
         method: "PATCH",
@@ -87,17 +78,16 @@ export default function MyFormsPage() {
       if (!res.ok) throw new Error("Erro ao atualizar estado do formulário");
       const updated = await res.json();
       setForms((prev) => prev.map((f) => (f.id === updated.id ? updated : f)));
-      
-      const msg = isArchived 
-        ? `Formulário "${form.name}" ativado com sucesso.` 
-        : `Formulário "${form.name}" arquivado com sucesso.`;
-      showToast(msg);
+      showToast(
+        form.archived
+          ? `Formulário "${form.name}" ativado com sucesso.`
+          : `Formulário "${form.name}" arquivado com sucesso.`
+      );
     } catch (err) {
       showToast("Não foi possível alterar o estado do formulário.", true);
     }
   }
 
-  // Lógica de filtragem corrigida para incluir a opção "todos"
   const filteredForms = forms.filter((form) => {
     if (activeTab === "todos") return true;
     return activeTab === "arquivados" ? form.archived : !form.archived;
@@ -138,31 +128,31 @@ export default function MyFormsPage() {
                 {loading
                   ? "A carregar..."
                   : filteredForms.length === 0
-                    ? `Sem formulários (${activeTab})`
-                    : `${filteredForms.length} formulário${filteredForms.length !== 1 ? "s" : ""} (${activeTab})`}
+                    ? "Sem formulários"
+                    : `${filteredForms.length} formulário${filteredForms.length !== 1 ? "s" : ""}`}
               </p>
             </div>
           </div>
 
-          {/* Seletor de Abas Corrigido */}
+          {/* Tabs */}
           <div className="myforms-tabs">
-            <button 
-              className={`tab-btn ${activeTab === "ativos" ? "active" : ""}`} 
+            <button
+              className={`tab-btn ${activeTab === "ativos" ? "active" : ""}`}
               onClick={() => setActiveTab("ativos")}
             >
-              Ativos ({forms.filter(f => !f.archived).length})
+              Ativos ({forms.filter((f) => !f.archived).length})
             </button>
-            <button 
-              className={`tab-btn ${activeTab === "arquivados" ? "active" : ""}`} 
+            <button
+              className={`tab-btn ${activeTab === "arquivados" ? "active" : ""}`}
               onClick={() => setActiveTab("arquivados")}
             >
-              Arquivados ({forms.filter(f => f.archived).length})
+              Arquivados ({forms.filter((f) => f.archived).length})
             </button>
-            <button 
-              className={`tab-btn ${activeTab === "todos" ? "active" : ""}`} 
+            <button
+              className={`tab-btn ${activeTab === "todos" ? "active" : ""}`}
               onClick={() => setActiveTab("todos")}
             >
-              Tudo ({forms.length})
+              Todos ({forms.length})
             </button>
           </div>
 
@@ -186,8 +176,8 @@ export default function MyFormsPage() {
                 <line x1="9" y1="15" x2="15" y2="15" />
               </svg>
               <p className="myforms-empty">
-                {activeTab === "arquivados" 
-                  ? "Não tens formulários arquivados." 
+                {activeTab === "arquivados"
+                  ? "Não tens formulários arquivados."
                   : "Ainda não tens formulários guardados."}
               </p>
               {activeTab === "ativos" && (
@@ -240,7 +230,7 @@ export default function MyFormsPage() {
         </div>
       </main>
 
-      {/* Elemento de Toast Discreto no Canto Inferior Direito */}
+      {/* Toast */}
       <div className={`myforms-toast ${toast.show ? "show" : ""} ${toast.isError ? "toast-error" : ""}`}>
         <span>{toast.message}</span>
       </div>
