@@ -9,6 +9,7 @@ import MyFormsPage from "./pages/MyFormsPage";
 import ViewFormPage from "./pages/ViewFormPage";
 import SendEmailPage from "./pages/SendEmailPage";
 import PasswordResetPage from "./pages/PasswordResetPage";
+import UserPage from "./pages/UserPage";
 import UserDashboardPage from "./pages/UserDashboardPage";
 import MySubmissionsPage from "./pages/MySubmissionsPage";
 import FillFormPage from "./pages/FillFormPage";
@@ -36,6 +37,13 @@ function App() {
         element={
           <PrivateRoute>
             <Create_form />
+          </PrivateRoute>
+        }
+      />
+      <Route path="profile"
+        element={
+          <PrivateRoute>
+            <UserPage/>
           </PrivateRoute>
         }
       />

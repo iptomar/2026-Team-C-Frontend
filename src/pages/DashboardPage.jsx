@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUserRole } from "../utils/session";
 import "../css/DashboardPage.css";
+import UserPage from "./UserPage";
 
 const navItems = [
   {
@@ -124,13 +125,13 @@ export default function DashboardPage() {
         {/* Topbar */}
         <header className="dashboard-topbar">
           <span className="topbar-title">Dashboard</span>
-          <div className="topbar-user">
+          <button onClick={() => navigate("/profile")} className="topbar-user">
             <div className="topbar-avatar">D</div>
             <div className="topbar-user-info">
               <span className="topbar-user-name">Docente</span>
               <span className="topbar-user-role">Área do Docente</span>
             </div>
-          </div>
+          </button>
         </header>
 
         {/* Content */}
