@@ -28,5 +28,5 @@ export function getUser() {
 }
 
 export function getUserRole() {
-  return getUser()?.role || null;
+  return getUser()?.user?.role || null;
 }

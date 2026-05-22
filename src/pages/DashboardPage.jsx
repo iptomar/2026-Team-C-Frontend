@@ -108,7 +108,7 @@ export default function DashboardPage() {
         </nav>
 
         <div className="sidebar-logout">
-          <button className="sidebar-item" onClick={() => navigate("/login")}>
+          <button className="sidebar-item" onClick={() => {removeToken(); navigate("/login"); }}>
             <svg className="sidebar-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
               <polyline points="16 17 21 12 16 7" />
