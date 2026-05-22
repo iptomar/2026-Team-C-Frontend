@@ -65,7 +65,7 @@ export default function LoginPage() {
         throw new Error(data.error || "Erro ao autenticar.");
       }
 
-      saveToken(data.token);
+      saveToken(data.user);
       setSuccess("Login efetuado com sucesso.");
       const role = getUserRole();
       setTimeout(() => navigate(role === "USER" ? "/inicio" : "/dashboard"), 1000);
