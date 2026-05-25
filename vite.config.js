@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: " https://two026-team-c-backend.onrender.com",
+        target: "https://api.avodore.uk/",
         changeOrigin: true,
       },
     },
