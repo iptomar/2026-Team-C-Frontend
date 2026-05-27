@@ -448,3 +448,17 @@
   border-color: rgba(185, 28, 28, 0.3);
   color: #b91c1c;
 }
+
+.export-btn {
+  border: none;
+  padding: 9px 16px;
+  border-radius: 8px;
+  background: #eef2ff;
+  color: #3730a3;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.export-btn:hover {
+  background: #e0e7ff;
+}

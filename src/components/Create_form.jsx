@@ -248,7 +248,7 @@ export default function Create_form() {
 
     const html = generatePreviewHTML(formTitle, rows, fields);
 
-    fetch("/api/forms/preview", {
+    fetch("http://localhost:3000/api/forms/preview", {
       method: "POST",
       headers: authHeaders(),
       body: JSON.stringify({ html, css: "" }),
@@ -265,7 +265,7 @@ export default function Create_form() {
   useEffect(() => {
     if (!id) return;
 
-    fetch(`/api/forms/${id}`, {
+    fetch(`http://localhost:3000/api/forms/${id}`, {
       headers: authHeaders(),
     })
       .then((res) => {
@@ -423,59 +423,72 @@ export default function Create_form() {
     setShowPreview(true);
   }
 
-  async function handleSaveForm() {
-    const trimmedTitle = formTitle.trim();
+async function handleSaveForm() {
+  const trimmedTitle = formTitle.trim();
 
-    if (!trimmedTitle) {
-      alert("Escreve um título para o formulário.");
-      return;
-    }
-
-    if (fields.length === 0) {
-      alert("Adiciona pelo menos um campo antes de guardar.");
-      return;
-    }
-
-    const ownerId = getOwnerId();
-    if (!ownerId) {
-      alert("Sessão expirada. Faz login novamente.");
-      navigate("/login");
-      return;
-    }
-
-    const html = generatePreviewHTML(trimmedTitle, rows, fields);
-    const css = JSON.stringify({ rows, fields });
-
-    try {
-      let res;
-
-      if (id) {
-        res = await fetch(`/api/forms/${id}`, {
-          method: "PUT",
-          headers: authHeaders(),
-          body: JSON.stringify({ name: trimmedTitle, html, css }),
-        });
-      } else {
-        res = await fetch("/api/forms", {
-          method: "POST",
-          headers: authHeaders(),
-          body: JSON.stringify({ name: trimmedTitle, html, css, ownerId }),
-        });
-      }
-
-      if (!res.ok) {
-        const erro = await res.json();
-        alert(`Erro: ${erro.erro || "Erro desconhecido"}`);
-        return;
-      }
-
-      alert(id ? "Formulário atualizado!" : "Formulário guardado!");
-      navigate("/meus-formularios");
-    } catch (err) {
-      console.error("Erro ao guardar formulário:", err);
-      alert("Erro de ligação ao servidor.");
-    }
+  if (!trimmedTitle) {
+    alert("Escreve um título para o formulário.");
+    return;
   }
+
+  if (fields.length === 0) {
+    alert("Adiciona pelo menos um campo antes de guardar.");
+    return;
+  }
+
+  const ownerId = getOwnerId();
+
+  if (!ownerId) {
+    alert("Sessão expirada. Faz login novamente.");
+    navigate("/login");
+    return;
+  }
+
+  const html = generatePreviewHTML(trimmedTitle, rows, fields);
+  const css = JSON.stringify({ rows, fields });
+
+  try {
+    let res;
+
+    if (id) {
+      res = await fetch(`http://localhost:3000/api/forms/${id}`, {
+        method: "PUT",
+        headers: authHeaders(),
+        body: JSON.stringify({
+          name: trimmedTitle,
+          html,
+          css,
+          fields,
+        }),
+      });
+    } else {
+      res = await fetch("http://localhost:3000/api/forms", {
+        method: "POST",
+        headers: authHeaders(),
+        body: JSON.stringify({
+          name: trimmedTitle,
+          html,
+          css,
+          fields,
+          ownerId,
+        }),
+      });
+    }
+
+    if (!res.ok) {
+      const erro = await res.json();
+      alert(`Erro: ${erro.erro || "Erro desconhecido"}`);
+      return;
+    }
+
+    alert(id ? "Formulário atualizado!" : "Formulário guardado!");
+    navigate("/meus-formularios");
+  } catch (err) {
+    console.error("Erro ao guardar formulário:", err);
+    alert("Erro de ligação ao servidor.");
+  }
+}
+
 
   return (
     <DndContext onDragEnd={handleDragEnd}>
