@@ -251,7 +251,10 @@ export default function Create_form() {
     fetch("/api/forms/preview", {
       method: "POST",
       headers: authHeaders(),
-      body: JSON.stringify({ html, css: "" }),
+      body: JSON.stringify({
+  html,
+  css: "/* preview */",
+}),
     })
       .then((res) => res.blob())
       .then((blob) => {
@@ -581,12 +584,12 @@ async function handleSaveForm() {
             <div className="preview-panel">
               <div className="preview-panel-header">
                 <h2>Pré-visualização</h2>
-                <button
-                  className="preview-close-btn"
-                  onClick={() => setShowPreview(false)}
-                >
-                  ✕
-                </button>
+<button
+  className="preview-close-btn"
+  onClick={() => setShowPreview(false)}
+>
+  Fechar preview
+</button>
               </div>
               <iframe
                 ref={iframeRef}
