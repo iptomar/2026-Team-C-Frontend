@@ -522,13 +522,6 @@ async function handleSaveForm() {
               Voltar
             </button>
 
-            <button
-              className={`preview-btn ${showPreview ? "preview-btn--active" : ""}`}
-              onClick={() => (showPreview ? setShowPreview(false) : handlePreview())}
-            >
-              {showPreview ? "Fechar preview" : "Abrir preview"}
-            </button>
-
             <button className="save-btn" onClick={handleSaveForm}>
               Guardar formulário
             </button>
