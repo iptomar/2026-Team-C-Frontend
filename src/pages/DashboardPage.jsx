@@ -135,9 +135,11 @@ export default function DashboardPage() {
             <div className="topbar-avatar">D</div>
             <div className="topbar-user-info">
               <span className="topbar-user-name">Docente</span>
-              <span className="topbar-user-role">
+<span className="topbar-user-role">
   {getUserRole() === "ADMIN"
     ? "Administrador"
+    : getUserRole() === "DOCENTE"
+    ? "Docente"
     : "Utilizador"}
 </span>
             </div>
