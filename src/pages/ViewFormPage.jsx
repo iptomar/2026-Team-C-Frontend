@@ -58,7 +58,7 @@ export default function ViewFormPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`http://localhost:3000/api/forms/${id}`, { headers: authHeaders() });
+      const res = await fetch(`/api/forms/${id}`, { headers: authHeaders() });
       if (!res.ok) throw new Error("Formulário não encontrado");
       const data = await res.json();
       setForm(data);
