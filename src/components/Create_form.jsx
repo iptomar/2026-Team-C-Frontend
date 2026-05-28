@@ -240,6 +240,8 @@ export default function Create_form() {
   const [previewMode, setPreviewMode] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [formTitle, setFormTitle] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const selectedField = fields.find((f) => f.id === selectedFieldId);
 
@@ -363,7 +365,7 @@ export default function Create_form() {
         rowId,
         colIndex,
         label: "Descrição",
-        placeholder: "Escreve aqui...",
+        placeholder: "Escreva aqui...",
         options: ["Opção 1", "Opção 2"],
         stars: 5,
         hasOther: false,
@@ -396,7 +398,7 @@ export default function Create_form() {
           rowId,
           colIndex,
           label: "Descrição",
-          placeholder: "Escreve aqui...",
+          placeholder: "Escreva aqui...",
           options: ["Opção 1", "Opção 2"],
           stars: 5,
           hasOther: false,
@@ -417,30 +419,33 @@ export default function Create_form() {
 
   function handlePreview() {
     if (fields.length === 0) {
-      alert("Adiciona pelo menos um campo para pré-visualizar.");
-      return;
+setErrorMessage("Adicione pelo menos um campo para pré-visualizar.");
+return;
     }
     setShowPreview(true);
   }
 
 async function handleSaveForm() {
+  setSuccessMessage("");
+  setErrorMessage("");
+
   const trimmedTitle = formTitle.trim();
 
   if (!trimmedTitle) {
-    alert("Escreve um título para o formulário.");
+    setErrorMessage("Por favor insira um título para o formulário.");
     return;
   }
 
   if (fields.length === 0) {
-    alert("Adiciona pelo menos um campo antes de guardar.");
+    setErrorMessage("Adicione pelo menos um campo antes de guardar.");
     return;
   }
 
   const ownerId = getOwnerId();
 
   if (!ownerId) {
-    alert("Sessão expirada. Faz login novamente.");
-    navigate("/login");
+    setErrorMessage("Sessão expirada. Faz login novamente.");
+    setTimeout(() => navigate("/login"), 1200);
     return;
   }
 
@@ -477,15 +482,22 @@ async function handleSaveForm() {
 
     if (!res.ok) {
       const erro = await res.json();
-      alert(`Erro: ${erro.erro || "Erro desconhecido"}`);
+      setErrorMessage(erro.erro || "Erro ao guardar formulário.");
       return;
     }
 
-    alert(id ? "Formulário atualizado!" : "Formulário guardado!");
-    navigate("/meus-formularios");
+    setSuccessMessage(
+      id
+        ? "Dados atualizados com sucesso."
+        : "Dados guardados com sucesso."
+    );
+
+    setTimeout(() => {
+      navigate("/meus-formularios");
+    }, 1200);
   } catch (err) {
     console.error("Erro ao guardar formulário:", err);
-    alert("Erro de ligação ao servidor.");
+    setErrorMessage("Erro de ligação ao servidor.");
   }
 }
 
@@ -499,7 +511,7 @@ async function handleSaveForm() {
             value={formTitle}
             onChange={(e) => setFormTitle(e.target.value)}
             className="form-title-input"
-            placeholder="Escreve o título do formulário"
+            placeholder="Por favor escreva o título do formulário"
           />
 
           <div className="header-buttons">
@@ -527,6 +539,18 @@ async function handleSaveForm() {
             </button>
           </div>
         </div>
+
+        {successMessage && (
+  <div className="form-success-message">
+    {successMessage}
+  </div>
+)}
+
+{errorMessage && (
+  <div className="form-error-message">
+    {errorMessage}
+  </div>
+)}
 
         {previewMode ? (
           <div className="viewform-page">
@@ -574,12 +598,12 @@ async function handleSaveForm() {
             <div className="preview-panel">
               <div className="preview-panel-header">
                 <h2>Pré-visualização</h2>
-                <button
-                  className="preview-close-btn"
-                  onClick={() => setShowPreview(false)}
-                >
-                  ✕
-                </button>
+<button
+  className="preview-close-btn"
+  onClick={() => setShowPreview(false)}
+>
+  Fechar preview
+</button>
               </div>
               <iframe
                 ref={iframeRef}
