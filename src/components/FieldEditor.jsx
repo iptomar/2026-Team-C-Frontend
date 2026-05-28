@@ -122,6 +122,28 @@ export default function FieldEditor({ field, updateField, deleteField }) {
 
       <hr className="editor-divider" />
 
+{field.type !== "title" && (
+  <>
+    <hr className="editor-divider" />
+
+    <div className="editor-section">
+      <label className="editor-required">
+        <input
+          type="checkbox"
+          checked={!!field.required}
+          onChange={(e) =>
+            updateField(field.id, {
+              required: e.target.checked,
+            })
+          }
+        />
+        Campo obrigatório
+      </label>
+    </div>
+  </>
+)}
+
+
       <button
         className="editor-delete-btn"
         onClick={() => deleteField(field.id)}
