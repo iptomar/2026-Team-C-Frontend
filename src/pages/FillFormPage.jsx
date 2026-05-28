@@ -154,7 +154,7 @@ export default function FillFormPage() {
         setFields(parseFields(data));
 
         if (submissionId) {
-          const res2 = await fetch(`/api/submissions/${submissionId}`, { headers: authHeaders() });
+          const res2 = await fetch(`/api/formsData/${submissionId}`, { headers: authHeaders() });
           if (res2.ok) {
             const sub = await res2.json();
             setAnswers(sub.data?.answers || {});
@@ -185,13 +185,13 @@ export default function FillFormPage() {
       let res;
 
       if (isDraftMode) {
-        res = await fetch(`/api/submissions/${submissionId}`, {
+        res = await fetch(`/api/formsData/${submissionId}`, {
           method: "PUT",
           headers: authHeaders(),
           body: JSON.stringify({ answers, isDraft }),
         });
       } else {
-        res = await fetch("/api/submissions", {
+        res = await fetch("/api/formsData", {
           method: "POST",
           headers: authHeaders(),
           body: JSON.stringify(body),
