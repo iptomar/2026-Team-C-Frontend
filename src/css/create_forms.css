@@ -529,27 +529,3 @@
   box-shadow: 0 4px 12px rgba(221, 100, 24, 0.25);
 }
 
-.preview-btn {
-  background: #f3f4f6;
-  color: #374151;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
-  transition: background 0.2s;
-}
-
-.preview-btn:hover {
-  background: #e5e7eb;
-}
-
-.preview-btn--active {
-  background: #DD6418;
-  color: #ffffff;
-}
-
-.preview-btn--active:hover {
-  background: #c05515;
-}
