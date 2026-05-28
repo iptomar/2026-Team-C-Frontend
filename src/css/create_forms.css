@@ -529,4 +529,25 @@
   box-shadow: 0 4px 12px rgba(221, 100, 24, 0.25);
 }
 
+.form-success-message {
+  margin: 14px 24px 0;
+  background: #ecfdf3;
+  color: #027a48;
+  border: 1px solid #abefc6;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
 }
+
+.form-error-message {
+  margin: 14px 24px 0;
+  background: #fef3f2;
+  color: #b42318;
+  border: 1px solid #fecdca;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
