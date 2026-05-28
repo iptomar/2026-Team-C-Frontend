@@ -27,7 +27,7 @@ export default function MySubmissionsPage() {
   async function loadSubmissions() {
     setLoading(true);
     try {
-      const res = await fetch("/api/submissions", { headers: authHeaders() });
+      const res = await fetch("/api/formsData", { headers: authHeaders() });
       if (!res.ok) throw new Error("Erro ao carregar preenchimentos");
       const data = await res.json();
       setSubmissions(Array.isArray(data) ? data : []);
@@ -52,7 +52,7 @@ export default function MySubmissionsPage() {
 
   async function handleDelete(id) {
     try {
-      const res = await fetch(`/api/submissions/${id}`, {
+      const res = await fetch(`/api/formsData/${id}`, {
         method: "DELETE",
         headers: authHeaders(),
       });
