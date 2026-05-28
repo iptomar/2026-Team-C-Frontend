@@ -6,7 +6,7 @@ import {
   removeToken
 } from "../utils/session";
 
-import { getUserRole, removeToken } from "../utils/session";
+
 
 import "../css/DashboardPage.css";
 
