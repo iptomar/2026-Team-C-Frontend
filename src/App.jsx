@@ -4,6 +4,8 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import PrivateRoute from "./components/PrivateRoute";
+import AdminRoute from "./components/AdminRoute";
+import UserRoute from "./components/UserRoute";
 import Create_form from "./components/Create_form";
 import MyFormsPage from "./pages/MyFormsPage";
 import ViewFormPage from "./pages/ViewFormPage";
@@ -26,21 +28,49 @@ function App() {
       <Route
         path="/dashboard"
         element={
-          <PrivateRoute>
+          <AdminRoute>
             <DashboardPage />
-          </PrivateRoute>
+          </AdminRoute>
         }
       />
 
       <Route
         path="/criar-formulario"
         element={
-          <PrivateRoute>
+          <AdminRoute>
             <Create_form />
-          </PrivateRoute>
+          </AdminRoute>
         }
       />
-      <Route path="profile"
+
+      <Route
+        path="/criar-formulario/:id"
+        element={
+          <AdminRoute>
+            <Create_form />
+          </AdminRoute>
+        }
+      />
+
+      <Route
+        path="/meus-formularios"
+        element={
+          <AdminRoute>
+            <MyFormsPage />
+          </AdminRoute>
+        }
+      />
+
+      <Route
+        path="/formulario/:id"
+        element={
+          <AdminRoute>
+            <ViewFormPage />
+          </AdminRoute>
+        }
+      />
+
+      <Route path="/profile"
         element={
           <PrivateRoute>
             <UserPage/>
@@ -49,65 +79,38 @@ function App() {
       />
 
       <Route
-        path="/criar-formulario/:id"
-        element={
-          <PrivateRoute>
-            <Create_form />
-          </PrivateRoute>
-        }
-      />
-
-      <Route
-        path="/meus-formularios"
-        element={
-          <PrivateRoute>
-            <MyFormsPage />
-          </PrivateRoute>
-        }
-      />
-
-      <Route
-        path="/formulario/:id"
-        element={
-          <PrivateRoute>
-            <ViewFormPage />
-          </PrivateRoute>
-        }
-      />
-
-      <Route
         path="/inicio"
         element={
-          <PrivateRoute>
+          <UserRoute>
             <UserDashboardPage />
-          </PrivateRoute>
+          </UserRoute>
         }
       />
 
       <Route
         path="/inicio/preenchimentos"
         element={
-          <PrivateRoute>
+          <UserRoute>
             <MySubmissionsPage />
-          </PrivateRoute>
+          </UserRoute>
         }
       />
 
       <Route
         path="/preencher/:id"
         element={
-          <PrivateRoute>
+          <UserRoute>
             <FillFormPage />
-          </PrivateRoute>
+          </UserRoute>
         }
       />
 
       <Route
         path="/preencher/:id/continuar/:submissionId"
         element={
-          <PrivateRoute>
+          <UserRoute>
             <FillFormPage />
-          </PrivateRoute>
+          </UserRoute>
         }
       />
     </Routes>

@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getToken, getUser, removeToken } from "../utils/session";
+import { getUser, removeToken } from "../utils/session";
 import "../css/UserDashboardPage.css";
 
 function authHeaders() {
   return {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${getToken()}`,
+    Authorization: `Bearer ${getUser()?.token}`,
   };
 }
 
 export default function UserDashboardPage() {
   const navigate = useNavigate();
-  const user = getUser();
+  const user = getUser()?.user;
   const [forms, setForms] = useState([]);
   const [loading, setLoading] = useState(true);
 

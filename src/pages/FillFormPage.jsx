@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getToken } from "../utils/session";
+import { getUser } from "../utils/session";
 import "../css/FillFormPage.css";
 
 function authHeaders() {
   return {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${getToken()}`,
+    Authorization: `Bearer ${getUser()?.token}`,
   };
 }
 
