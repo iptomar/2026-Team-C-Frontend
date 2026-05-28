@@ -54,7 +54,7 @@ async function fetchForms() {
 
   try {
     const res = await fetch(
-      "http://localhost:3000/api/forms",
+      "/api/forms",
       {
         headers: authHeaders(),
       }
@@ -94,7 +94,7 @@ async function handleDeleteForm(formId) {
   try {
     const res =
       await fetch(
-        `http://localhost:3000/api/forms/${formId}`,
+        `/api/forms/${formId}`,
         {
           method:
             "DELETE",
@@ -139,8 +139,8 @@ async function handleToggleStatus(
 ) {
   const endpoint =
     form.archived
-      ? `http://localhost:3000/api/forms/${form.id}/unarchive`
-      : `http://localhost:3000/api/forms/${form.id}/archive`;
+      ? `/api/forms/${form.id}/unarchive`
+      : `/api/forms/${form.id}/archive`;
 
   try {
     const res =
@@ -173,7 +173,7 @@ async function handleToggleStatus(
 async function handleExportForm(formId) {
   try {
     const res = await fetch(
-      `http://localhost:3000/api/forms/${formId}/export`,
+      `/api/forms/${formId}/export`,
       {
         method: "GET",
         headers: authHeaders(),

@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserRole } from "../utils/session";
+import {
+  getUserRole,
+  removeToken
+} from "../utils/session";
 import "../css/DashboardPage.css";
 import UserPage from "./UserPage";
 
@@ -129,7 +132,11 @@ export default function DashboardPage() {
             <div className="topbar-avatar">D</div>
             <div className="topbar-user-info">
               <span className="topbar-user-name">Docente</span>
-              <span className="topbar-user-role">Área do Docente</span>
+              <span className="topbar-user-role">
+  {getUserRole() === "ADMIN"
+    ? "Administrador"
+    : "Utilizador"}
+</span>
             </div>
           </button>
         </header>

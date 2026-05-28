@@ -248,7 +248,7 @@ export default function Create_form() {
 
     const html = generatePreviewHTML(formTitle, rows, fields);
 
-    fetch("http://localhost:3000/api/forms/preview", {
+    fetch("/api/forms/preview", {
       method: "POST",
       headers: authHeaders(),
       body: JSON.stringify({ html, css: "" }),
@@ -265,7 +265,7 @@ export default function Create_form() {
   useEffect(() => {
     if (!id) return;
 
-    fetch(`http://localhost:3000/api/forms/${id}`, {
+    fetch(`/api/forms/${id}`, {
       headers: authHeaders(),
     })
       .then((res) => {
@@ -451,7 +451,7 @@ async function handleSaveForm() {
     let res;
 
     if (id) {
-      res = await fetch(`http://localhost:3000/api/forms/${id}`, {
+      res = await fetch(`/api/forms/${id}`, {
         method: "PUT",
         headers: authHeaders(),
         body: JSON.stringify({
@@ -462,7 +462,7 @@ async function handleSaveForm() {
         }),
       });
     } else {
-      res = await fetch("http://localhost:3000/api/forms", {
+      res = await fetch("/api/forms", {
         method: "POST",
         headers: authHeaders(),
         body: JSON.stringify({
