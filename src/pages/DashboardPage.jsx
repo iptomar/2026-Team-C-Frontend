@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 import {
   getUserRole,
   removeToken
 } from "../utils/session";
+
+import { getUserRole, removeToken } from "../utils/session";
+
 import "../css/DashboardPage.css";
-import UserPage from "./UserPage";
 
 const navItems = [
   {
