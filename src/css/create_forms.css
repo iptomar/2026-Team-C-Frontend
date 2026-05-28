@@ -551,3 +551,84 @@
   font-weight: 600;
 }
 
+.editor {
+  width: 280px;
+  background: #ffffff;
+  border-left: 1px solid #e5e7eb;
+  padding: 22px 20px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.editor h3 {
+  margin: 0 0 22px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.editor-section {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 18px;
+}
+
+.editor-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #374151;
+}
+
+.editor-input {
+  width: 100%;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+.editor-input:focus {
+  border-color: #dd6418;
+  box-shadow: 0 0 0 3px rgba(221, 100, 24, 0.12);
+}
+
+.editor-divider {
+  border: none;
+  border-top: 1px solid #f3f4f6;
+  margin: 18px 0;
+}
+
+.editor-required {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #9a3412;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.editor-required input {
+  accent-color: #dd6418;
+}
+
+.editor-delete-btn {
+  width: 100%;
+  margin-top: 6px;
+  background: #fef2f2;
+  color: #b42318;
+  border: 1px solid #fecdca;
+  padding: 11px 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.editor-delete-btn:hover {
+  background: #fee4e2;
+}

@@ -292,3 +292,10 @@
 .fill-toast.toast-error {
   background: #dc2626;
 }
+
+
+.fill-required {
+  color: #dc2626;
+  margin-left: 4px;
+  font-weight: 700;
+}
