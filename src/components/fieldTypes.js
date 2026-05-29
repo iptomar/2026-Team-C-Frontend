@@ -12,4 +12,5 @@ export const fieldTypes = [
   { type: "rating", label: "Estrelas" },
   { type: "title", label: "Título" },
   { type: "subtitle", label: "Subtítulo" },
+  { type: "info", label: "Texto Estático" },
 ];

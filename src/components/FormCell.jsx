@@ -16,6 +16,7 @@ const quickFields = [
   { label: "Estrelas", type: "rating" },
   { label: "Título", type: "title" },
   { label: "Subtítulo", type: "subtitle" },
+  { label: "Texto Estático", type: "info" },
 ];
 
 function DraggableCellField({ field, isSelected, onClick, onDelete }) {

@@ -138,7 +138,7 @@ export default function FieldRenderer({ field }) {
 
     case "title":
       return (
-        <div className="viewform-field viewform-field-title" style={{ borderTop: "none", paddingTop: 0, pointerEvents: "none" }}>
+        <div className="viewform-field viewform-field-title" style={{ pointerEvents: "none" }}>
           <h2>{field.label}</h2>
         </div>
       );
@@ -147,6 +147,12 @@ export default function FieldRenderer({ field }) {
       return (
         <div className="viewform-field viewform-field-subtitle" style={{ paddingTop: 0, pointerEvents: "none" }}>
           <h3>{field.label}</h3>
+        </div>
+      );
+      case "info":
+      return (
+        <div className="viewform-field viewform-field-info" style={{ pointerEvents: "none" }}>
+          <p>{field.label || "Escreva aqui o seu texto explicativo..."}</p>
         </div>
       );
     default:
