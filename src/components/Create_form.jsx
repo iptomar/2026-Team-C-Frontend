@@ -150,7 +150,7 @@ function generatePreviewHTML(title, rows, fields) {
         `;
       case "title":
         return `
-          <div class="viewform-field viewform-field-title" style="border-top:none;padding-top:0;">
+          <div class="viewform-field viewform-field-title">
             <h2>${field.label}</h2>
           </div>
         `;
@@ -158,6 +158,12 @@ function generatePreviewHTML(title, rows, fields) {
         return `
           <div class="viewform-field viewform-field-subtitle" style="padding-top:0;">
             <h3>${field.label}</h3>
+          </div>
+        `;
+        case "info":
+        return `
+          <div class="viewform-field viewform-field-info">
+            <p>${field.label || "Escreva aqui o seu texto explicativo..."}</p>
           </div>
         `;
       default:
@@ -206,6 +212,9 @@ body{ margin:0; background:#f8f9fb; font-family:Inter,system-ui,sans-serif; }
 .viewform-stars{ display:flex; gap:4px; }
 .viewform-star{ color:#DD6418; font-size:24px; }
 .viewform-other-input{ border:none; border-bottom:1px solid #d1d5db; background:transparent; width:120px; }
+.viewform-field-title { margin-top: 32px; padding-top: 16px; border-top: 2px solid #e5e7eb; }
+.viewform-card > div:first-child .viewform-field-title { margin-top: 0; padding-top: 0; border-top: none; }
+.viewform-field-info p { margin: 0; font-size: 14px; color: #4b5563; line-height: 1.5; white-space: pre-wrap; }
 </style>
 </head>
 <body>

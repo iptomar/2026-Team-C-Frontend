@@ -18,13 +18,26 @@ export default function FieldEditor({ field, updateField, deleteField }) {
       <h3>Editar campo</h3>
 
       <div className="editor-section">
-        <span className="editor-label">Descrição</span>
-        <input
-          className="editor-input"
-          value={field.label}
-          onChange={(e) => updateField(field.id, { label: e.target.value })}
-          placeholder="Ex: Nome completo"
-        />
+        <span className="editor-label">
+          {field.type === "info" ? "Texto a apresentar" : "Descrição"}
+        </span>
+        
+        {field.type === "info" ? (
+          <textarea
+            className="editor-input"
+            style={{ minHeight: "90px", resize: "vertical", padding: "8px" }}
+            value={field.label}
+            onChange={(e) => updateField(field.id, { label: e.target.value })}
+            placeholder="Escreva as instruções ou texto estático aqui..."
+          />
+        ) : (
+          <input
+            className="editor-input"
+            value={field.label}
+            onChange={(e) => updateField(field.id, { label: e.target.value })}
+            placeholder="Ex: Nome completo"
+          />
+        )}
       </div>
 
       {(field.type === "text" || field.type === "textarea") && (

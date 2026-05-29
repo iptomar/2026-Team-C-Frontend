@@ -137,7 +137,7 @@ export function FormField({ field }) {
       );
    case "title":
       return (
-        <div className="viewform-field viewform-field-title" style={{ borderTop: "none", paddingTop: 0 }}>
+        <div className="viewform-field viewform-field-title">
           <h2>{field.label}</h2>
         </div>
       );
@@ -146,6 +146,12 @@ export function FormField({ field }) {
       return (
         <div className="viewform-field viewform-field-subtitle" style={{ paddingTop: 0 }}>
           <h3>{field.label}</h3>
+        </div>
+      );
+      case "info":
+      return (
+        <div className="viewform-field viewform-field-info">
+          <p>{field.label || "Escreva aqui o seu texto explicativo..."}</p>
         </div>
       );
     default:

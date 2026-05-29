@@ -374,9 +374,28 @@
   content: counter(main-title) ". ";
 }
 
-/* --- ESTILOS DO SUBTÍTULO --- */
-.viewform-field-subtitle {
-  /* Opcional: reduz um pouco o gap interno se quiseres que fique mais colado */
+/* --- ESPAÇO E DIVISÓRIA DOS TÍTULOS --- */
+.viewform-field-title {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 2px solid #e5e7eb;
+}
+
+/* Se o título estiver logo na primeira linha do formulário, não precisa de margem nem linha */
+.form-rows > div:first-child .viewform-field-title,
+.viewform-card > div:first-child .viewform-field-title {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+/* --- ESTILOS DO TEXTO ESTÁTICO (INFO) --- */
+.viewform-field-info p {
+  margin: 0;
+  font-size: 14px;
+  color: #4b5563; /* Cinzento um pouco mais escuro para ler bem */
+  line-height: 1.5;
+  white-space: pre-wrap; /* Mantém as quebras de linha que o utilizador der no editor */
 }
 
 .viewform-field-subtitle h3 {
