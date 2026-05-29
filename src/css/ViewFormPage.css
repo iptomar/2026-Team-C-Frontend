@@ -352,3 +352,42 @@
   background: #f3f4f6;
   border-color: #9ca3af;
 }
+
+/* Inicia os contadores no contentor principal */
+.viewform-card, .form-rows {
+  counter-reset: main-title;
+}
+
+/* --- ESTILOS DO TÍTULO PRINCIPAL --- */
+.viewform-field-title h2 {
+  counter-increment: main-title;
+  counter-reset: sub-title; /* Volta o subtítulo a zero sempre que há um título novo */
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  text-transform: uppercase; /* Fica "1. IDENTIFICAÇÃO" */
+}
+
+/* Insere o número antes do texto do título */
+.viewform-field-title h2::before {
+  content: counter(main-title) ". ";
+}
+
+/* --- ESTILOS DO SUBTÍTULO --- */
+.viewform-field-subtitle {
+  /* Opcional: reduz um pouco o gap interno se quiseres que fique mais colado */
+}
+
+.viewform-field-subtitle h3 {
+  counter-increment: sub-title;
+  margin: 0 0 0 24px; /* Recuo à esquerda de 24px */
+  font-size: 15px; /* Tamanho de letra mais pequeno */
+  font-weight: 700;
+  color: #374151;
+}
+
+/* Insere a numeração composta (ex: "1.1. ") antes do subtítulo */
+.viewform-field-subtitle h3::before {
+  content: counter(main-title) "." counter(sub-title) ". ";
+}

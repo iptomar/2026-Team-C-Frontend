@@ -137,8 +137,18 @@ export default function FieldRenderer({ field }) {
       );
 
     case "title":
-      return <h2 style={{ margin: 0, fontSize: "18px", fontWeight: 700, color: "#111827" }}>{field.label}</h2>;
-
+      return (
+        <div className="viewform-field viewform-field-title" style={{ borderTop: "none", paddingTop: 0, pointerEvents: "none" }}>
+          <h2>{field.label}</h2>
+        </div>
+      );
+      
+    case "subtitle":
+      return (
+        <div className="viewform-field viewform-field-subtitle" style={{ paddingTop: 0, pointerEvents: "none" }}>
+          <h3>{field.label}</h3>
+        </div>
+      );
     default:
       return null;
   }

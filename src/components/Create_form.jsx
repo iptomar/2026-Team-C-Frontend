@@ -150,10 +150,14 @@ function generatePreviewHTML(title, rows, fields) {
         `;
       case "title":
         return `
-          <div class="viewform-field" style="border-top:none;padding-top:0;">
-            <h2 style="margin:0;font-size:18px;font-weight:700;color:#111827;">
-              ${field.label}
-            </h2>
+          <div class="viewform-field viewform-field-title" style="border-top:none;padding-top:0;">
+            <h2>${field.label}</h2>
+          </div>
+        `;
+      case "subtitle":
+        return `
+          <div class="viewform-field viewform-field-subtitle" style="padding-top:0;">
+            <h3>${field.label}</h3>
           </div>
         `;
       default:
