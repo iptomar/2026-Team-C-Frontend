@@ -11,4 +11,5 @@ export const fieldTypes = [
   { type: "file", label: "Upload" },
   { type: "rating", label: "Estrelas" },
   { type: "title", label: "Título" },
+  { type: "subtitle", label: "Subtítulo" },
 ];

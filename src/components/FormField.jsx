@@ -135,12 +135,17 @@ export function FormField({ field }) {
           <StarRating count={field.stars ?? 5} />
         </div>
       );
-    case "title":
+   case "title":
       return (
-        <div className="viewform-field" style={{ borderTop: "none", paddingTop: 0 }}>
-          <h2 style={{ margin: 0, fontSize: "18px", fontWeight: 700, color: "#111827" }}>
-            {field.label}
-          </h2>
+        <div className="viewform-field viewform-field-title" style={{ borderTop: "none", paddingTop: 0 }}>
+          <h2>{field.label}</h2>
+        </div>
+      );
+      
+    case "subtitle":
+      return (
+        <div className="viewform-field viewform-field-subtitle" style={{ paddingTop: 0 }}>
+          <h3>{field.label}</h3>
         </div>
       );
     default:
