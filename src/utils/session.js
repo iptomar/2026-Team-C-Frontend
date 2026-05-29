@@ -6,7 +6,6 @@ export function saveToken(user) {
 
 export function getToken() {
   return localStorage.getItem(TOKEN_KEY)
-
 }
 
 export function removeToken() {

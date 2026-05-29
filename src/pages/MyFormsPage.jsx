@@ -4,9 +4,16 @@ import { getToken } from "../utils/session";
 import "../css/MyFormsPage.css";
 
 function authHeaders() {
+  const raw = getToken();
+  let token;
+  try {
+    token = JSON.parse(raw).token;
+  } catch {
+    token = raw;
+  }
   return {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${getToken()}`,
+    Authorization: `Bearer ${token}`,
   };
 }
 
@@ -51,7 +58,7 @@ export default function MyFormsPage() {
 async function fetchForms() {
   setLoading(true);
   setError(null);
-
+  
   try {
     const res = await fetch(
       "/api/forms",
