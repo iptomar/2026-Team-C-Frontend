@@ -6,6 +6,7 @@ const quickFields = [
   { label: "Texto curto", type: "text" },
   { label: "Texto longo", type: "textarea" },
   { label: "Número", type: "number" },
+  { label: "Segmentado", type: "segmented" },
   { label: "Email", type: "email" },
   { label: "Checkbox", type: "checkbox" },
   { label: "Escolha única", type: "radio" },

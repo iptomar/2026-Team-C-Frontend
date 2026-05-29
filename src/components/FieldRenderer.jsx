@@ -1,3 +1,4 @@
+import SegmentedInput from "./SegmentedInput";
 export default function FieldRenderer({ field }) {
   const inputStyle = {
     width: "100%",
@@ -30,6 +31,22 @@ export default function FieldRenderer({ field }) {
         </div>
       );
 
+     case "segmented": {
+      const currentSegments = field.segments && field.segments.length > 0 ? field.segments : [8, 4];
+      const currentSeparator = field.separator !== undefined ? field.separator : "-";
+
+      return (
+        // AQUI MANTÉNS O BLOQUEIO DE CLIQUES
+        <div className="viewform-field" style={{ pointerEvents: "none" }}>
+          <SegmentedInput 
+            label={field.label || "Descrição"} 
+            segments={currentSegments} 
+            separator={currentSeparator} 
+          />
+        </div>
+      );
+    }
+      
     case "email":
       return (
         <div>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SegmentedInput from "./SegmentedInput";
 
 function StarRating({ count }) {
   const [hovered, setHovered] = useState(0);
@@ -44,6 +45,21 @@ export function FormField({ field }) {
           <input type="number" />
         </div>
       );
+      case "segmented": {
+      const currentSegments = field.segments && field.segments.length > 0 ? field.segments : [8, 4];
+      const currentSeparator = field.separator !== undefined ? field.separator : "-";
+
+      return (
+        // AQUI NÃO PODE TER O pointerEvents: "none"
+        <div className="viewform-field">
+          <SegmentedInput 
+            label={field.label || "Descrição"} 
+            segments={currentSegments} 
+            separator={currentSeparator} 
+          />
+        </div>
+      );
+    }
     case "email":
       return (
         <div className="viewform-field">
