@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { saveToken, getUserRole } from "../utils/session";
+import { saveToken, getUserRole, isAuthenticated } from "../utils/session";
 import "../css/LoginPage.css";
 
 export default function LoginPage() {
@@ -11,6 +11,13 @@ export default function LoginPage() {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (isAuthenticated()) {
+      const role = getUserRole();
+      navigate(role === "USER" ? "/inicio" : "/dashboard", { replace: true });
+    }
+  }, []);
+
   function handleChange(event) {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -20,21 +27,25 @@ export default function LoginPage() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setLoading(true);
     setError("");
     setSuccess("");
 
     if (!formData.email || !formData.password) {
       setError("Preencha todos os campos.");
+      setLoading(false);
       return;
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       setError("Introduza um email válido.");
+      setLoading(false);
       return;
     }
 
     if (formData.password.length < 8) {
       setError("A palavra-passe deve ter pelo menos 8 caracteres.");
+      setLoading(false);
       return;
     }
 
