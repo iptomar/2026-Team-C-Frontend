@@ -352,3 +352,99 @@
   background: #f3f4f6;
   border-color: #9ca3af;
 }
+
+
+/* ───────── IPT HEADER ───────── */
+
+.ipt-header {
+  background: white;
+  border-bottom: 3px solid #41b62a;
+  padding: 24px 28px 18px;
+}
+
+.ipt-header-top {
+  display: grid;
+  grid-template-columns: 190px 1fr 260px;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.ipt-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ipt-logo-img {
+  width: 90px;
+  height: auto;
+  object-fit: contain;
+}
+
+.ipt-logo-text strong {
+  display: block;
+  font-size: 28px;
+  color: #111827;
+}
+
+.ipt-logo-text span {
+  display: block;
+  font-size: 12px;
+  line-height: 1.15;
+  color: #374151;
+}
+
+.ipt-title-box {
+  border: 1px solid #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  text-align: center;
+}
+
+.ipt-title-box h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #000;
+}
+
+.ipt-meta-box {
+  border: 1px solid #111;
+  display: flex;
+  flex-direction: column;
+}
+
+.ipt-meta-box div {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.ipt-meta-box div:first-child {
+  border-bottom: 1px solid #111;
+}
+
+.ipt-schools {
+  display: flex;
+  justify-content: center;
+  gap: 120px;
+  margin-top: 18px;
+}
+
+.ipt-schools label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.ipt-schools input {
+  width: 22px;
+  height: 22px;
+}

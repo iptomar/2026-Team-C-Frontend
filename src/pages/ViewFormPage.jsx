@@ -161,6 +161,56 @@ export default function ViewFormPage() {
         </div>
       </header>
 
+<div className="ipt-header">
+
+  <div className="ipt-header-top">
+
+<div className="ipt-logo">
+
+  <img
+    src="/logo-ipt.png"
+    alt="IPT"
+    className="ipt-logo-img"
+  />
+
+  <div className="ipt-logo-text">
+    <strong>ipt</strong>
+    <span>Instituto Politécnico de Tomar</span>
+  </div>
+
+</div>
+
+    <div className="ipt-title-box">
+      <h1>{form.name || "Formulário sem título"}</h1>
+    </div>
+
+    <div className="ipt-meta-box">
+      <div>PT.SIGQ.MOD ACA 30 20 - 1</div>
+      <div>Página 1 de 1</div>
+    </div>
+
+  </div>
+
+  <div className="ipt-schools">
+    <label>
+      <input type="checkbox" checked readOnly />
+      ESGT
+    </label>
+
+    <label>
+      <input type="checkbox" readOnly />
+      ESTA
+    </label>
+
+    <label>
+      <input type="checkbox" readOnly />
+      ESTT
+    </label>
+  </div>
+
+</div>
+
+
       {/* Preview via iframe */}
       <main className="viewform-content" style={{ padding: 0 }}>
         {previewUrl ? (
