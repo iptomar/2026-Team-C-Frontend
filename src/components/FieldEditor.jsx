@@ -18,13 +18,26 @@ export default function FieldEditor({ field, updateField, deleteField }) {
       <h3>Editar campo</h3>
 
       <div className="editor-section">
-        <span className="editor-label">Descrição</span>
-        <input
-          className="editor-input"
-          value={field.label}
-          onChange={(e) => updateField(field.id, { label: e.target.value })}
-          placeholder="Ex: Nome completo"
-        />
+        <span className="editor-label">
+          {field.type === "info" ? "Texto a apresentar" : "Descrição"}
+        </span>
+        
+        {field.type === "info" ? (
+          <textarea
+            className="editor-input"
+            style={{ minHeight: "90px", resize: "vertical", padding: "8px" }}
+            value={field.label}
+            onChange={(e) => updateField(field.id, { label: e.target.value })}
+            placeholder="Escreva as instruções ou texto estático aqui..."
+          />
+        ) : (
+          <input
+            className="editor-input"
+            value={field.label}
+            onChange={(e) => updateField(field.id, { label: e.target.value })}
+            placeholder="Ex: Nome completo"
+          />
+        )}
       </div>
 
       {(field.type === "text" || field.type === "textarea") && (
@@ -38,6 +51,48 @@ export default function FieldEditor({ field, updateField, deleteField }) {
           />
         </div>
       )}
+
+      {/* --- INÍCIO DA CONFIGURAÇÃO DO SEGMENTED INPUT --- */}
+      {field.type === "segmented" && (
+        <>
+          <div className="editor-section">
+            <span className="editor-label">Formato das Caixas (ex: 8,4)</span>
+            <input
+              className="editor-input"
+              placeholder="Ex: 8,4 ou 4,3,4"
+              value={field.segmentsRaw !== undefined ? field.segmentsRaw : (field.segments ? field.segments.join(",") : "8,4")}
+              onChange={(e) => {
+                const raw = e.target.value;
+                // Converte a string "8,4" num array de números [8, 4]
+                const parsed = raw
+                  .split(",")
+                  .map((s) => parseInt(s.trim(), 10))
+                  .filter((n) => !isNaN(n) && n > 0);
+                
+                updateField(field.id, { 
+                  segmentsRaw: raw, // Guarda o texto exato para não apagar a vírgula enquanto se escreve
+                  segments: parsed.length > 0 ? parsed : [1] 
+                });
+              }}
+            />
+            <small style={{ color: "#9ca3af", fontSize: "11px", display: "block", marginTop: "4px" }}>
+              Separa por vírgulas para criar grupos. Ex: 4,3,4.
+            </small>
+          </div>
+
+          <div className="editor-section">
+            <span className="editor-label">Separador</span>
+            <input
+              className="editor-input"
+              maxLength={3}
+              placeholder="Ex: - ou / (vazio para nenhum)"
+              value={field.separator !== undefined ? field.separator : "-"}
+              onChange={(e) => updateField(field.id, { separator: e.target.value })}
+            />
+          </div>
+        </>
+      )}
+      {/* --- FIM DA CONFIGURAÇÃO DO SEGMENTED INPUT --- */}
 
       {(field.type === "radio" || field.type === "select" || field.type === "checkbox") && (
         <>

@@ -1,3 +1,4 @@
+import SegmentedInput from "./SegmentedInput";
 export default function FieldRenderer({ field }) {
   const inputStyle = {
     width: "100%",
@@ -30,6 +31,22 @@ export default function FieldRenderer({ field }) {
         </div>
       );
 
+     case "segmented": {
+      const currentSegments = field.segments && field.segments.length > 0 ? field.segments : [8, 4];
+      const currentSeparator = field.separator !== undefined ? field.separator : "-";
+
+      return (
+        // AQUI MANTÉNS O BLOQUEIO DE CLIQUES
+        <div className="viewform-field" style={{ pointerEvents: "none" }}>
+          <SegmentedInput 
+            label={field.label || "Descrição"} 
+            segments={currentSegments} 
+            separator={currentSeparator} 
+          />
+        </div>
+      );
+    }
+      
     case "email":
       return (
         <div>
@@ -120,8 +137,24 @@ export default function FieldRenderer({ field }) {
       );
 
     case "title":
-      return <h2 style={{ margin: 0, fontSize: "18px", fontWeight: 700, color: "#111827" }}>{field.label}</h2>;
-
+      return (
+        <div className="viewform-field viewform-field-title" style={{ pointerEvents: "none" }}>
+          <h2>{field.label}</h2>
+        </div>
+      );
+      
+    case "subtitle":
+      return (
+        <div className="viewform-field viewform-field-subtitle" style={{ paddingTop: 0, pointerEvents: "none" }}>
+          <h3>{field.label}</h3>
+        </div>
+      );
+      case "info":
+      return (
+        <div className="viewform-field viewform-field-info" style={{ pointerEvents: "none" }}>
+          <p>{field.label || "Escreva aqui o seu texto explicativo..."}</p>
+        </div>
+      );
     default:
       return null;
   }

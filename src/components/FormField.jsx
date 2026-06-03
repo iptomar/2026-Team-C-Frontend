@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SegmentedInput from "./SegmentedInput";
 
 function StarRating({ count }) {
   const [hovered, setHovered] = useState(0);
@@ -44,6 +45,21 @@ export function FormField({ field }) {
           <input type="number" />
         </div>
       );
+      case "segmented": {
+      const currentSegments = field.segments && field.segments.length > 0 ? field.segments : [8, 4];
+      const currentSeparator = field.separator !== undefined ? field.separator : "-";
+
+      return (
+        // AQUI NÃO PODE TER O pointerEvents: "none"
+        <div className="viewform-field">
+          <SegmentedInput 
+            label={field.label || "Descrição"} 
+            segments={currentSegments} 
+            separator={currentSeparator} 
+          />
+        </div>
+      );
+    }
     case "email":
       return (
         <div className="viewform-field">
@@ -119,12 +135,23 @@ export function FormField({ field }) {
           <StarRating count={field.stars ?? 5} />
         </div>
       );
-    case "title":
+   case "title":
       return (
-        <div className="viewform-field" style={{ borderTop: "none", paddingTop: 0 }}>
-          <h2 style={{ margin: 0, fontSize: "18px", fontWeight: 700, color: "#111827" }}>
-            {field.label}
-          </h2>
+        <div className="viewform-field viewform-field-title">
+          <h2>{field.label}</h2>
+        </div>
+      );
+      
+    case "subtitle":
+      return (
+        <div className="viewform-field viewform-field-subtitle" style={{ paddingTop: 0 }}>
+          <h3>{field.label}</h3>
+        </div>
+      );
+      case "info":
+      return (
+        <div className="viewform-field viewform-field-info">
+          <p>{field.label || "Escreva aqui o seu texto explicativo..."}</p>
         </div>
       );
     default:

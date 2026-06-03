@@ -1,0 +1,61 @@
+.segmented-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: inherit;
+}
+
+.segmented-label {
+  font-size: 14px;
+  color: #111827;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.segmented-container {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espaçamento ao redor do hífen/separador */
+}
+
+.segmented-group {
+  display: flex;
+}
+
+.segmented-square {
+  width: 28px;
+  height: 32px;
+  text-align: center;
+  font-size: 14px;
+  border: 1px solid #94a3b8;
+  background-color: #f8f9fb;
+  margin-left: -1px; /* Faz o overlap das borders para parecer uma grelha unida */
+  outline: none;
+  color: #111827;
+  transition: all 0.1s ease;
+}
+
+/* Garante que o primeiro quadrado não perde a margem esquerda */
+.segmented-square:first-child {
+  margin-left: 0;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.segmented-square:last-child {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.segmented-square:focus {
+  border-color: #DD6418;
+  background-color: #ffffff;
+  z-index: 1; /* Traz o input focado para a frente para a border ficar totalmente visível */
+  box-shadow: 0 0 0 2px rgba(221, 100, 24, 0.15);
+}
+
+.segmented-separator {
+  font-size: 16px;
+  color: #374151;
+  font-weight: 600;
+}

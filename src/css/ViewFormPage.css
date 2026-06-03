@@ -447,4 +447,62 @@
 .ipt-schools input {
   width: 22px;
   height: 22px;
+
+/* Inicia os contadores no contentor principal */
+.viewform-card, .form-rows {
+  counter-reset: main-title;
+}
+
+/* --- ESTILOS DO TÍTULO PRINCIPAL --- */
+.viewform-field-title h2 {
+  counter-increment: main-title;
+  counter-reset: sub-title; /* Volta o subtítulo a zero sempre que há um título novo */
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  text-transform: uppercase; /* Fica "1. IDENTIFICAÇÃO" */
+}
+
+/* Insere o número antes do texto do título */
+.viewform-field-title h2::before {
+  content: counter(main-title) ". ";
+}
+
+/* --- ESPAÇO E DIVISÓRIA DOS TÍTULOS --- */
+.viewform-field-title {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 2px solid #e5e7eb;
+}
+
+/* Se o título estiver logo na primeira linha do formulário, não precisa de margem nem linha */
+.form-rows > div:first-child .viewform-field-title,
+.viewform-card > div:first-child .viewform-field-title {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+/* --- ESTILOS DO TEXTO ESTÁTICO (INFO) --- */
+.viewform-field-info p {
+  margin: 0;
+  font-size: 14px;
+  color: #4b5563; /* Cinzento um pouco mais escuro para ler bem */
+  line-height: 1.5;
+  white-space: pre-wrap; /* Mantém as quebras de linha que o utilizador der no editor */
+}
+
+.viewform-field-subtitle h3 {
+  counter-increment: sub-title;
+  margin: 0 0 0 24px; /* Recuo à esquerda de 24px */
+  font-size: 15px; /* Tamanho de letra mais pequeno */
+  font-weight: 700;
+  color: #374151;
+}
+
+/* Insere a numeração composta (ex: "1.1. ") antes do subtítulo */
+.viewform-field-subtitle h3::before {
+  content: counter(main-title) "." counter(sub-title) ". ";
+
 }

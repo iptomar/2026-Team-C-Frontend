@@ -2,6 +2,7 @@ export const fieldTypes = [
   { type: "text", label: "Texto curto" },
   { type: "textarea", label: "Texto longo" },
   { type: "number", label: "Número" },
+  { type: "segmented", label: "ID / Documento (Caixas)" },
   { type: "email", label: "Email" },
   { type: "checkbox", label: "Checkbox" },
   { type: "radio", label: "Escolha única" },
@@ -10,4 +11,6 @@ export const fieldTypes = [
   { type: "file", label: "Upload" },
   { type: "rating", label: "Estrelas" },
   { type: "title", label: "Título" },
+  { type: "subtitle", label: "Subtítulo" },
+  { type: "info", label: "Texto Estático" },
 ];

@@ -6,6 +6,7 @@ const quickFields = [
   { label: "Texto curto", type: "text" },
   { label: "Texto longo", type: "textarea" },
   { label: "Número", type: "number" },
+  { label: "Segmentado", type: "segmented" },
   { label: "Email", type: "email" },
   { label: "Checkbox", type: "checkbox" },
   { label: "Escolha única", type: "radio" },
@@ -14,6 +15,8 @@ const quickFields = [
   { label: "Upload", type: "file" },
   { label: "Estrelas", type: "rating" },
   { label: "Título", type: "title" },
+  { label: "Subtítulo", type: "subtitle" },
+  { label: "Texto Estático", type: "info" },
 ];
 
 function DraggableCellField({ field, isSelected, onClick, onDelete }) {
