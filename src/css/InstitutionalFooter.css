@@ -1,0 +1,60 @@
+.institutional-footer {
+  width: 100%;
+  margin-top: 40px;
+  background: #fff;
+}
+
+.footer-title {
+  background: linear-gradient(#f4f4f4, #dcdcdc);
+  border: 1px solid #bdbdbd;
+  padding: 8px 12px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  font-size: 18px;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 30px 50px;
+  min-height: 120px;
+}
+
+.footer-date {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-signature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.footer-line {
+  border-bottom: 2px solid #000;
+}
+
+.footer-line.small {
+  width: 150px;
+}
+
+.footer-line.large {
+  width: 350px;
+}
+
+.footer-date label,
+.footer-signature label {
+  font-size: 18px;
+  color: #000;
+}
+
+@media print {
+  .institutional-footer {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
