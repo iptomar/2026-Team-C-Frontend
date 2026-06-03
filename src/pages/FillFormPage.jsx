@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getUser } from "../utils/session";
 import InstitutionalHeader from "../components/InstitutionalHeader";
+import InstitutionalFooter from "../components/InstitutionalFooter";
 import "../css/FillFormPage.css";
+
 
 function authHeaders() {
   return {
@@ -259,8 +261,6 @@ export default function FillFormPage() {
           });
 
 
-          const res2 = await fetch(`/api/formsData/${submissionId}`, { headers: authHeaders() });
-
           if (res2.ok) {
             const sub = await res2.json();
             setAnswers(sub.data?.answers || {});
@@ -378,6 +378,7 @@ export default function FillFormPage() {
               ))
             )}
           </div>
+          <InstitutionalFooter />
 
           <div className="fill-actions">
             <button
