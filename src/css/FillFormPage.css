@@ -104,14 +104,21 @@
   gap: 18px;
 }
 
+
+
 /* ── Fields ─────────────────────────────────────────────── */
+
 .fill-field {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
-.fill-field label {
+.fill-field > label:first-child {
+  width: fit-content;
+  min-width: unset;
+  margin-right: 10px;
   font-size: 13.5px;
   font-weight: 600;
   color: #374151;
@@ -128,6 +135,7 @@
 .fill-field input[type="date"],
 .fill-field textarea,
 .fill-field select {
+  flex: 1;
   padding: 9px 12px;
   border: 1.5px solid #d1d5db;
   border-radius: 8px;
@@ -137,7 +145,6 @@
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
   font-family: inherit;
-  width: 100%;
   box-sizing: border-box;
 }
 
@@ -149,16 +156,22 @@
 }
 
 .fill-field textarea {
+  min-height: 120px;
   resize: vertical;
-  min-height: 100px;
+}
+
+.fill-field:has(textarea) {
+  align-items: flex-start;
 }
 
 /* ── Radio & Checkbox ─────────────────────────────────── */
+
 .fill-radio-group,
 .fill-checkbox-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  flex: 1;
 }
 
 .fill-option {
@@ -195,6 +208,8 @@
   width: auto !important;
   min-width: 160px;
 }
+
+
 
 /* ── Title field ─────────────────────────────────────── */
 .fill-title-field h2 {
@@ -299,3 +314,4 @@
   margin-left: 4px;
   font-weight: 700;
 }
+
