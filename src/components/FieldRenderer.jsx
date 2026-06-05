@@ -59,7 +59,7 @@ export default function FieldRenderer({ field }) {
       return (
         <div>
           <label>{field.label}</label>
-          <div style={{ display: "flex", flexDirection: "column", gap: "4px", marginTop: "4px" }}>
+          <div style={{ display: "flex", flexDirection: field.inline ? "row" : "column", gap: "4px", marginTop: "4px" }}>
             {(field.options || []).map((opt, i) => (
               <label key={i} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: "#374151" }}>
                 <input type="checkbox" />

@@ -107,9 +107,9 @@ function generatePreviewHTML(title, rows, fields) {
 
       case "checkbox":
         return `
-          <div class="viewform-field">
+          <div class="viewform-field" >
             <label>${field.label}</label>
-            <div class="viewform-checkbox-group">
+            <div class="viewform-checkbox-group" style= flexDirection : ${field.inline ? "row" : "column"}>
               ${(field.options || [])
                 .map(
                   (o) => `
@@ -422,6 +422,7 @@ function addRow(section = "foundation") {
         stars: 5,
         hasOther: false,
         otherLabel: "Outros",
+        inline: false
       },
     ]);
   }
@@ -458,6 +459,7 @@ function addRow(section = "foundation") {
           stars: 5,
           hasOther: false,
           otherLabel: "Outros",
+          inline:false
         },
       ]);
 
@@ -631,7 +633,7 @@ function addRow(section = "foundation") {
                     number="2"
                     title={sectionTitles.subject}
                   />
-
+                  
                   <FormSection
                     number="3"
                     title={sectionTitles.foundation}
