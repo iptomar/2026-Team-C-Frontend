@@ -6,6 +6,7 @@ import FormCanvas from "./FormCanvas";
 import FieldPalette from "./FieldPalette";
 import FieldEditor from "./FieldEditor";
 import FormRenderer from "./FormRenderer";
+import FormSection from "./FormSection";
 
 import { getToken } from "../utils/session";
 
@@ -15,6 +16,7 @@ import "../css/ViewFormPage.css";
 function getOwnerId() {
   const token = getToken();
   if (!token) return null;
+
   try {
     const payload = JSON.parse(atob(token.split(".")[1]));
     return payload.userId;
@@ -30,7 +32,6 @@ function authHeaders() {
   };
 }
 
-// ── Gerador HTML Preview ─────────────────────────────────────────
 function generatePreviewHTML(title, rows, fields) {
   function renderField(field) {
     switch (field.type) {
@@ -41,6 +42,7 @@ function generatePreviewHTML(title, rows, fields) {
             <input type="text" placeholder="${field.placeholder ?? ""}" disabled />
           </div>
         `;
+
       case "textarea":
         return `
           <div class="viewform-field">
@@ -48,6 +50,7 @@ function generatePreviewHTML(title, rows, fields) {
             <textarea placeholder="${field.placeholder ?? ""}" disabled></textarea>
           </div>
         `;
+
       case "number":
         return `
           <div class="viewform-field">
@@ -55,6 +58,7 @@ function generatePreviewHTML(title, rows, fields) {
             <input type="number" disabled />
           </div>
         `;
+
       case "email":
         return `
           <div class="viewform-field">
@@ -62,6 +66,7 @@ function generatePreviewHTML(title, rows, fields) {
             <input type="email" placeholder="exemplo@email.com" disabled />
           </div>
         `;
+
       case "date":
         return `
           <div class="viewform-field">
@@ -69,6 +74,7 @@ function generatePreviewHTML(title, rows, fields) {
             <input type="date" disabled />
           </div>
         `;
+
       case "select":
         return `
           <div class="viewform-field">
@@ -79,57 +85,61 @@ function generatePreviewHTML(title, rows, fields) {
             </select>
           </div>
         `;
+
       case "radio":
         return `
           <div class="viewform-field">
             <label>${field.label}</label>
             <div class="viewform-radio-group">
               ${(field.options || [])
-            .map(
-              (o) => `
-                  <label class="viewform-radio-option">
-                    <input type="radio" disabled />
-                    ${o}
-                  </label>
-                `
-            )
-            .join("")}
+                .map(
+                  (o) => `
+                    <label class="viewform-radio-option">
+                      <input type="radio" disabled />
+                      ${o}
+                    </label>
+                  `
+                )
+                .join("")}
             </div>
           </div>
         `;
+
       case "checkbox":
         return `
           <div class="viewform-field">
             <label>${field.label}</label>
             <div class="viewform-checkbox-group">
               ${(field.options || [])
-            .map(
-              (o) => `
-                  <label class="viewform-checkbox-option">
-                    <input type="checkbox" disabled />
-                    ${o}
-                  </label>
-                `
-            )
-            .join("")}
-              ${field.hasOther
-            ? `
-                  <label class="viewform-checkbox-option">
-                    <input type="checkbox" disabled />
-                    ${field.otherLabel || "Outros"}
-                    <input
-                      type="text"
-                      class="viewform-other-input"
-                      placeholder="Especifica..."
-                      disabled
-                    />
-                  </label>
-                `
-            : ""
-          }
+                .map(
+                  (o) => `
+                    <label class="viewform-checkbox-option">
+                      <input type="checkbox" disabled />
+                      ${o}
+                    </label>
+                  `
+                )
+                .join("")}
+              ${
+                field.hasOther
+                  ? `
+                    <label class="viewform-checkbox-option">
+                      <input type="checkbox" disabled />
+                      ${field.otherLabel || "Outros"}
+                      <input
+                        type="text"
+                        class="viewform-other-input"
+                        placeholder="Especifica..."
+                        disabled
+                      />
+                    </label>
+                  `
+                  : ""
+              }
             </div>
           </div>
         `;
+
       case "file":
         return `
           <div class="viewform-field">
@@ -137,35 +147,40 @@ function generatePreviewHTML(title, rows, fields) {
             <input type="file" disabled />
           </div>
         `;
+
       case "rating":
         return `
           <div class="viewform-field">
             <label>${field.label}</label>
             <div class="viewform-stars">
               ${Array.from({ length: field.stars || 5 })
-            .map(() => `<span class="viewform-star">★</span>`)
-            .join("")}
+                .map(() => `<span class="viewform-star">★</span>`)
+                .join("")}
             </div>
           </div>
         `;
+
       case "title":
         return `
           <div class="viewform-field viewform-field-title">
             <h2>${field.label}</h2>
           </div>
         `;
+
       case "subtitle":
         return `
-          <div class="viewform-field viewform-field-subtitle" style="padding-top:0;">
+          <div class="viewform-field viewform-field-subtitle">
             <h3>${field.label}</h3>
           </div>
         `;
-        case "info":
+
+      case "info":
         return `
           <div class="viewform-field viewform-field-info">
             <p>${field.label || "Escreva aqui o seu texto explicativo..."}</p>
           </div>
         `;
+
       default:
         return "";
     }
@@ -177,6 +192,7 @@ function generatePreviewHTML(title, rows, fields) {
         const field = fields.find(
           (f) => f.rowId === row.id && f.colIndex === colIndex
         );
+
         return `<div>${field ? renderField(field) : ""}</div>`;
       }).join("");
 
@@ -212,9 +228,9 @@ body{ margin:0; background:#f8f9fb; font-family:Inter,system-ui,sans-serif; }
 .viewform-stars{ display:flex; gap:4px; }
 .viewform-star{ color:#DD6418; font-size:24px; }
 .viewform-other-input{ border:none; border-bottom:1px solid #d1d5db; background:transparent; width:120px; }
-.viewform-field-title { margin-top: 32px; padding-top: 16px; border-top: 2px solid #e5e7eb; }
-.viewform-card > div:first-child .viewform-field-title { margin-top: 0; padding-top: 0; border-top: none; }
-.viewform-field-info p { margin: 0; font-size: 14px; color: #4b5563; line-height: 1.5; white-space: pre-wrap; }
+.viewform-field-title{ margin-top:32px; padding-top:16px; border-top:2px solid #e5e7eb; }
+.viewform-card > div:first-child .viewform-field-title{ margin-top:0; padding-top:0; border-top:none; }
+.viewform-field-info p{ margin:0; font-size:14px; color:#4b5563; line-height:1.5; white-space:pre-wrap; }
 </style>
 </head>
 <body>
@@ -253,6 +269,13 @@ export default function Create_form() {
   const [previewMode, setPreviewMode] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [formTitle, setFormTitle] = useState("");
+
+  const [sectionTitles, setSectionTitles] = useState({
+    identification: "Identificação",
+    subject: "Assunto | Descrição",
+    foundation: "Fundamentação",
+  });
+
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -272,7 +295,6 @@ export default function Create_form() {
       .then((blob) => {
         const url = URL.createObjectURL(blob);
         iframeRef.current.src = url;
-        return () => URL.revokeObjectURL(url);
       })
       .catch((err) => console.error("Erro no preview:", err));
   }, [showPreview, formTitle, rows, fields]);
@@ -289,10 +311,16 @@ export default function Create_form() {
       })
       .then((form) => {
         setFormTitle(form.name || "");
+
         try {
           const estrutura = JSON.parse(form.css);
+
           setRows(estrutura.rows || []);
           setFields(estrutura.fields || []);
+
+          if (estrutura.sectionTitles) {
+            setSectionTitles(estrutura.sectionTitles);
+          }
         } catch {
           console.error("Não foi possível reconstruir a estrutura do formulário.");
         }
@@ -305,6 +333,7 @@ export default function Create_form() {
       if (e.key === "Delete" && selectedFieldId) {
         deleteField(selectedFieldId);
       }
+
       if (e.key === "Escape") {
         setShowPreview(false);
       }
@@ -318,12 +347,18 @@ export default function Create_form() {
     return Array.from({ length: n }, () => 100 / n);
   }
 
-  function addRow() {
-    setRows((prev) => [
-      ...prev,
-      { id: crypto.randomUUID(), colCount: 1, colWidths: [100], height: null },
-    ]);
-  }
+function addRow(section = "foundation") {
+  setRows((prev) => [
+    ...prev,
+    {
+      id: crypto.randomUUID(),
+      colCount: 1,
+      colWidths: [100],
+      height: null,
+      section,
+    },
+  ]);
+}
 
   function removeRow(rowId) {
     setRows((prev) => prev.filter((r) => r.id !== rowId));
@@ -334,9 +369,12 @@ export default function Create_form() {
     setFields((prev) =>
       prev.filter((f) => !(f.rowId === rowId && f.colIndex >= colCount))
     );
+
     setRows((prev) =>
       prev.map((r) =>
-        r.id === rowId ? { ...r, colCount, colWidths: equalWidths(colCount) } : r
+        r.id === rowId
+          ? { ...r, colCount, colWidths: equalWidths(colCount) }
+          : r
       )
     );
   }
@@ -368,6 +406,7 @@ export default function Create_form() {
     const targetOccupied = fields.find(
       (f) => f.rowId === rowId && f.colIndex === colIndex
     );
+
     if (targetOccupied) return;
 
     setFields((prev) => [
@@ -389,9 +428,11 @@ export default function Create_form() {
 
   function handleDragEnd(event) {
     const { active, over } = event;
+
     if (!over) return;
 
     const overId = String(over.id);
+
     if (!overId.startsWith("cell::")) return;
 
     const [, rowId, colStr] = overId.split("::");
@@ -403,6 +444,7 @@ export default function Create_form() {
 
     if (active.data.current?.from === "palette") {
       if (targetOccupied) return;
+
       setFields((prev) => [
         ...prev,
         {
@@ -418,102 +460,110 @@ export default function Create_form() {
           otherLabel: "Outros",
         },
       ]);
+
       return;
     }
 
     if (active.data.current?.from === "cell") {
       const fieldId = active.id;
+
       if (targetOccupied && targetOccupied.id !== fieldId) return;
+
       setFields((prev) =>
-        prev.map((f) => (f.id === fieldId ? { ...f, rowId, colIndex } : f))
+        prev.map((f) =>
+          f.id === fieldId ? { ...f, rowId, colIndex } : f
+        )
       );
     }
   }
 
   function handlePreview() {
     if (fields.length === 0) {
-setErrorMessage("Adicione pelo menos um campo para pré-visualizar.");
-return;
-    }
-    setShowPreview(true);
-  }
-
-async function handleSaveForm() {
-  setSuccessMessage("");
-  setErrorMessage("");
-
-  const trimmedTitle = formTitle.trim();
-
-  if (!trimmedTitle) {
-    setErrorMessage("Por favor insira um título para o formulário.");
-    return;
-  }
-
-  if (fields.length === 0) {
-    setErrorMessage("Adicione pelo menos um campo antes de guardar.");
-    return;
-  }
-
-  const ownerId = getOwnerId();
-
-  if (!ownerId) {
-    setErrorMessage("Sessão expirada. Faz login novamente.");
-    setTimeout(() => navigate("/login"), 1200);
-    return;
-  }
-
-  const html = generatePreviewHTML(trimmedTitle, rows, fields);
-  const css = JSON.stringify({ rows, fields });
-
-  try {
-    let res;
-
-    if (id) {
-      res = await fetch(`/api/forms/${id}`, {
-        method: "PUT",
-        headers: authHeaders(),
-        body: JSON.stringify({
-          name: trimmedTitle,
-          html,
-          css,
-          fields,
-        }),
-      });
-    } else {
-      res = await fetch("/api/forms", {
-        method: "POST",
-        headers: authHeaders(),
-        body: JSON.stringify({
-          name: trimmedTitle,
-          html,
-          css,
-          fields,
-          ownerId,
-        }),
-      });
-    }
-
-    if (!res.ok) {
-      const erro = await res.json();
-      setErrorMessage(erro.erro || "Erro ao guardar formulário.");
+      setErrorMessage("Adicione pelo menos um campo para pré-visualizar.");
       return;
     }
 
-    setSuccessMessage(
-      id
-        ? "Dados atualizados com sucesso."
-        : "Dados guardados com sucesso."
-    );
-
-    setTimeout(() => {
-      navigate("/meus-formularios");
-    }, 1200);
-  } catch (err) {
-    console.error("Erro ao guardar formulário:", err);
-    setErrorMessage("Erro de ligação ao servidor.");
+    setShowPreview(true);
   }
-}
 
+  async function handleSaveForm() {
+    setSuccessMessage("");
+    setErrorMessage("");
+
+    const trimmedTitle = formTitle.trim();
+
+    if (!trimmedTitle) {
+      setErrorMessage("Por favor insira um título para o formulário.");
+      return;
+    }
+
+    if (fields.length === 0) {
+      setErrorMessage("Adicione pelo menos um campo antes de guardar.");
+      return;
+    }
+
+    const ownerId = getOwnerId();
+
+    if (!ownerId) {
+      setErrorMessage("Sessão expirada. Faz login novamente.");
+      setTimeout(() => navigate("/login"), 1200);
+      return;
+    }
+
+    const html = generatePreviewHTML(trimmedTitle, rows, fields);
+
+    const css = JSON.stringify({
+      rows,
+      fields,
+      sectionTitles,
+    });
+
+    try {
+      let res;
+
+      if (id) {
+        res = await fetch(`/api/forms/${id}`, {
+          method: "PUT",
+          headers: authHeaders(),
+          body: JSON.stringify({
+            name: trimmedTitle,
+            html,
+            css,
+            fields,
+          }),
+        });
+      } else {
+        res = await fetch("/api/forms", {
+          method: "POST",
+          headers: authHeaders(),
+          body: JSON.stringify({
+            name: trimmedTitle,
+            html,
+            css,
+            fields,
+            ownerId,
+          }),
+        });
+      }
+
+      if (!res.ok) {
+        const erro = await res.json();
+        setErrorMessage(erro.erro || "Erro ao guardar formulário.");
+        return;
+      }
+
+      setSuccessMessage(
+        id ? "Dados atualizados com sucesso." : "Dados guardados com sucesso."
+      );
+
+      setTimeout(() => {
+        navigate("/meus-formularios");
+      }, 1200);
+    } catch (err) {
+      console.error("Erro ao guardar formulário:", err);
+      setErrorMessage("Erro de ligação ao servidor.");
+    }
+  }
 
   return (
     <DndContext onDragEnd={handleDragEnd}>
@@ -535,6 +585,7 @@ async function handleSaveForm() {
               >
                 Editar
               </button>
+
               <button
                 className={previewMode ? "active" : ""}
                 onClick={() => setPreviewMode(true)}
@@ -554,16 +605,12 @@ async function handleSaveForm() {
         </div>
 
         {successMessage && (
-  <div className="form-success-message">
-    {successMessage}
-  </div>
-)}
+          <div className="form-success-message">{successMessage}</div>
+        )}
 
-{errorMessage && (
-  <div className="form-error-message">
-    {errorMessage}
-  </div>
-)}
+        {errorMessage && (
+          <div className="form-error-message">{errorMessage}</div>
+        )}
 
         {previewMode ? (
           <div className="viewform-page">
@@ -573,31 +620,57 @@ async function handleSaveForm() {
                   <h1>{formTitle || "Formulário sem título"}</h1>
                   <p>Preencha todos os campos e submeta o formulário.</p>
                 </div>
+
                 <div className="viewform-card">
+                  <FormSection
+                    number="1"
+                    title={sectionTitles.identification}
+                  />
+
+                  <FormSection
+                    number="2"
+                    title={sectionTitles.subject}
+                  />
+
+                  <FormSection
+                    number="3"
+                    title={sectionTitles.foundation}
+                  />
+
                   <FormRenderer rows={rows} fields={fields} />
                 </div>
+
                 <div className="viewform-actions">
-                  <button className="viewform-submit">Submeter formulário</button>
+                  <button className="viewform-submit">
+                    Submeter formulário
+                  </button>
                 </div>
               </div>
             </main>
           </div>
         ) : (
           <div className="builder">
-            <FormCanvas
-              rows={rows}
-              fields={fields}
-              onAddRow={addRow}
-              onRemoveRow={removeRow}
-              onSetCols={setRowCols}
-              onSetColWidths={setRowColWidths}
-              onSetHeight={setRowHeight}
-              setSelectedField={setSelectedFieldId}
-              selectedFieldId={selectedFieldId}
-              onDeleteField={deleteField}
-              onAddField={addFieldToCell}
-            />
+            <div style={{ flex: 1 }}>
+            
+<FormCanvas
+  rows={rows}
+  fields={fields}
+  sectionTitles={sectionTitles}
+  setSectionTitles={setSectionTitles}
+  onAddRow={addRow}
+  onRemoveRow={removeRow}
+  onSetCols={setRowCols}
+  onSetColWidths={setRowColWidths}
+  onSetHeight={setRowHeight}
+  setSelectedField={setSelectedFieldId}
+  selectedFieldId={selectedFieldId}
+  onDeleteField={deleteField}
+  onAddField={addFieldToCell}
+/>
+            </div>
+
             <FieldPalette />
+
             <FieldEditor
               field={selectedField}
               updateField={updateField}
@@ -611,13 +684,15 @@ async function handleSaveForm() {
             <div className="preview-panel">
               <div className="preview-panel-header">
                 <h2>Pré-visualização</h2>
-<button
-  className="preview-close-btn"
-  onClick={() => setShowPreview(false)}
->
-  Fechar preview
-</button>
+
+                <button
+                  className="preview-close-btn"
+                  onClick={() => setShowPreview(false)}
+                >
+                  Fechar preview
+                </button>
               </div>
+
               <iframe
                 ref={iframeRef}
                 title="preview"

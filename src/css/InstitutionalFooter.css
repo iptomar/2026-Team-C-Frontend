@@ -58,3 +58,24 @@
     break-inside: avoid;
   }
 }
+
+.footer-title {
+  display: flex;
+  align-items: center;
+}
+
+.footer-number {
+  margin-right: 10px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.footer-text {
+  flex: 1;
+  padding: 8px 12px;
+  letter-spacing: 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 1px solid #bdbdbd;
+  background: linear-gradient(to bottom, #f8f8f8, #d8d8d8);
+}

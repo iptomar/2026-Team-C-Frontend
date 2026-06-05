@@ -3,9 +3,10 @@ import "../css/InstitutionalFooter.css";
 export default function InstitutionalFooter() {
   return (
     <footer className="institutional-footer">
-      <div className="footer-title">
-        <span>R E Q U E R E N T E</span>
-      </div>
+<div className="footer-title">
+  <span className="footer-number">4.</span>
+  <span className="footer-text">O REQUERENTE</span>
+</div>
 
       <div className="footer-content">
         <div className="footer-date">
