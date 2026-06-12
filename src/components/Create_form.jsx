@@ -621,24 +621,45 @@ function addRow(section = "foundation") {
                   <p>Preencha todos os campos e submeta o formulário.</p>
                 </div>
 
-                <div className="viewform-card">
-                  <FormSection
-                    number="1"
-                    title={sectionTitles.identification}
-                  />
+<div className="viewform-card">
+  <FormSection
+    number="1"
+    title={sectionTitles.identification}
+  />
 
-                  <FormSection
-                    number="2"
-                    title={sectionTitles.subject}
-                  />
+  <FormRenderer
+    rows={rows.filter(
+      (row) => row.section === "identification"
+    )}
+    fields={fields}
+  />
 
-                  <FormSection
-                    number="3"
-                    title={sectionTitles.foundation}
-                  />
+  <FormSection
+    number="2"
+    title={sectionTitles.subject}
+  />
 
-                  <FormRenderer rows={rows} fields={fields} />
-                </div>
+  <FormRenderer
+    rows={rows.filter(
+      (row) => row.section === "subject"
+    )}
+    fields={fields}
+  />
+
+  <FormSection
+    number="3"
+    title={sectionTitles.foundation}
+  />
+
+  <FormRenderer
+    rows={rows.filter(
+      (row) =>
+        !row.section ||
+        row.section === "foundation"
+    )}
+    fields={fields}
+  />
+</div>
 
                 <div className="viewform-actions">
                   <button className="viewform-submit">
