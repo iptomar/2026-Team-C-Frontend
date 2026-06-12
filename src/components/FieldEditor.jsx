@@ -139,6 +139,17 @@ export default function FieldEditor({ field, updateField, deleteField }) {
                 <label className="editor-required">
                   <input
                     type="checkbox"
+                    checked={!!field.inline}
+                    onChange={(e) => updateField(field.id, { inline: e.target.checked })}
+                  />
+                  Em linha
+                </label>
+              </div>
+
+              <div className="editor-section">
+                <label className="editor-required">
+                  <input
+                    type="checkbox"
                     checked={!!field.hasOther}
                     onChange={(e) => updateField(field.id, { hasOther: e.target.checked })}
                   />

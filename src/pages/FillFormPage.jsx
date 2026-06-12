@@ -87,7 +87,7 @@ function FieldInput({ field, value, onChange }) {
       return (
         <div className="fill-field">
           <label>{field.label}{field.required && <span className="fill-required">*</span>}</label>
-          <div className="fill-checkbox-group">
+          <div className="fill-checkbox-group" style={{flexDirection : field.inline ? "row" : "column"}}>
             {(field.options || []).map((opt, i) => (
               <label key={i} className="fill-option">
                 <input

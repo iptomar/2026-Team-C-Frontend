@@ -104,7 +104,7 @@ export function FormField({ field }) {
       return (
         <div className="viewform-field">
           <label>{field.label}</label>
-          <div className="viewform-checkbox-group">
+          <div className="viewform-checkbox-group" style={{ flexDirection: field.inline ? "row" : "column" }}>
             {(field.options || []).map((opt, i) => (
               <label key={i} className="viewform-checkbox-option">
                 <input type="checkbox" value={opt} />
