@@ -251,8 +251,17 @@ async function handleExportForm(formId) {
   );
 
   return (
+    
     <div className="myforms-page">
 
+<div className="myforms-topbar">
+  <button
+    className="back-btn"
+    onClick={() => navigate(-1)}
+  >
+    ← Voltar
+  </button>
+</div>
       <main className="myforms-content">
         <div className="myforms-container">
 

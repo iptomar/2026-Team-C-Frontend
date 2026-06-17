@@ -179,22 +179,27 @@
 }
 
 /* ── Campos ── */
-.viewform-field {
+.viewform-field{
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start; 
+  gap: 6px; 
 }
 
-.viewform-field label {
+.viewform-field label{
   font-size: 13px;
   font-weight: 600;
   color: #374151;
-  letter-spacing: 0.2px;
+  min-width: 90px;   
+  max-width: 140px;
 }
 
 .viewform-field input,
 .viewform-field textarea,
 .viewform-field select {
+  flex:1;
+  
   padding: 10px 14px;
   border-radius: 10px;
   border: 1.5px solid #e5e7eb;
@@ -447,7 +452,7 @@
 .ipt-schools input {
   width: 22px;
   height: 22px;
-
+}
 /* Inicia os contadores no contentor principal */
 .viewform-card, .form-rows {
   counter-reset: main-title;

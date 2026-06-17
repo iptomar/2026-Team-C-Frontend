@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { DndContext } from "@dnd-kit/core";
+import { arrayMove } from "@dnd-kit/sortable";
 
 import FormCanvas from "./FormCanvas";
 import FieldPalette from "./FieldPalette";
@@ -15,6 +16,7 @@ import { getToken } from "../utils/session";
 import "../css/create_forms.css";
 import "../css/ViewFormPage.css";
 import "../css/FillFormPage.css";
+
 
 function getOwnerId() {
   const token = getToken();
@@ -430,57 +432,7 @@ function addRow(section = "foundation") {
     ]);
   }
 
-  function handleDragEnd(event) {
-    const { active, over } = event;
-
-    if (!over) return;
-
-    const overId = String(over.id);
-
-    if (!overId.startsWith("cell::")) return;
-
-    const [, rowId, colStr] = overId.split("::");
-    const colIndex = parseInt(colStr, 10);
-
-    const targetOccupied = fields.find(
-      (f) => f.rowId === rowId && f.colIndex === colIndex
-    );
-
-    if (active.data.current?.from === "palette") {
-      if (targetOccupied) return;
-
-      setFields((prev) => [
-        ...prev,
-        {
-          id: crypto.randomUUID(),
-          type: active.data.current.type,
-          rowId,
-          colIndex,
-          label: "Descrição",
-          placeholder: "Escreva aqui...",
-          options: ["Opção 1", "Opção 2"],
-          stars: 5,
-          hasOther: false,
-          otherLabel: "Outros",
-          inline:false
-        },
-      ]);
-
-      return;
-    }
-
-    if (active.data.current?.from === "cell") {
-      const fieldId = active.id;
-
-      if (targetOccupied && targetOccupied.id !== fieldId) return;
-
-      setFields((prev) =>
-        prev.map((f) =>
-          f.id === fieldId ? { ...f, rowId, colIndex } : f
-        )
-      );
-    }
-  }
+  
 
   function handlePreview() {
     if (fields.length === 0) {
@@ -490,6 +442,80 @@ function addRow(section = "foundation") {
 
     setShowPreview(true);
   }
+
+function handleDragEnd(event) {
+  const { active, over } = event;
+
+  if (!over) return;
+
+  // Reordenar linhas
+  if (active.data.current?.type === "row") {
+    const activeRowId = active.data.current.rowId;
+    const targetRowId = over.data.current?.rowId;
+
+    if (!targetRowId || activeRowId === targetRowId) return;
+
+    setRows((rows) => {
+      const oldIndex = rows.findIndex((r) => r.id === activeRowId);
+      const newIndex = rows.findIndex((r) => r.id === targetRowId);
+
+      return arrayMove(rows, oldIndex, newIndex);
+    });
+
+    return;
+  }
+
+  // Mover campos
+  const overId = String(over.id);
+
+  if (!overId.startsWith("cell::")) return;
+
+  const [, rowId, colStr] = overId.split("::");
+  const colIndex = parseInt(colStr, 10);
+
+  const targetOccupied = fields.find(
+    (f) => f.rowId === rowId && f.colIndex === colIndex
+  );
+
+  // Campo novo vindo da paleta
+  if (active.data.current?.from === "palette") {
+    if (targetOccupied) return;
+
+    setFields((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        type: active.data.current.type,
+        rowId,
+        colIndex,
+        label: "Descrição",
+        placeholder: "Escreva aqui...",
+        options: ["Opção 1", "Opção 2"],
+        stars: 5,
+        hasOther: false,
+        otherLabel: "Outros",
+        inline: false,
+      },
+    ]);
+
+    return;
+  }
+
+  // Campo movido entre células
+  if (active.data.current?.from === "cell") {
+    const fieldId = active.id;
+
+    if (targetOccupied && targetOccupied.id !== fieldId) return;
+
+    setFields((prev) =>
+      prev.map((f) =>
+        f.id === fieldId
+          ? { ...f, rowId, colIndex }
+          : f
+      )
+    );
+  }
+}
 
   async function handleSaveForm() {
     setSuccessMessage("");
