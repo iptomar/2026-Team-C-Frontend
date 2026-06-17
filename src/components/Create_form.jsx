@@ -7,11 +7,14 @@ import FieldPalette from "./FieldPalette";
 import FieldEditor from "./FieldEditor";
 import FormRenderer from "./FormRenderer";
 import FormSection from "./FormSection";
+import InstitutionalHeader from "./InstitutionalHeader";
+import InstitutionalFooter from "./InstitutionalFooter";
 
 import { getToken } from "../utils/session";
 
 import "../css/create_forms.css";
 import "../css/ViewFormPage.css";
+import "../css/FillFormPage.css";
 
 function getOwnerId() {
   const token = getToken();
@@ -615,77 +618,35 @@ function addRow(section = "foundation") {
         )}
 
         {previewMode ? (
-          <div className="viewform-page">
-            <main className="viewform-content">
-              <div className="viewform-container">
-                <div className="viewform-intro">
-                  <h1>{formTitle || "Formulário sem título"}</h1>
-                  <p>Preencha todos os campos e submeta o formulário.</p>
+          <div className="fill-page">
+            <InstitutionalHeader title={formTitle || "Formulário sem título"} page="Página 1 de 1" />
+
+            <main className="fill-content">
+              <div className="fill-container">
+                <div className="fill-card">
+                  <FormSection number="1" title={sectionTitles.identification} />
+                  <FormRenderer
+                    rows={rows.filter((row) => row.section === "identification")}
+                    fields={fields}
+                  />
+
+                  <FormSection number="2" title={sectionTitles.subject} />
+                  <FormRenderer
+                    rows={rows.filter((row) => row.section === "subject")}
+                    fields={fields}
+                  />
+
+                  <FormSection number="3" title={sectionTitles.foundation} />
+                  <FormRenderer
+                    rows={rows.filter((row) => !row.section || row.section === "foundation")}
+                    fields={fields}
+                  />
                 </div>
 
-
-<div className="viewform-card">
-  <FormSection
-    number="1"
-    title={sectionTitles.identification}
-  />
-
-  <FormRenderer
-    rows={rows.filter(
-      (row) => row.section === "identification"
-    )}
-    fields={fields}
-  />
-
-  <FormSection
-    number="2"
-    title={sectionTitles.subject}
-  />
-
-  <FormRenderer
-    rows={rows.filter(
-      (row) => row.section === "subject"
-    )}
-    fields={fields}
-  />
-
-  <FormSection
-    number="3"
-    title={sectionTitles.foundation}
-  />
-
-  <FormRenderer
-    rows={rows.filter(
-      (row) =>
-        !row.section ||
-        row.section === "foundation"
-    )}
-    fields={fields}
-  />
-</div>
-
-                <div className="viewform-card">
-                  <FormSection
-                    number="1"
-                    title={sectionTitles.identification}
-                  />
-
-                  <FormSection
-                    number="2"
-                    title={sectionTitles.subject}
-                  />
-                  
-                  <FormSection
-                    number="3"
-                    title={sectionTitles.foundation}
-                  />
-
-                  <FormRenderer rows={rows} fields={fields} />
-                </div>
-
+                <InstitutionalFooter />
 
                 <div className="viewform-actions">
-                  <button className="viewform-submit">
+                  <button className="viewform-submit" disabled>
                     Submeter formulário
                   </button>
                 </div>
