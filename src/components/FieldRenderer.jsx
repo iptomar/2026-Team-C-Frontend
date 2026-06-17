@@ -1,4 +1,5 @@
 import SegmentedInput from "./SegmentedInput";
+
 export default function FieldRenderer({ field }) {
   const inputStyle = {
     width: "100%",

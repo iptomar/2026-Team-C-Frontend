@@ -130,6 +130,7 @@
 .canvas-wrapper {
   flex: 1;
   overflow-y: auto;
+  min-height: 0; /* 🔥 CRÍTICO */
 }
 
 .form-rows {
@@ -137,7 +138,7 @@
   flex-direction: column;
   gap: 12px;
   padding: 24px;
-  box-sizing: border-box;
+  min-height: 0;
 }
 
 /* ── Linha ── */
@@ -631,4 +632,56 @@
 
 .editor-delete-btn:hover {
   background: #fee4e2;
+}
+
+
+
+.row-drag-handle {
+  cursor: grab;
+  user-select: none;
+  padding: 6px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.row-drag-handle:active {
+  cursor: grabbing;
+}
+
+.form-row {
+  position: relative;
+}
+
+
+.form-row.row-over::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: #f97316;
+  border-radius: 999px;
+  z-index: 100;
+}
+
+
+
+.builder {
+  display: flex;
+  flex: 1;
+  min-height: 0; /* 🔥 CRÍTICO */
+}
+
+.builder > div:first-child {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.form-canvas {
+  height: 100%;
+  overflow-y: auto;
+  min-height: 0;
 }

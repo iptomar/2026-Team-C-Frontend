@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import FormCell from "./FormCell";
+import { useDraggable, useDroppable } from "@dnd-kit/core";
 
 const MIN_HEIGHT = 90;
 
@@ -197,11 +198,61 @@ export default function FormRow({
     window.addEventListener("pointerup", onUp);
   }
 
+function setRefs(node) {
+  setNodeRef(node); // draggable
+  setDropRef(node); // droppable
+}
+
   const gridTemplate = row.colWidths.map((w) => `${w}%`).join(" ");
 
+  const {
+  attributes,
+  listeners,
+  setNodeRef,
+  transform,
+  isDragging,
+} = useDraggable({
+  id: `row-${row.id}`,
+  data: {
+    type: "row",
+    rowId: row.id,
+  },
+});
+
+const {
+  setNodeRef: setDropRef,
+  isOver,
+} = useDroppable({
+  id: `row-drop-${row.id}`,
+  data: {
+    type: "row-drop",
+    rowId: row.id,
+  },
+});
+
+const dragStyle = {
+  opacity: isDragging ? 0.5 : 1,
+  transform: transform
+    ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
+    : undefined,
+};
+
+
   return (
-    <div className="form-row">
-      <div className="row-controls">
+    <div
+  ref={setRefs}
+  className={`form-row ${isOver ? "row-over" : ""}`}
+  style={dragStyle}
+>
+      <div className="row-controls">  
+        <div
+  className="row-drag-handle"
+  {...listeners}
+  {...attributes}
+  title="Arrastar linha"
+>
+  ⠿
+</div>  
         <span className="row-label">Linha</span>
 
         <div className="row-col-btns">
