@@ -9,10 +9,10 @@ export default function FormRenderer({ rows = [], fields = [] }) {
           style={{
             display: "grid",
             gridTemplateColumns: row.colWidths
-              ? row.colWidths.map((w) => `${w}%`).join(" ")
+              ? row.colWidths.map((w) => `${w}fr`).join(" ")
               : `repeat(${row.colCount}, 1fr)`,
             gap: "16px",
-            marginBottom: "16px",
+            marginBottom: "1px",
             alignItems: "start",
           }}
         >

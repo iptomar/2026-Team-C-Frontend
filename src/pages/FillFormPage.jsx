@@ -1,10 +1,76 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getUser } from "../utils/session";
 import InstitutionalHeader from "../components/InstitutionalHeader";
 import InstitutionalFooter from "../components/InstitutionalFooter";
 import FormSection from "../components/FormSection";
 import "../css/FillFormPage.css";
+
+// Controlled segmented input — mirrors SegmentedInput.jsx but tied to fill-form value/onChange
+function FillSegmentedInput({ field, value, onChange }) {
+  const segments = field.segments?.length > 0 ? field.segments : [parseInt(field.segmentsRaw, 10) || 1];
+  const separator = field.separator !== undefined ? field.separator : "";
+  const totalLen = segments.reduce((a, b) => a + b, 0);
+
+  const chars = Array.from({ length: totalLen }, (_, i) => (value || "")[i] || "");
+  const refs = useRef([]);
+  refs.current = [];
+
+  function handleChange(i, e) {
+    const char = e.target.value.slice(-1);
+    const next = [...chars];
+    next[i] = char;
+    onChange(field.id, next.join(""));
+    if (char && i < totalLen - 1) refs.current[i + 1]?.focus();
+  }
+
+  function handleKeyDown(i, e) {
+    if (e.key === "Backspace" && !chars[i] && i > 0) refs.current[i - 1]?.focus();
+    if (e.key === "ArrowLeft"  && i > 0)             refs.current[i - 1]?.focus();
+    if (e.key === "ArrowRight" && i < totalLen - 1)  refs.current[i + 1]?.focus();
+  }
+
+  let flat = 0;
+  const groups = segments.map((count) => {
+    const squares = [];
+    for (let i = 0; i < count; i++) {
+      const fi = flat++;
+      squares.push(
+        <input
+          key={fi}
+          style={{borderWidth: "1px"}}
+          ref={(el) => { if (el) refs.current[fi] = el; }}
+          className="segmented-square"
+          type="text"
+          maxLength={1}
+          value={chars[fi]}
+          onChange={(e) => handleChange(fi, e)}
+          onKeyDown={(e) => handleKeyDown(fi, e)}
+          
+        />
+      );
+    }
+    return squares;
+  });
+
+  return (
+    <div className="fill-field">
+      <label>{field.label}{field.required && <span className="fill-required">*</span>}</label>
+      <div className="segmented-wrapper">
+        <div className="segmented-container">
+          {groups.map((grp, gi) => (
+            <span key={gi} style={{ display: "contents" }}>
+              <div className="segmented-group">{grp}</div>
+              {gi < groups.length - 1 && separator && (
+                <span className="segmented-separator">{separator}</span>
+              )}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function authHeaders() {
   return {
@@ -111,10 +177,27 @@ function FieldInput({ field, value, onChange }) {
         </div>
       );
 
+    case "segmented":
+      return <FillSegmentedInput field={field} value={value} onChange={onChange} />;
+
     case "title":
       return (
         <div className="fill-field fill-title-field">
           <h2>{field.label}</h2>
+        </div>
+      );
+
+    case "subtitle":
+      return (
+        <div className="fill-field viewform-field-subtitle" style={{ paddingTop: 0 }}>
+          <h3>{field.label}</h3>
+        </div>
+      );
+
+    case "info":
+      return (
+        <div className="fill-field viewform-field-info">
+          <p>{field.label}</p>
         </div>
       );
 
@@ -193,33 +276,52 @@ export default function FillFormPage() {
     }));
   }
 
-  function getFieldsBySection(section) {
-    const sectionRowIds = rows
-      .filter((row) =>
-        section === "foundation"
-          ? !row.section || row.section === "foundation"
-          : row.section === section
-      )
-      .map((row) => row.id);
-
-    return fields.filter((field) => sectionRowIds.includes(field.rowId));
-  }
-
   function renderSectionFields(section) {
-    const sectionFields = getFieldsBySection(section);
+    // Get rows belonging to this section, in order
+    const sectionRows = rows.filter((row) =>
+      section === "foundation"
+        ? !row.section || row.section === "foundation"
+        : row.section === section
+    );
 
-    if (sectionFields.length === 0) {
-      return null;
-    }
+    if (sectionRows.length === 0) return null;
 
-    return sectionFields.map((field) => (
-      <FieldInput
-        key={field.id}
-        field={field}
-        value={answers[field.id]}
-        onChange={handleChange}
-      />
-    ));
+    return sectionRows.map((row) => {
+      // Build colWidths into a CSS grid template
+      const colWidths = row.colWidths || Array(row.colCount).fill(100 / row.colCount);
+      const gridTemplate = colWidths.map((w) => `${w}fr`).join(" ");
+
+      // Map colIndex -> field for this row
+      const colMap = {};
+      fields
+        .filter((f) => f.rowId === row.id)
+        .forEach((f) => { colMap[f.colIndex] = f; });
+
+      return (
+        <div
+          key={row.id}
+          style={{
+            display: "grid",
+            gridTemplateColumns: gridTemplate,
+            gap: "16px",
+            alignItems: "start",
+            marginBottom: "1px",
+          }}
+        >
+          {Array.from({ length: row.colCount }, (_, i) => (
+            <div key={i}>
+              {colMap[i] ? (
+                <FieldInput
+                  field={colMap[i]}
+                  value={answers[colMap[i].id]}
+                  onChange={handleChange}
+                />
+              ) : null}
+            </div>
+          ))}
+        </div>
+      );
+    });
   }
 
   async function handleSubmit(isDraft) {

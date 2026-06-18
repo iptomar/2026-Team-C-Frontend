@@ -138,7 +138,6 @@
 
 .viewform-container {
   width: 100%;
-  max-width: 640px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -172,7 +171,7 @@
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 14px;
-  padding: 28px;
+  padding: 1%;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -191,21 +190,22 @@
   font-size: 13px;
   font-weight: 600;
   color: #374151;
-  min-width: 90px;   
+  min-width: 0px;   
   max-width: 140px;
 }
 
 .viewform-field input,
 .viewform-field textarea,
 .viewform-field select {
-  flex:1;
-  
+  flex: 1;
+  min-width: 0;
   padding: 10px 14px;
-  border-radius: 10px;
-  border: 1.5px solid #e5e7eb;
+  margin: auto 1px;
+  border-width: 0px 0px 1px 0px ;
+  border-color: #000001;
   font-size: 14px;
   color: #111827;
-  background-color: #f9fafb;
+  background-color: #dde4ff;
   outline: none;
   font-family: inherit;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
@@ -226,12 +226,14 @@
 
 .viewform-field input[type="checkbox"],
 .viewform-field input[type="radio"] {
-  width: auto;
+  width: 20px;
+  height: 20px;
   padding: 0;
   border: none;
   background: transparent;
   box-shadow: none;
   accent-color: #DD6418;
+  justify-content: center;
 }
 
 .viewform-radio-group,
@@ -239,6 +241,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  justify-content: center;
 }
 
 .viewform-radio-option,
@@ -504,10 +507,4 @@
   font-size: 15px; /* Tamanho de letra mais pequeno */
   font-weight: 700;
   color: #374151;
-}
-
-/* Insere a numeração composta (ex: "1.1. ") antes do subtítulo */
-.viewform-field-subtitle h3::before {
-  content: counter(main-title) "." counter(sub-title) ". ";
-
 }

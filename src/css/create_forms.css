@@ -78,7 +78,7 @@
 .builder {
   display: flex;
   flex: 1;
-  overflow: hidden;
+  overflow: auto;
 }
 
 /* ── Sidebar ── */
