@@ -112,7 +112,6 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 12px;
 }
 
 .fill-field > label:first-child {
@@ -129,6 +128,8 @@
   margin-left: 3px;
 }
 
+
+
 .fill-field input[type="text"],
 .fill-field input[type="number"],
 .fill-field input[type="email"],
@@ -137,15 +138,20 @@
 .fill-field select {
   flex: 1;
   padding: 9px 12px;
-  border: 1.5px solid #d1d5db;
-  border-radius: 8px;
+  margin: auto 1px;
+  border-width: 0px 0px 1px 0px;
+  border-color: #000001;
   font-size: 14px;
   color: #111827;
-  background: #fff;
+  background-color: #dde4ff;
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
   font-family: inherit;
   box-sizing: border-box;
+}
+
+.fill-checkbox-group{
+  justify-content: center;
 }
 
 .fill-field input:focus,
@@ -153,6 +159,16 @@
 .fill-field select:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+.viewform-field-info{
+  justify-content: center;
+}
+
+
+.fill-field .segmented-square{
+  margin: 1px;
+  border-width: 1px;
 }
 
 .fill-field:has(textarea) {
@@ -169,12 +185,9 @@
   flex: 1;
   min-height: 220px;
   resize: vertical;
-
   padding: 0 12px;
   line-height: 30px;
-
   border: none;
-  border-radius: 0;
   outline: none;
   box-shadow: none;
 
@@ -208,7 +221,6 @@
   color: #374151;
   cursor: pointer;
   padding: 6px 10px;
-  border-radius: 6px;
   transition: background 0.12s;
 }
 
@@ -223,6 +235,8 @@
   height: 15px;
   cursor: pointer;
   flex-shrink: 0;
+  width: 20px;
+  height: 20px;
 }
 
 .fill-other-input {

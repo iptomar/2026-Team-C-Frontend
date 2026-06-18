@@ -203,7 +203,7 @@ function setRefs(node) {
   setDropRef(node); // droppable
 }
 
-  const gridTemplate = row.colWidths.map((w) => `${w}%`).join(" ");
+  const gridTemplate = row.colWidths.map((w) => `${w}fr`).join(" ");
 
   const {
   attributes,
